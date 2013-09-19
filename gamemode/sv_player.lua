@@ -73,10 +73,8 @@ function GM:PlayerLoadout(ply)
 	ply:Give("weapon_rp_hands")
 
 	if ply:GetMurderer() then
-		ply:Give("weapon_crowbar")
+		ply:Give("weapon_mu_knife")
 	end
-
-	print(ply, "loadout")
 
 
 end

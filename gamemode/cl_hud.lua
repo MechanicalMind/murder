@@ -56,6 +56,9 @@ function GM:HUDPaint()
 		local lt = (lc.r + lc.g + lc.b) / 3
 		draw.DrawText("Light:" .. tostring(lc), "MersRadial", ScrW() - 20, 80, color_white, 2)
 		draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
+
+		DebugInfo(1, tostring(tr.Entity))
+		DebugInfo(2, tostring(tr.PhysicsBone))
 	end
 end
 
