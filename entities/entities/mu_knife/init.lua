@@ -37,13 +37,17 @@ function ENT:Think()
 		self.RemoveNext = false
 		self:Remove()
 	end
-	if self.HitSomething && self:GetVelocity():Length2D() < 0.5 then
+	if self.HitSomething && self:GetVelocity():Length2D() < 1.5 then
 		self.HitSomething = false
 		local knife = ents.Create("weapon_mu_knife")
 		knife:SetPos(self:GetPos())
 		knife:SetAngles(self:GetAngles())
 		knife:Spawn()
 		self:Remove()
+		local phys = knife:GetPhysicsObject()
+		if IsValid(phys) then
+			phys:SetVelocity(self:GetVelocity())
+		end
 	end
 
 	self:NextThink(CurTime())
@@ -57,7 +61,7 @@ local function addangle(ang,ang2)
 end
 
 function ENT:PhysicsCollide( data, physobj )
-	print(data.OurOldVelocity:Length())
+	-- print(data.OurOldVelocity:Length())
 
 	if self.HitSomething then return end
 	if self.RemoveNext then return end
@@ -65,8 +69,8 @@ function ENT:PhysicsCollide( data, physobj )
 	local ply = data.HitEntity
 	if IsValid(ply) && ply:IsPlayer() then
 
-		self.RemoveNext = true
-		self:SetColor(Color(0,0,0,0))
+		-- self.RemoveNext = true
+		-- self:SetColor(Color(0,0,0,0))
 
 		local dmg = DamageInfo()
 		dmg:SetDamage(120)

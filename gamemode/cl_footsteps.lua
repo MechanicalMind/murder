@@ -85,6 +85,8 @@ net.Receive("add_footstep", function ()
 	local ply = net.ReadEntity()
 	local pos = net.ReadVector()
 
+	if !IsValid(ply) then return end
+
 	if ply == LocalPlayer() then return end
 
 	if !GAMEMODE:CanSeeFootsteps() then return end

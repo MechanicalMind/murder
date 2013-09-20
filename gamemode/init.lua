@@ -36,6 +36,7 @@ end
 
 function GM:Think()
 	self:ParkourThink()
+	self:RoundThink()
 end
 
 function GM:AllowPlayerPickup( ply, ent )
@@ -55,20 +56,15 @@ function GM:OnEndRound()
 end
 
 function GM:OnStartRound()
-	local players = team.GetPlayers(2)
-	for k,ply in pairs(players) do
-		ply:UnSpectate()
+	
+end
+
+function GM:SendMessageAll(msg) 
+	for k,v in pairs(player.GetAll()) do
+		v:ChatPrint(msg)
 	end
-	game.CleanUpMap()
-	local murderer = table.Random(players)
-	murderer:SetMurderer(true)
-	for k, ply in pairs(players) do
-		if ply != murderer then
-			ply:SetMurderer(false)
-		end
-		ply:StripWeapons()
-		ply:KillSilent()
-		ply:Spawn()
-	end
-	self:ClearAllFootsteps()
+end
+
+function GM:PlayerDisconnected(ply)
+	self:PlayerLeavePlay(ply)
 end

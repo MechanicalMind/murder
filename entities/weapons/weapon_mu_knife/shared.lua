@@ -4,12 +4,14 @@ SWEP.WorldModel = "models/weapons/w_knife_t.mdl"
 
 SWEP.PrintName = "Knife"
 
+SWEP.Weight	= 0
+
 SWEP.Spawnable			= true
 SWEP.AdminSpawnable		= true
 
 SWEP.Primary.Delay			= 0.5
 SWEP.Primary.Recoil			= 3
-SWEP.Primary.Damage			= 60
+SWEP.Primary.Damage			= 120
 SWEP.Primary.NumShots		= 1	
 SWEP.Primary.Cone			= 0.04
 SWEP.Primary.ClipSize		= -1
@@ -88,10 +90,10 @@ function SWEP:Think()
 		local tr = self:GetTrace()
 
 		// aim around
-		-- if !tr.Hit then tr = self:GetTrace(Angle(0,20,0)) end
-		-- if !tr.Hit then tr = self:GetTrace(Angle(0,-20,0)) end
-		-- if !tr.Hit then tr = self:GetTrace(Angle(0,0,20)) end
-		-- if !tr.Hit then tr = self:GetTrace(Angle(0,0,-20)) end
+		if !tr.Hit then tr = self:GetTrace(Angle(0,20,0)) end
+		if !tr.Hit then tr = self:GetTrace(Angle(0,-20,0)) end
+		if !tr.Hit then tr = self:GetTrace(Angle(0,0,20)) end
+		if !tr.Hit then tr = self:GetTrace(Angle(0,0,-20)) end
 		if tr.Hit then
 			self.Owner:ViewPunch(Angle(0, 3, 0))
 			if IsValid(tr.Entity) then

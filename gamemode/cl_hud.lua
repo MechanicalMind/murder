@@ -46,19 +46,27 @@ function GM:HUDPaint()
 	if !client:Alive() then
 		self:RenderRespawnText()
 	else
-		local speed = math.floor(LocalPlayer():GetVelocity():Length2D())
+		local t1 = "You are innocent"
+		local t2 = "Try to stay alive and find the murderer"
+		local c = Color(255,255,255)
 
-		draw.DrawText("Speed:" .. speed, "MersRadial", ScrW() - 200, 20, color_white, 0)
+		if self:GetAmMurderer() then
+			t1 = "You are the murderer"
+			t2 = "Kill everyone, stealthly"
+			c = Color(255,90,90)
+		end
 
-		local tr = LocalPlayer():GetEyeTrace()
+		draw.DrawText(t1, "MersRadial", ScrW() - 20, 20, c, 2)
+		draw.DrawText(t2, "MersRadialSmall", ScrW() - 20, 60, c, 2)
 
-		local lc = render.GetLightColor(LocalPlayer():GetPos() + Vector(0,0,30))
-		local lt = (lc.r + lc.g + lc.b) / 3
-		draw.DrawText("Light:" .. tostring(lc), "MersRadial", ScrW() - 20, 80, color_white, 2)
-		draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
 
-		DebugInfo(1, tostring(tr.Entity))
-		DebugInfo(2, tostring(tr.PhysicsBone))
+		-- local tr = LocalPlayer():GetEyeTrace()
+
+		-- local lc = render.GetLightColor(LocalPlayer():GetPos() + Vector(0,0,30))
+		-- local lt = (lc.r + lc.g + lc.b) / 3
+		-- draw.DrawText("Light:" .. tostring(lc), "MersRadial", ScrW() - 20, 80, color_white, 2)
+		-- draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
+
 	end
 end
 

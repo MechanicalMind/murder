@@ -71,6 +71,7 @@ end
 function GM:PlayerLoadout(ply)
 
 	ply:Give("weapon_rp_hands")
+	-- ply:Give("weapon_fists")
 
 	if ply:GetMurderer() then
 		ply:Give("weapon_mu_knife")
@@ -114,6 +115,12 @@ function GM:PlayerSetModel( ply )
 end
 
 function GM:DoPlayerDeath( ply, attacker, dmginfo )
+
+	for k, weapon in pairs(ply:GetWeapons()) do
+		if weapon:GetClass() == "weapon_mu_magnum" then
+			ply:DropWeapon(weapon)
+		end
+	end
 
 	ply:CreateRagdoll()
 
@@ -226,25 +233,30 @@ function GM:ScalePlayerDamage( ply, hitgroup, dmginfo )
 	// Don't scale it depending on hitgroup
 end
 
-function GM:PlayerDeath(victim, Inflictor, Attacker )
+function GM:PlayerDeath(ply, Inflictor, attacker )
 
-	victim.NextSpawnTime = CurTime() + 30
-	victim.DeathTime = CurTime()
-	victim.SpectateTime = CurTime() + 12
+	// wierd
+	timer.Simple(0, function ()
+		self:DoRoundDeaths(ply, attacker)
+	end)
 
-	umsg.Start("rp_death", victim)
+	ply.NextSpawnTime = CurTime() + 30
+	ply.DeathTime = CurTime()
+	ply.SpectateTime = CurTime() + 12
+
+	umsg.Start("rp_death", ply)
 	umsg.Long(30)
 	umsg.Long(12)
 	umsg.End()
 	
-	if ( Inflictor && Inflictor == Attacker && (Inflictor:IsPlayer() || Inflictor:IsNPC()) ) then
+	if ( Inflictor && Inflictor == attacker && (Inflictor:IsPlayer() || Inflictor:IsNPC()) ) then
 	
 		Inflictor = Inflictor:GetActiveWeapon()
-		if ( !Inflictor || Inflictor == NULL ) then Inflictor = Attacker end
+		if ( !Inflictor || Inflictor == NULL ) then Inflictor = attacker end
 	
 	end
 
-	self:RagdollSetDeathDetails(victim, Inflictor, Attacker)
+	self:RagdollSetDeathDetails(ply, Inflictor, attacker)
 end
 
 function GM:PlayerDeathThink( ply )
@@ -294,4 +306,30 @@ end
 
 function GM:PlayerFootstep(ply, pos, foot, sound, volume, filter)
 	self:FootstepsOnFootstep(ply, pos, foot, sound, volume, filter)
+end
+
+function GM:PlayerCanPickupWeapon( ply, ent ) 
+	if ent:GetClass() == "weapon_mu_magnum" then
+		if ply:GetMurderer() then
+			return false
+		end
+	end
+
+	if ent:GetClass() == "weapon_mu_knife" then
+		if !ply:GetMurderer() then
+			return false
+		end
+	end
+
+	return true
+end
+
+function GM:PlayerCanHearPlayersVoice( listener, talker ) 
+	if talker:Team() != 2 then
+		return false
+	end
+	if !talker:Alive() then
+		return false
+	end
+	return true
 end
