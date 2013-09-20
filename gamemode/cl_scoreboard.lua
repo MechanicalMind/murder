@@ -122,23 +122,23 @@ local function makeTeamList(parent, pteam)
 		end
 	end
 
-	chaos = vgui.Create("DLabel", headp)
-	chaos:Dock(RIGHT)
-	chaos:DockMargin(0,0,10,0)
-	if pteam == 2 then
-		-- chaos:SetText("Control: " .. GAMEMODE:GetControl())
-	else
-		-- chaos:SetText("Chaos: " .. GAMEMODE:GetChaos())
-	end
-	function chaos:PerformLayout()
-		self:ApplySchemeSettings()
-		self:SizeToContentsX()
-		if ( self.m_bAutoStretchVertical ) then
-			self:SizeToContentsY()
-		end
-	end
-	chaos:SetFont("Trebuchet24")
-	chaos:SetTextColor(team.GetColor(pteam))
+	-- chaos = vgui.Create("DLabel", headp)
+	-- chaos:Dock(RIGHT)
+	-- chaos:DockMargin(0,0,10,0)
+	-- if pteam == 2 then
+	-- 	-- chaos:SetText("Control: " .. GAMEMODE:GetControl())
+	-- else
+	-- 	-- chaos:SetText("Chaos: " .. GAMEMODE:GetChaos())
+	-- end
+	-- function chaos:PerformLayout()
+	-- 	self:ApplySchemeSettings()
+	-- 	self:SizeToContentsX()
+	-- 	if ( self.m_bAutoStretchVertical ) then
+	-- 		self:SizeToContentsY()
+	-- 	end
+	-- end
+	-- chaos:SetFont("Trebuchet24")
+	-- chaos:SetTextColor(team.GetColor(pteam))
 
 	local head = vgui.Create("DLabel", headp)
 	head:SetText(team.GetName(pteam))
@@ -186,7 +186,7 @@ function GM:ScoreboardShow()
 
 		menu.Cops = makeTeamList(menu, 2)
 		menu.Cops:Dock(LEFT)
-		menu.Robbers = makeTeamList(menu, 3)
+		menu.Robbers = makeTeamList(menu, 1)
 		menu.Robbers:Dock(FILL)
 	end
 end

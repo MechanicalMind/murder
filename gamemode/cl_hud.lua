@@ -23,6 +23,14 @@ surface.CreateFont( "MersRadial" , {
 	italic = false
 })
 
+surface.CreateFont( "MersRadialBig" , {
+	font = "coolvetica",
+	size = math.ceil(ScrW() / 24),
+	weight = 500,
+	antialias = true,
+	italic = false
+})
+
 surface.CreateFont( "MersRadialSmall" , {
 	font = "coolvetica",
 	size = math.ceil(ScrW() / 60),
@@ -39,25 +47,39 @@ surface.CreateFont( "MersDeathBig" , {
 	italic = false
 })
 
+local function drawTextShadow(t,f,x,y,c,px,py)
+	draw.SimpleText(t,f,x + 1,y + 1,color_black,px,py)
+	draw.SimpleText(t,f,x,y,c,px,py)
+end
 
 
+local healthCol = Color(120,255,20)
 function GM:HUDPaint()
 	local client = LocalPlayer()
 	if !client:Alive() then
 		self:RenderRespawnText()
 	else
-		local t1 = "You are innocent"
+		local t1 = "Victim"
 		local t2 = "Try to stay alive and find the murderer"
-		local c = Color(255,255,255)
+		local c = Color(20,120,255)
 
 		if self:GetAmMurderer() then
-			t1 = "You are the murderer"
-			t2 = "Kill everyone, stealthly"
-			c = Color(255,90,90)
+			t1 = "Murderer"
+			t2 = "Kill everyone, without being seen"
+			c = Color(230,50,50)
 		end
 
-		draw.DrawText(t1, "MersRadial", ScrW() - 20, 20, c, 2)
-		draw.DrawText(t2, "MersRadialSmall", ScrW() - 20, 60, c, 2)
+		drawTextShadow(t1, "MersRadial", ScrW() - 20, ScrH() - 10, c, 2, TEXT_ALIGN_TOP)
+
+		drawTextShadow(t2, "MersRadialSmall", ScrW() - 20, 20, color_white, 2)
+
+		local health = client:Health()
+
+		surface.SetFont("MersRadial")
+		local w,h = surface.GetTextSize("Health")
+
+		drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
+		drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
 
 
 		-- local tr = LocalPlayer():GetEyeTrace()
@@ -78,4 +100,12 @@ function GM:RenderScreenspaceEffects()
 	if !client:Alive() then
 		self:RenderDeathOverlay()
 	end
+end
+
+function GM:HUDShouldDraw( name )
+	// hide health and armor
+    if name == "CHudHealth" || name == "CHudBattery" then
+        return false
+    end
+    return true
 end

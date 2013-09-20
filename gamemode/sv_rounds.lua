@@ -17,6 +17,7 @@ function GM:DoRoundDeaths(dead, attacker)
 	if self.RoundStage == 1 then
 		local murderer
 		local players = team.GetPlayers(2)
+		if #players == 0 then return end
 		for k,v in pairs(players) do
 			if !v:Alive() || dead == v then
 				players[k] = nil
