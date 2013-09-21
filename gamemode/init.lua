@@ -66,16 +66,3 @@ function GM:SendMessageAll(msg)
 	end
 end
 
-function GM:PlayerDisconnected(ply)
-	self:PlayerLeavePlay(ply)
-end
-
-concommand.Add("th_jointeam", function (ply, com, args)
-	local curteam = ply:Team()
-	local newteam = tonumber(args[1] or "") or 0
-	if newteam >= 1 && newteam <= 2 && newteam != curteam then
-		ply:SetTeam(newteam)
-		ply:Kill()
-		GAMEMODE:SendMessageAll(ply:Nick() .. " changed team to " .. team.GetName(newteam))
-	end
-end)

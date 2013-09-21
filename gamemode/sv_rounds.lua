@@ -4,54 +4,87 @@ if GAMEMODE then
 	GM.RoundStage = GAMEMODE.RoundStage
 end
 
+// 0 not enough players
+// 1 playing
+// 2 end, about to restart
 function GM:RoundThink()
-	if self.RoundStage == 2 then
+	if self.RoundStage == 0 then
+		
+	elseif self.RoundStage == 1 then
+		if !self.RoundLastDeath || self.RoundLastDeath < CurTime() then
+			self:RoundCheckForWin()
+		end
+	elseif self.RoundStage == 2 then
 		if self.RoundTime + 5 < CurTime() then
 			self:StartNewRound()
 		end
 	end
 end
 
+function GM:RoundCheckForWin()
+	local murderer
+	local players = team.GetPlayers(2)
+	if #players <= 0 then 
+		self.RoundStage = 0
+		return 
+	end
+	local survivors = {}
+	for k,v in pairs(players) do
+		if v:Alive() && !v:GetMurderer() then
+			table.insert(survivors, v)
+		end
+		if v:GetMurderer() then
+			murderer = v
+		end
+	end
+
+	// check we have a murderer
+	if !IsValid(murderer) then
+		self:EndTheRound(3, murderer)
+		return
+	end
+
+	// has the murderer killed everyone?
+	if #survivors < 1 then
+		self:EndTheRound(1, murderer)
+		return
+	end
+
+	// is the murderer dead?
+	if !murderer:Alive() then
+		self:EndTheRound(2, murderer)
+		return
+	end
+
+	// keep playing.
+end
+
 
 function GM:DoRoundDeaths(dead, attacker)
 	if self.RoundStage == 1 then
-		local murderer
-		local players = team.GetPlayers(2)
-		if #players == 0 then return end
-		for k,v in pairs(players) do
-			if !v:Alive() || dead == v then
-				players[k] = nil
-			end
-			if v:GetMurderer() then
-				murderer = v
-				players[k] = nil
-			end
-		end
-		local c = table.Count(players)
+		self.RoundLastDeath = CurTime() + 2
+		
 
 		if !dead:GetMurderer() then
-			if attacker:GetMurderer() then
-				self:SendMessageAll("The murderer struck again! (" .. c .. " left)")
+			if IsValid(attacker) && attacker:IsPlayer() then
+				if attacker:GetMurderer() then
+					-- self:SendMessageAll("The murderer has struck again")
+				else
+					self:SendMessageAll("A bystander was killed by " .. attacker:Nick())
+				end
 			else
-				self:SendMessageAll("An innocent was killed by " .. attacker:Nick())
+				-- self:SendMessageAll("An bystander died in mysterious circumstances")
 			end
-		end
-
-		if !murderer then
-			self:EndTheRound(3, murderer)
-			return
-		end
-		if !murderer:Alive() || murderer == dead then
-			self:EndTheRound(2, murderer)
-			return
-		end
-
-		if c <= 0 then 
-			self:EndTheRound(1, murderer)
-			return
+		else
+			if attacker != dead && IsValid(attacker) && attacker:IsPlayer() then
+				self:SendMessageAll(attacker:Nick() .. " killed the murderer")
+			else
+				self:SendMessageAll("The murderer died in mysterious circumstances")
+			end
 		end
 
 		
+
 	end
 end
 
@@ -62,11 +95,19 @@ function GM:EndTheRound(reason, murderer)
 	if self.RoundStage != 1 then return end
 
 	if reason == 3 then
-		self:SendMessageAll("Murderer rage quit, it was " .. murderer:Nick())
+		if murderer then
+			self:SendMessageAll("Murderer rage quit, it was " .. murderer:Nick())
+		else
+			self:SendMessageAll("Murderer rage quit")
+		end
 	elseif reason == 2 then
-		self:SendMessageAll("Murderer died, it was " .. murderer:Nick())
+		self:SendMessageAll("Bystanders win! The murderer was " .. murderer:Nick())
 	elseif reason == 1 then
-		self:SendMessageAll("Murderer killed everyone, it was " .. murderer:Nick())
+		if murderer:Alive() then
+			self:SendMessageAll("The murderer wins! He was " .. murderer:Nick())
+		else
+			self:SendMessageAll("The murderer wins at the cost of his own life. He was " .. murderer:Nick())
+		end
 	end
 	self:OnEndRound()
 	self.RoundStage = 2
@@ -85,7 +126,9 @@ function GM:StartNewRound()
 	game.CleanUpMap()
 	self:ClearAllFootsteps()
 	local murderer = table.Random(players)
-	murderer:SetMurderer(true)
+	if IsValid(murderer) then
+		murderer:SetMurderer(true)
+	end
 	for k, ply in pairs(players) do
 		if ply != murderer then
 			ply:SetMurderer(false)

@@ -235,18 +235,15 @@ end
 
 function GM:PlayerDeath(ply, Inflictor, attacker )
 
-	// wierd
-	timer.Simple(0, function ()
-		self:DoRoundDeaths(ply, attacker)
-	end)
+	self:DoRoundDeaths(ply, attacker)
 
 	ply.NextSpawnTime = CurTime() + 30
 	ply.DeathTime = CurTime()
-	ply.SpectateTime = CurTime() + 12
+	ply.SpectateTime = CurTime() + 4
 
 	umsg.Start("rp_death", ply)
 	umsg.Long(30)
-	umsg.Long(12)
+	umsg.Long(4)
 	umsg.End()
 	
 	if ( Inflictor && Inflictor == attacker && (Inflictor:IsPlayer() || Inflictor:IsNPC()) ) then
@@ -265,7 +262,7 @@ function GM:PlayerDeathThink( ply )
 		ply:Spawn()
 	end
 
-	if (ply.SpectateTime < CurTime() && ply:KeyPressed(IN_ATTACK))
+	if ((!ply.SpectateTime || ply.SpectateTime < CurTime()) && ply:KeyPressed(IN_ATTACK))
 	 || !IsValid(ply.Spectating) || (ply.Spectating:IsPlayer() && !ply.Spectating:Alive()) then
 
 		// recalculate spectating
@@ -325,6 +322,12 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 end
 
 function GM:PlayerCanHearPlayersVoice( listener, talker ) 
+	if self.RoundStage != 1 then
+		return true
+	end
+	if !listener:Alive() || listener:Team() != 2 then
+		return true
+	end
 	if talker:Team() != 2 then
 		return false
 	end
@@ -333,3 +336,27 @@ function GM:PlayerCanHearPlayersVoice( listener, talker )
 	end
 	return true
 end
+
+function GM:PlayerDisconnected(ply)
+	self:PlayerLeavePlay(ply)
+end
+
+function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam) 
+	ply:KillSilent()
+	GAMEMODE:SendMessageAll(ply:Nick() .. " changed team to " .. team.GetName(newTeam))
+	if oldteam == 2 then
+		self:PlayerLeavePlay(ply)	
+	end
+	if newteam == 1 then
+		
+	end
+end
+
+concommand.Add("th_jointeam", function (ply, com, args)
+	local curTeam = ply:Team()
+	local newTeam = tonumber(args[1] or "") or 0
+	if newTeam >= 1 && newTeam <= 2 && newTeam != curTeam then
+		ply:SetTeam(newTeam)
+		GAMEMODE:PlayerOnChangeTeam(ply, curTeam, newTeam)
+	end
+end)

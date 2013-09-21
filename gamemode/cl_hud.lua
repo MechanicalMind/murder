@@ -59,7 +59,7 @@ function GM:HUDPaint()
 	if !client:Alive() then
 		self:RenderRespawnText()
 	else
-		local t1 = "Victim"
+		local t1 = "Bystander"
 		local t2 = "Try to stay alive and find the murderer"
 		local c = Color(20,120,255)
 
