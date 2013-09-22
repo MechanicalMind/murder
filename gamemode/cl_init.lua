@@ -5,6 +5,8 @@ include("cl_footsteps.lua")
 include("cl_respawn.lua")
 include("cl_murderer.lua")
 include("cl_player.lua")
+include("cl_fixplayercolor.lua")
+include("cl_ragdoll.lua")
 
 
 function GM:Initialize() 

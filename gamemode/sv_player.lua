@@ -237,6 +237,32 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 
 	self:DoRoundDeaths(ply, attacker)
 
+	if !ply:GetMurderer() then
+		if IsValid(attacker) && attacker:IsPlayer() then
+			if attacker:GetMurderer() then
+				-- self:SendMessageAll("The murderer has struck again")
+			else
+				self:SendMessageAll("A bystander was killed by " .. attacker:Nick())
+				timer.Simple(0, function () 
+					if IsValid(attacker) && attacker:HasWeapon("weapon_mu_magnum") then
+						local wep = attacker:GetWeapon("weapon_mu_magnum")
+						wep.LastTK = attacker
+						wep.LastTKTime = CurTime()
+						attacker:DropWeapon(wep)
+					end
+				end)
+			end
+		else
+			-- self:SendMessageAll("An bystander died in mysterious circumstances")
+		end
+	else
+		if attacker != ply && IsValid(attacker) && attacker:IsPlayer() then
+			self:SendMessageAll(attacker:Nick() .. " killed the murderer")
+		else
+			self:SendMessageAll("The murderer died in mysterious circumstances")
+		end
+	end
+
 	ply.NextSpawnTime = CurTime() + 30
 	ply.DeathTime = CurTime()
 	ply.SpectateTime = CurTime() + 4
@@ -310,6 +336,9 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 		if ply:GetMurderer() then
 			return false
 		end
+		if ent.LastTK == ply && ent.LastTKTime + 10 > CurTime() then
+			return false
+		end
 	end
 
 	if ent:GetClass() == "weapon_mu_knife" then
@@ -344,6 +373,7 @@ end
 function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam) 
 	ply:KillSilent()
 	GAMEMODE:SendMessageAll(ply:Nick() .. " changed team to " .. team.GetName(newTeam))
+	ply:SetMurderer(false)
 	if oldteam == 2 then
 		self:PlayerLeavePlay(ply)	
 	end
@@ -357,6 +387,6 @@ concommand.Add("th_jointeam", function (ply, com, args)
 	local newTeam = tonumber(args[1] or "") or 0
 	if newTeam >= 1 && newTeam <= 2 && newTeam != curTeam then
 		ply:SetTeam(newTeam)
-		GAMEMODE:PlayerOnChangeTeam(ply, curTeam, newTeam)
+		GAMEMODE:PlayerOnChangeTeam(ply, newTeam, curTeam)
 	end
 end)

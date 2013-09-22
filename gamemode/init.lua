@@ -5,6 +5,8 @@ AddCSLuaFile("cl_footsteps.lua")
 AddCSLuaFile("cl_respawn.lua")
 AddCSLuaFile("cl_murderer.lua")
 AddCSLuaFile("cl_player.lua")
+AddCSLuaFile("cl_fixplayercolor.lua")
+AddCSLuaFile("cl_ragdoll.lua")
 
 include("shared.lua")
 include("sv_player.lua")

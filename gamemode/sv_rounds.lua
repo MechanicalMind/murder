@@ -9,7 +9,10 @@ end
 // 2 end, about to restart
 function GM:RoundThink()
 	if self.RoundStage == 0 then
-		
+		local players = team.GetPlayers(2)
+		if #players > 1 then 
+			self:StartNewRound()
+		end
 	elseif self.RoundStage == 1 then
 		if !self.RoundLastDeath || self.RoundLastDeath < CurTime() then
 			self:RoundCheckForWin()
@@ -64,27 +67,6 @@ function GM:DoRoundDeaths(dead, attacker)
 	if self.RoundStage == 1 then
 		self.RoundLastDeath = CurTime() + 2
 		
-
-		if !dead:GetMurderer() then
-			if IsValid(attacker) && attacker:IsPlayer() then
-				if attacker:GetMurderer() then
-					-- self:SendMessageAll("The murderer has struck again")
-				else
-					self:SendMessageAll("A bystander was killed by " .. attacker:Nick())
-				end
-			else
-				-- self:SendMessageAll("An bystander died in mysterious circumstances")
-			end
-		else
-			if attacker != dead && IsValid(attacker) && attacker:IsPlayer() then
-				self:SendMessageAll(attacker:Nick() .. " killed the murderer")
-			else
-				self:SendMessageAll("The murderer died in mysterious circumstances")
-			end
-		end
-
-		
-
 	end
 end
 
@@ -115,6 +97,12 @@ function GM:EndTheRound(reason, murderer)
 end
 
 function GM:StartNewRound()
+	local players = team.GetPlayers(2)
+	if #players <= 1 then 
+		self:SendMessageAll("Not enough players to start round")
+		self.RoundStage = 0
+		return
+	end
 	self:SendMessageAll("New round has started")
 	self.RoundStage = 1
 	self.RoundTime = CurTime()

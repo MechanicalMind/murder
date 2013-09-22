@@ -87,7 +87,7 @@ function ENT:PhysicsCollide( data, physobj )
 
 			if IsValid(rag) then
 				local pos, ang = rag:GetBonePosition(0)
-				local vec = Vector(0, 14, -10)
+				local vec = Vector(0, 16, -14)
 				vec:Rotate(ang)
 				pos = pos + vec
 				addangle(ang, Angle(30, -90, 0))

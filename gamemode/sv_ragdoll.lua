@@ -1,4 +1,5 @@
 local PlayerMeta = FindMetaTable("Player")
+local EntityMeta = FindMetaTable("Entity")
 
 local dtypes = {}
 dtypes[DMG_GENERIC]=""
@@ -88,6 +89,7 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	if ent.SetPlayerColor then
 		ent:SetPlayerColor(self:GetPlayerColor())
 	end
+	ent:SetNWEntity("RagdollOwner", self)
 	
 	ent.Corpse = {}
 	ent.Corpse.Name = self:Nick()
@@ -140,6 +142,15 @@ function PlayerMeta:GetRagdollEntity()
 		return ent
 	end
 	return self:GetRagdollEntityOld()
+end
+
+PlayerMeta.GetRagdollOwnerOld = PlayerMeta.GetRagdollOwner
+function EntityMeta:GetRagdollOwner()
+	local ent = self:GetNWEntity("RagdollOwner")
+	if IsValid(ent) then
+		return ent
+	end
+	return self:GetRagdollOwnerOld()
 end
 
 function GM:RagdollSetDeathDetails(victim, inflictor, attacker) 

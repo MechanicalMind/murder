@@ -33,7 +33,7 @@ SWEP.Secondary.Ammo         = "none"
 function SWEP:GetTrace(ang)
 	local trace = {}
 	trace.filter = self.Owner
-	trace.start = self.Owner:EyePos()
+	trace.start = self.Owner:GetShootPos()
 	trace.mask = MASK_SHOT
 	local vec = self.Owner:GetAimVector()
 	if ang then vec:Rotate(ang) end
@@ -41,6 +41,7 @@ function SWEP:GetTrace(ang)
 	//trace.mask = MASK_SHOT
 	local tr = util.TraceLine(trace)
 	tr.TraceAimVector = vec
+	tr.TraceAngle = ang
 	return tr
 end
 
@@ -86,6 +87,8 @@ function SWEP:Think()
 		self.IdleTime = CurTime() + 0.1
 	end	
 	if self.FistHit && self.FistHit < CurTime() then
+		self.Owner:LagCompensation(true)
+		-- print(SERVER and "SERVER" or "CLIENT", self.Owner:GetShootPos())
 		self.FistHit = nil
 		local tr = self:GetTrace()
 
@@ -95,6 +98,7 @@ function SWEP:Think()
 		if !tr.Hit then tr = self:GetTrace(Angle(0,0,20)) end
 		if !tr.Hit then tr = self:GetTrace(Angle(0,0,-20)) end
 		if tr.Hit then
+			-- print(SERVER and "SERVER" or "CLIENT", "HIT", CurTime(), tr.TraceAngle)
 			self.Owner:ViewPunch(Angle(0, 3, 0))
 			if IsValid(tr.Entity) then
 				self:EmitSound("Weapon_Crowbar.Melee_Hit")
@@ -111,7 +115,9 @@ function SWEP:Think()
 			bullet.Damage = self.Primary.Damage
 			self.Owner:FireBullets( bullet )
 		else
+			-- print(SERVER and "SERVER" or "CLIENT", "MISSED", CurTime())
 			self:EmitSound("Weapon_Crowbar.Single")
 		end
+		self.Owner:LagCompensation(false)
 	end
 end
