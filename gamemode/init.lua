@@ -7,6 +7,8 @@ AddCSLuaFile("cl_murderer.lua")
 AddCSLuaFile("cl_player.lua")
 AddCSLuaFile("cl_fixplayercolor.lua")
 AddCSLuaFile("cl_ragdoll.lua")
+AddCSLuaFile("cl_chattext.lua")
+AddCSLuaFile("cl_voicepanels.lua")
 
 include("shared.lua")
 include("sv_player.lua")
@@ -18,6 +20,7 @@ include("sv_respawn.lua")
 include("sv_murderer.lua")
 include("sv_rounds.lua")
 include("sv_footsteps.lua")
+include("sv_chattext.lua")
 
 resource.AddFile("materials/thieves/footprint.vmt")
 

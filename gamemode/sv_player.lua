@@ -5,6 +5,12 @@ function GM:PlayerInitialSpawn( ply )
 
 	ply:SetTeam(2)
 
+	timer.Simple(0, function ()
+		if IsValid(ply) then
+			ply:KillSilent()
+		end
+	end)
+
 end
 
 function GM:PlayerSpawn( ply )
@@ -242,7 +248,11 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 			if attacker:GetMurderer() then
 				-- self:SendMessageAll("The murderer has struck again")
 			else
-				self:SendMessageAll("A bystander was killed by " .. attacker:Nick())
+				local ct = ChatText()
+				ct:Add("A bystander was killed by ")
+				local col = attacker:GetPlayerColor()
+				ct:Add(attacker:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+				ct:SendAll()
 				timer.Simple(0, function () 
 					if IsValid(attacker) && attacker:HasWeapon("weapon_mu_magnum") then
 						local wep = attacker:GetWeapon("weapon_mu_magnum")
@@ -257,7 +267,11 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		end
 	else
 		if attacker != ply && IsValid(attacker) && attacker:IsPlayer() then
-			self:SendMessageAll(attacker:Nick() .. " killed the murderer")
+			local ct = ChatText()
+			local col = attacker:GetPlayerColor()
+			ct:Add(attacker:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+			ct:Add(" killed the murderer")
+			ct:SendAll()
 		else
 			self:SendMessageAll("The murderer died in mysterious circumstances")
 		end
@@ -351,6 +365,10 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 end
 
 function GM:PlayerCanHearPlayersVoice( listener, talker ) 
+	return self:PlayerCanHearChatVoice(listener, talker) 
+end
+
+function GM:PlayerCanHearChatVoice(listener, talker) 
 	if self.RoundStage != 1 then
 		return true
 	end
@@ -372,11 +390,14 @@ end
 
 function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam) 
 	ply:KillSilent()
-	GAMEMODE:SendMessageAll(ply:Nick() .. " changed team to " .. team.GetName(newTeam))
-	ply:SetMurderer(false)
-	if oldteam == 2 then
+	local ct = ChatText()
+	ct:Add(ply:Nick() .. " changed team to ")
+	ct:Add(team.GetName(newTeam), team.GetColor(newTeam))
+	ct:SendAll()
+	if oldTeam == 2 then
 		self:PlayerLeavePlay(ply)	
 	end
+	ply:SetMurderer(false)
 	if newteam == 1 then
 		
 	end
@@ -390,3 +411,19 @@ concommand.Add("th_jointeam", function (ply, com, args)
 		GAMEMODE:PlayerOnChangeTeam(ply, newTeam, curTeam)
 	end
 end)
+
+function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
+	return self:PlayerCanHearChatVoice(listener, speaker) 
+end
+
+function GM:PlayerSay( ply, text, team)
+	if ply:Team() == 2 && ply:Alive() then
+		local ct = ChatText()
+		local col = ply:GetPlayerColor()
+		ct:Add("Bystander", Color(col.x * 255, col.y * 255, col.z * 255))
+		ct:Add(": " .. text, color_white)
+		ct:SendAll()
+		return false
+	end
+	return true
+end

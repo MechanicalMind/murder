@@ -77,19 +77,28 @@ function GM:EndTheRound(reason, murderer)
 	if self.RoundStage != 1 then return end
 
 	if reason == 3 then
+		local ct = ChatText()
+		ct:Add("Murderer rage quit")
 		if murderer then
-			self:SendMessageAll("Murderer rage quit, it was " .. murderer:Nick())
-		else
-			self:SendMessageAll("Murderer rage quit")
+			ct:Add(", it was ")
+			local col = murderer:GetPlayerColor()
+			ct:Add(murderer:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
 		end
+		ct:SendAll()
 	elseif reason == 2 then
-		self:SendMessageAll("Bystanders win! The murderer was " .. murderer:Nick())
+		local ct = ChatText()
+		ct:Add("Bystanders win! ", Color(50, 255, 0))
+		ct:Add("The murderer was ")
+		local col = murderer:GetPlayerColor()
+		ct:Add(murderer:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+		ct:SendAll()
 	elseif reason == 1 then
-		if murderer:Alive() then
-			self:SendMessageAll("The murderer wins! He was " .. murderer:Nick())
-		else
-			self:SendMessageAll("The murderer wins at the cost of his own life. He was " .. murderer:Nick())
-		end
+		local ct = ChatText()
+		ct:Add("The murderer wins! ", Color(255, 50, 0))
+		ct:Add("He was ")
+		local col = murderer:GetPlayerColor()
+		ct:Add(murderer:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+		ct:SendAll()
 	end
 	self:OnEndRound()
 	self.RoundStage = 2
@@ -99,11 +108,17 @@ end
 function GM:StartNewRound()
 	local players = team.GetPlayers(2)
 	if #players <= 1 then 
-		self:SendMessageAll("Not enough players to start round")
+		local ct = ChatText()
+		ct:Add("Not enough players to start round", Color(255, 150, 50))
+		ct:SendAll()
 		self.RoundStage = 0
 		return
 	end
-	self:SendMessageAll("New round has started")
+
+	local ct = ChatText()
+	ct:Add("New round has started")
+	ct:SendAll()
+
 	self.RoundStage = 1
 	self.RoundTime = CurTime()
 

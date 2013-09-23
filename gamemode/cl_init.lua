@@ -7,6 +7,8 @@ include("cl_murderer.lua")
 include("cl_player.lua")
 include("cl_fixplayercolor.lua")
 include("cl_ragdoll.lua")
+include("cl_chattext.lua")
+include("cl_voicepanels.lua")
 
 
 function GM:Initialize() 
