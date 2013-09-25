@@ -1,4 +1,4 @@
-GM.Name 	= "Thieves"
+GM.Name 	= "Murder"
 GM.Author 	= "MechanicalMind"
 GM.Email 	= ""
 GM.Website 	= ""
