@@ -128,7 +128,19 @@ function GM:StartNewRound()
 	end
 	game.CleanUpMap()
 	self:ClearAllFootsteps()
+
+	local oldMurderer
+	for k,v in pairs(players) do
+		if v:GetMurderer() then
+			oldMurderer = v
+		end
+	end
+
 	local murderer = table.Random(players)
+	if murderer == oldMurderer then
+		murderer = table.Random(players)
+		print(oldMurderer, murderer, "REMADE CHANCES")
+	end
 	if IsValid(murderer) then
 		murderer:SetMurderer(true)
 	end
