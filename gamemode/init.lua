@@ -43,6 +43,7 @@ end
 function GM:Think()
 	self:ParkourThink()
 	self:RoundThink()
+	self:MurdererThink()
 end
 
 function GM:AllowPlayerPickup( ply, ent )
