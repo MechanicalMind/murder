@@ -136,11 +136,11 @@ function GM:StartNewRound()
 		end
 	end
 
-	local murderer = table.Random(players)
-	if murderer == oldMurderer then
-		murderer = table.Random(players)
-		print(oldMurderer, murderer, "REMADE CHANCES")
-	end
+	// don't pick same murderer as last round
+	local moMurderer = table.Copy(players)
+	table.RemoveByValue(moMurderer, oldMurderer)
+	local murderer = table.Random(moMurderer)
+
 	if IsValid(murderer) then
 		murderer:SetMurderer(true)
 	end
