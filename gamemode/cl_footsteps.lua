@@ -33,12 +33,14 @@ function GM:DrawFootprints()
 
 end
 
-function GM:AddFootstep(ply, pos) 
+function GM:AddFootstep(ply, pos, ang) 
+	ang.p = 0
+	ang.r = 0
 	local fpos = pos
 	if ply.LastFoot then
-		fpos = fpos + ply:GetAngles():Right() * 5
+		fpos = fpos + ang:Right() * 5
 	else
-		fpos = fpos + ply:GetAngles():Right() * -5
+		fpos = fpos + ang:Right() * -5
 	end
 	ply.LastFoot = !ply.LastFoot
 
@@ -55,7 +57,7 @@ function GM:AddFootstep(ply, pos)
 		tbl.plypos = fpos
 		tbl.foot = foot
 		tbl.curtime = CurTime()
-		tbl.angle = ply:GetAimVector():Angle().y
+		tbl.angle = ang.y
 		tbl.normal = tr.HitNormal
 		local col = ply:GetPlayerColor()
 		tbl.col = Color(col.x * 255, col.y * 255, col.z * 255)
@@ -69,7 +71,7 @@ function GM:FootStepsFootstep(ply, pos, foot, sound, volume, filter)
 
 	if !self:CanSeeFootsteps() then return end
 
-	self:AddFootstep(ply, pos)
+	self:AddFootstep(ply, pos, ply:GetAimVector():Angle())
 end
 
 function GM:CanSeeFootsteps()
@@ -84,6 +86,7 @@ end
 net.Receive("add_footstep", function ()
 	local ply = net.ReadEntity()
 	local pos = net.ReadVector()
+	local ang = net.ReadAngle()
 
 	if !IsValid(ply) then return end
 
@@ -91,7 +94,7 @@ net.Receive("add_footstep", function ()
 
 	if !GAMEMODE:CanSeeFootsteps() then return end
 
-	GAMEMODE:AddFootstep(ply, pos)
+	GAMEMODE:AddFootstep(ply, pos, ang)
 end)
 
 net.Receive("clear_footsteps", function ()
