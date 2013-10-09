@@ -10,6 +10,7 @@ AddCSLuaFile("cl_ragdoll.lua")
 AddCSLuaFile("cl_chattext.lua")
 AddCSLuaFile("cl_voicepanels.lua")
 AddCSLuaFile("cl_rounds.lua")
+AddCSLuaFile("cl_endroundboard.lua")
 
 include("shared.lua")
 include("sv_player.lua")
@@ -22,6 +23,7 @@ include("sv_murderer.lua")
 include("sv_rounds.lua")
 include("sv_footsteps.lua")
 include("sv_chattext.lua")
+include("sv_loot.lua")
 
 resource.AddFile("materials/thieves/footprint.vmt")
 
@@ -31,14 +33,30 @@ function GM:Initialize()
 	self:LoadSpawns()
 	self.DeathRagdolls = {}
 	self:StartNewRound()
+	self:LoadLootData()
 end
 
 function GM:InitPostEntity() 
+	local canAdd = self:CountLootItems() <= 0
+	for k, ent in pairs(ents.FindByClass("mu_loot")) do
+		if canAdd then
+			self:AddLootItem(ent)
+		end
+	end
+	self:InitPostEntityAndMapCleanup()
+end
+
+function GM:InitPostEntityAndMapCleanup() 
 	for k, ent in pairs(ents.GetAll()) do
 		if ent:GetClass():find("door") then
 			ent:Fire("unlock","",0)
 		end
 	end
+
+	for k, ent in pairs(ents.FindByClass("mu_loot")) do
+		ent:Remove()
+	end
+	self:SpawnLoot()
 end
 
 function GM:Think()

@@ -10,6 +10,7 @@ include("cl_ragdoll.lua")
 include("cl_chattext.lua")
 include("cl_voicepanels.lua")
 include("cl_rounds.lua")
+include("cl_endroundboard.lua")
 
 
 function GM:Initialize() 
@@ -56,6 +57,7 @@ function GM:PreDrawHalos()
 			end
 		end
 		halo.Add(entL, Color(0, 0, 255), 5, 5, 5, true, false)
+		halo.Add(ents.FindByClass( "mu_loot" ), Color(0, 220, 0), 4, 4, 2, true, false)
 
 		if self:GetAmMurderer() then
 			local knives = ents.FindByClass( "weapon_mu_knife" )

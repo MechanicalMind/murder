@@ -1,5 +1,6 @@
 
 util.AddNetworkString("SetRound")
+util.AddNetworkString("DeclareWinner")
 
 GM.RoundStage = 0
 if GAMEMODE then
@@ -20,7 +21,7 @@ end
 
 // 0 not enough players
 // 1 playing
-// 2 end, about to restart
+// 2 round ended, about to restart
 function GM:RoundThink()
 	local players = team.GetPlayers(2)
 	if self.RoundStage == 0 then
@@ -108,7 +109,7 @@ function GM:EndTheRound(reason, murderer)
 
 	if reason == 3 then
 		local ct = ChatText()
-		ct:Add("Murderer rage quit")
+		ct:Add("The murderer rage quit")
 		if murderer then
 			ct:Add(", it was ")
 			local col = murderer:GetPlayerColor()
@@ -130,6 +131,20 @@ function GM:EndTheRound(reason, murderer)
 		ct:Add(murderer:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
 		ct:SendAll()
 	end
+
+	net.Start("DeclareWinner")
+	net.WriteUInt(reason, 8)
+	net.WriteEntity(murderer)
+
+	for k, ply in pairs(team.GetPlayers(2)) do
+		net.WriteUInt(1, 8)
+		net.WriteEntity(ply)
+		net.WriteUInt(ply.LootCollected, 32)
+	end
+	net.WriteUInt(0, 8)
+
+	net.Broadcast()
+
 	self:OnEndRound()
 	self:SetRound(2)
 end
@@ -145,7 +160,7 @@ function GM:StartNewRound()
 	end
 
 	local ct = ChatText()
-	ct:Add("New round has started")
+	ct:Add("A new round has started")
 	ct:SendAll()
 
 	self:SetRound(1)
@@ -156,6 +171,7 @@ function GM:StartNewRound()
 		ply:UnSpectate()
 	end
 	game.CleanUpMap()
+	self:InitPostEntityAndMapCleanup()
 	self:ClearAllFootsteps()
 
 	local oldMurderer
@@ -181,6 +197,8 @@ function GM:StartNewRound()
 		ply:KillSilent()
 		ply:Spawn()
 		ply:Freeze(true)
+
+		ply.LootCollected = 0
 	end
 	local noobs = table.Copy(players)
 	table.RemoveByValue(noobs, murderer)

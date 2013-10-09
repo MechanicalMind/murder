@@ -1,0 +1,219 @@
+if !LootItems then
+	LootItems = {}
+end
+
+local LootModels = {}
+LootModels["breenbust"] = "models/props_combine/breenbust.mdl"
+LootModels["huladoll"] = "models/props_lab/huladoll.mdl"
+LootModels["beer1"] = "models/props_junk/glassbottle01a.mdl"
+LootModels["beer2"] = "models/props_junk/glassjug01.mdl"
+LootModels["cactus"] = "models/props_lab/cactus.mdl"
+LootModels["lamp"] = "models/props_lab/desklamp01.mdl"
+LootModels["clipboard"] = "models/props_lab/clipboard.mdl"
+
+util.AddNetworkString("GrabLoot")
+
+function GM:LoadLootData() 
+	local mapName = game.GetMap()
+	local jason = file.Read("thieves/" .. mapName .. "/loot.txt", "DATA")
+	if jason then
+		local tbl = util.JSONToTable(jason)
+		LootItems = tbl
+	end
+end
+
+function GM:CountLootItems()
+	return #LootItems
+end
+
+function GM:SpawnLoot()
+	for k, ent in pairs(ents.FindByClass("mu_loot")) do
+		ent:Remove()
+	end
+
+	for k, data in pairs(LootItems) do
+		local ent = ents.Create("mu_loot")
+		ent:SetModel(data.model)
+		ent:SetPos(data.pos)
+		ent:SetAngles(data.angle)
+		ent:Spawn()
+
+		ent.LootData = data
+	end
+end
+
+function GM:SaveLootData()
+
+	// ensure the folders are there
+	if !file.Exists("thieves/","DATA") then
+		file.CreateDir("thieves")
+	end
+
+	local mapName = game.GetMap()
+	if !file.Exists("thieves/" .. mapName .. "/","DATA") then
+		file.CreateDir("thieves/" .. mapName)
+	end
+
+	// JSON!
+	local jason = util.TableToJSON(LootItems)
+	file.Write("thieves/" .. mapName .. "/loot.txt", jason)
+end
+
+function GM:AddLootItem(ent)
+	local data = {}
+	data.model = ent:GetModel()
+	data.material = ent:GetMaterial()
+	data.pos = ent:GetPos()
+	data.angle = ent:GetAngles()
+	table.insert(LootItems, data)
+end
+
+function GM:PlayerPickupLoot(ply, ent)
+	ply.LootCollected = ply.LootCollected + 1
+
+	ply:EmitSound("ambient/levels/canals/windchime2.wav", 100, math.random(40,160))
+	ent:Remove()
+end
+
+local function getLootPrintString(data, plyPos) 
+	local str = math.Round(data.pos.x) .. "," .. math.Round(data.pos.y) .. "," .. math.Round(data.pos.z) .. " " .. math.Round(data.pos:Distance(plyPos) / 12) .. "ft"
+	str = str .. " " .. data.model
+	return str
+end
+
+concommand.Add("mu_loot_add", function (ply, com, args, full)
+	if (!ply:IsAdmin()) then return end
+
+	if #args < 1 then
+		ply:ChatPrint("Too few args (model)")
+		return
+	end
+
+	local mdl = args[1]
+
+	local name = args[1]:lower()
+	if !name:find("%.mdl$") then
+		if !LootModels[name] then
+			ply:ChatPrint("Invalid model alias " .. name)
+			return
+		end
+
+		mdl = LootModels[name]
+	end
+
+
+	local data = {}
+	data.model = mdl
+	data.pos = ply:GetEyeTrace().HitPos
+	data.angle = ply:GetAngles() * 1
+	data.angle.p = 0
+	table.insert(LootItems, data)
+
+	ply:ChatPrint("Added " .. #LootItems .. ": " .. getLootPrintString(data, ply:GetPos()) )
+
+	GAMEMODE:SaveLootData()
+end)
+
+concommand.Add("mu_loot_list", function (ply, com, args, full)
+	if (!ply:IsAdmin()) then return end
+
+	if #args < 0 then
+		ply:ChatPrint("Too few args ()")
+		return
+	end
+
+
+	ply:ChatPrint("Loot items ")
+	for k, pos in pairs(LootItems) do
+		ply:ChatPrint(k .. ": " .. getLootPrintString(pos, ply:GetPos()) )
+	end
+end)
+
+concommand.Add("mu_loot_closest", function (ply, com, args, full)
+	if (!ply:IsAdmin()) then return end
+
+	if #args < 0 then
+		ply:ChatPrint("Too few args ()")
+		return
+	end
+
+	if #LootItems <= 0 then
+		ply:ChatPrint("Loot list is empty")
+		return
+	end
+
+	local closest
+	for k, data in pairs(LootItems) do
+		if !closest || (LootItems[closest].pos:Distance(ply:GetPos()) > data.pos:Distance(ply:GetPos())) then
+			closest = k
+		end
+	end
+
+	ply:ChatPrint(closest .. ": " .. getLootPrintString(LootItems[closest], ply:GetPos()) )
+end)
+
+concommand.Add("mu_loot_remove", function (ply, com, args, full)
+	if (!ply:IsAdmin()) then return end
+
+	if #args < 1 then
+		ply:ChatPrint("Too few args (key)")
+		return
+	end
+
+	local key = tonumber(args[1]) or 0
+	if !LootItems[key] then
+		ply:ChatPrint("Invalid key, position inexists")
+		return
+	end
+
+	local data = LootItems[key]
+	table.remove(LootItems, key)
+	ply:ChatPrint("Remove " .. key .. ": " .. getLootPrintString(data, ply:GetPos()) )
+
+	GAMEMODE:SaveLootData()
+end)
+
+concommand.Add("mu_loot_adjustpos", function (ply, com, args, full)
+	if (!ply:IsAdmin()) then return end
+
+	if #args < 0 then
+		ply:ChatPrint("Too few args ()")
+		return
+	end
+
+	local key
+	local ent = ply:GetEyeTrace().Entity
+	if IsValid(ent) && ent:GetClass() == "mu_loot" && ent.LootData then
+		for k,v in pairs(LootItems) do
+			if v == ent.LootData then
+				key = k
+			end
+		end
+	end
+	if !key then
+		ply:ChatPrint("Not a loot item")
+		return
+	end
+
+	ent.LootData.pos = ent:GetPos()
+	ent.LootData.angle = ent:GetAngles()
+
+	ply:ChatPrint("Adjusted " .. key .. ": " .. getLootPrintString(ent.LootData, ply:GetPos()) )
+
+	GAMEMODE:SaveLootData()
+end)
+
+concommand.Add("mu_loot_respawn", function (ply, com, args, full)
+	if (!ply:IsAdmin()) then return end
+
+	GAMEMODE:SpawnLoot()
+end)
+
+concommand.Add("mu_loot_models_list", function (ply, com, args, full)
+	if (!ply:IsAdmin()) then return end
+
+	ply:ChatPrint("Loot models")
+	for alias, model in pairs(LootModels) do
+		ply:ChatPrint(alias .. ": " .. model )
+	end
+end)
