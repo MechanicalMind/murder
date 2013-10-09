@@ -67,7 +67,7 @@ function GM:HUDPaint()
 	else
 
 		if round == 1 then
-			if self:GetRound() == 1 && self.RoundStart && self.RoundStart + 10 > CurTime() then
+			if self.RoundStart && self.RoundStart + 10 > CurTime() then
 				self:DrawStartRoundInformation()
 			else
 				self:DrawGameHUD()
@@ -126,7 +126,7 @@ function GM:DrawStartRoundInformation()
 	drawTextShadow(t1, "MersRadial", ScrW() / 2, ScrH()  * 0.25, c, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	if t2 then
 		local h = draw.GetFontHeight("MersRadial")
-		drawTextShadow(t2, "MersRadialSmall", ScrW() / 2, ScrH() * 0.25 + h * 0.7, Color(190, 20, 20), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		drawTextShadow(t2, "MersRadialSmall", ScrW() / 2, ScrH() * 0.25 + h * 0.7, Color(120, 70, 245), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 
 	local fontHeight = draw.GetFontHeight("MersRadialSmall")
