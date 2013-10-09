@@ -10,6 +10,7 @@ function GM:DisplayEndRoundBoard(data)
 	menu:Center()
 	menu:SetTitle("")
 	menu:MakePopup()
+	menu:SetKeyboardInputEnabled(false)
 
 	function menu:Paint()
 		surface.SetDrawColor(Color(40,40,40,255))
@@ -29,7 +30,7 @@ function GM:DisplayEndRoundBoard(data)
 
 	local winner = vgui.Create("DLabel", winnerPnl)
 	winner:Dock(TOP)
-	winner:SetFont("MersRadial")
+	winner:SetFont("MersRadialBig")
 	winner:SetAutoStretchVertical(true)
 
 	if data.reason == 3 then
@@ -37,17 +38,29 @@ function GM:DisplayEndRoundBoard(data)
 		winner:SetTextColor(Color(255, 255, 255))
 	elseif data.reason == 2 then
 		winner:SetText("Bystanders win!")
-		winner:SetTextColor(Color(50, 255, 0))
+		winner:SetTextColor(Color(20, 120, 255))
 	elseif data.reason == 1 then
 		winner:SetText("The murderer wins!")
-		winner:SetTextColor(Color(255, 50, 0))
+		winner:SetTextColor(Color(190, 20, 20))
 	end
 
-	local murderer = vgui.Create("DLabel", winnerPnl)
-	murderer:Dock(TOP)
+	local murdererPnl = vgui.Create("DPanel", winnerPnl)
+	murdererPnl:Dock(TOP)
+	function murdererPnl:Paint()
+	end
+
+	local was = vgui.Create("DLabel", murdererPnl)
+	was:Dock(LEFT)
+	was:SetText("The murderer was ")
+	was:SetFont("MersRadialSmall")
+	was:SetTextColor(color_white)
+	was:SizeToContents()
+
+	local murderer = vgui.Create("DLabel", murdererPnl)
+	murderer:Dock(FILL)
 	murderer:SetFont("MersRadialSmall")
 	murderer:SetAutoStretchVertical(true)
-	murderer:SetText("The murderer was " .. data.murdererName)
+	murderer:SetText(data.murdererName)
 	local col = data.murdererColor
 	murderer:SetTextColor(Color(col.x * 255, col.y * 255, col.z * 255))
 
@@ -64,6 +77,7 @@ function GM:DisplayEndRoundBoard(data)
 	desc:SetFont("MersRadial")
 	desc:SetAutoStretchVertical(true)
 	desc:SetText("Loot Collected")
+	desc:SetTextColor(color_white)
 	
 	local lootList = vgui.Create("DPanelList", lootPnl)
 	lootList:Dock(FILL)
