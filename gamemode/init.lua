@@ -91,3 +91,22 @@ function GM:SendMessageAll(msg)
 	end
 end
 
+function GM:EntityTakeDamage( ent, dmginfo )
+
+	// disable all prop damage
+	if IsValid(dmginfo:GetAttacker()) && (dmginfo:GetAttacker():GetClass() == "prop_physics" || dmginfo:GetAttacker():GetClass() == "prop_physics_multiplayer") then
+		return true
+	end
+
+	if IsValid(dmginfo:GetInflictor()) && (dmginfo:GetInflictor():GetClass() == "prop_physics" || dmginfo:GetInflictor():GetClass() == "prop_physics_multiplayer") then
+		return true
+	end
+
+end
+
+function file.ReadDataAndContent(path)
+	local f = file.Read(path, "DATA")
+	if f then return f end
+	f = file.Read(GAMEMODE.Folder .. "/content/data/" .. path, "GAME")
+	return f
+end

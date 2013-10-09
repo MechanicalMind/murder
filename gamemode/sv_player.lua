@@ -2,6 +2,7 @@ local PlayerMeta = FindMetaTable("Player")
 local EntityMeta = FindMetaTable("Entity")
 
 function GM:PlayerInitialSpawn( ply )
+	ply.LootCollected = 0
 
 	ply:SetTeam(2)
 
@@ -428,4 +429,8 @@ function GM:PlayerSay( ply, text, team)
 		return false
 	end
 	return true
+end
+
+function GM:PlayerShouldTaunt( ply, actid )
+	return false
 end

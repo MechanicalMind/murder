@@ -177,10 +177,5 @@ function GM:HUDShouldDraw( name )
 	if name == "CHudHealth" || name == "CHudBattery" then
 		return false
 	end
-	if self:GetRound() == 1 && self.RoundStart && self.RoundStart + 10 > CurTime() then
-		if name == "CHudChat" then
-			return false
-		end
-	end
 	return true
 end

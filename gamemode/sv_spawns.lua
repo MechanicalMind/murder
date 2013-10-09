@@ -5,7 +5,7 @@ end
 
 function GM:LoadSpawns() 
 	for listName, spawnList in pairs(TeamSpawns) do
-		local jason = file.Read("murder/" .. game.GetMap() .. "/spawns/" .. listName .. ".txt", "DATA")
+		local jason = file.ReadDataAndContent("murder/" .. game.GetMap() .. "/spawns/" .. listName .. ".txt")
 		if jason then
 			local tbl = util.JSONToTable(jason)
 			TeamSpawns[listName] = tbl

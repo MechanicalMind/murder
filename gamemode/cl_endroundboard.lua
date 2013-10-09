@@ -56,13 +56,15 @@ function GM:DisplayEndRoundBoard(data)
 	was:SetTextColor(color_white)
 	was:SizeToContents()
 
-	local murderer = vgui.Create("DLabel", murdererPnl)
-	murderer:Dock(FILL)
-	murderer:SetFont("MersRadialSmall")
-	murderer:SetAutoStretchVertical(true)
-	murderer:SetText(data.murdererName)
-	local col = data.murdererColor
-	murderer:SetTextColor(Color(col.x * 255, col.y * 255, col.z * 255))
+	if data.murdererName then
+		local murderer = vgui.Create("DLabel", murdererPnl)
+		murderer:Dock(FILL)
+		murderer:SetFont("MersRadialSmall")
+		murderer:SetAutoStretchVertical(true)
+		murderer:SetText(data.murdererName)
+		local col = data.murdererColor
+		murderer:SetTextColor(Color(col.x * 255, col.y * 255, col.z * 255))
+	end
 
 	local lootPnl = vgui.Create("DPanel", menu)
 	lootPnl:Dock(FILL)

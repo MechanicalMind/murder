@@ -15,7 +15,7 @@ util.AddNetworkString("GrabLoot")
 
 function GM:LoadLootData() 
 	local mapName = game.GetMap()
-	local jason = file.Read("thieves/" .. mapName .. "/loot.txt", "DATA")
+	local jason = file.ReadDataAndContent("murder/" .. mapName .. "/loot.txt")
 	if jason then
 		local tbl = util.JSONToTable(jason)
 		LootItems = tbl
@@ -45,18 +45,18 @@ end
 function GM:SaveLootData()
 
 	// ensure the folders are there
-	if !file.Exists("thieves/","DATA") then
-		file.CreateDir("thieves")
+	if !file.Exists("murder/","DATA") then
+		file.CreateDir("murder")
 	end
 
 	local mapName = game.GetMap()
-	if !file.Exists("thieves/" .. mapName .. "/","DATA") then
-		file.CreateDir("thieves/" .. mapName)
+	if !file.Exists("murder/" .. mapName .. "/","DATA") then
+		file.CreateDir("murder/" .. mapName)
 	end
 
 	// JSON!
 	local jason = util.TableToJSON(LootItems)
-	file.Write("thieves/" .. mapName .. "/loot.txt", jason)
+	file.Write("murder/" .. mapName .. "/loot.txt", jason)
 end
 
 function GM:AddLootItem(ent)
