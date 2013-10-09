@@ -247,7 +247,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		if IsValid(attacker) && attacker:IsPlayer() then
 			if attacker:GetMurderer() then
 				-- self:SendMessageAll("The murderer has struck again")
-			else
+			elseif attacker != ply then
 				local ct = ChatText()
 				ct:Add("A bystander was killed by ")
 				local col = attacker:GetPlayerColor()
@@ -277,12 +277,12 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		end
 	end
 
-	ply.NextSpawnTime = CurTime() + 30
+	ply.NextSpawnTime = CurTime() + 5
 	ply.DeathTime = CurTime()
 	ply.SpectateTime = CurTime() + 4
 
 	umsg.Start("rp_death", ply)
-	umsg.Long(30)
+	umsg.Long(5)
 	umsg.Long(4)
 	umsg.End()
 	
@@ -297,37 +297,39 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 end
 
 function GM:PlayerDeathThink( ply )
-
 	if self:CanRespawn(ply) then
 		ply:Spawn()
-	end
 
-	if ((!ply.SpectateTime || ply.SpectateTime < CurTime()) && ply:KeyPressed(IN_ATTACK))
-	 || !IsValid(ply.Spectating) || (ply.Spectating:IsPlayer() && !ply.Spectating:Alive()) then
+	else
 
-		// recalculate spectating
-		local players = team.GetPlayers(2)
-		for k,v in pairs(players) do
-			if !(v:Alive()) then
-				players[k] = nil
+		if ((!ply.SpectateTime || ply.SpectateTime < CurTime()) && ply:KeyPressed(IN_ATTACK))
+		 || !IsValid(ply.Spectating) || (ply.Spectating:IsPlayer() && !ply.Spectating:Alive()) then
+
+			// recalculate spectating
+			local players = team.GetPlayers(2)
+			for k,v in pairs(players) do
+				if !(v:Alive()) then
+					players[k] = nil
+				end
+			end
+
+			local ent = table.Random(players)
+			if IsValid(ent) then
+				ply:SpectateEntity( ent )
+				ply:Spectate( OBS_MODE_IN_EYE )
+				ply.Spectating = ent
+			elseif IsValid(ply.Spectating) then
+				if ply.Spectating != ply:GetRagdollEntity() then
+					ply:SpectateEntity( ply:GetRagdollEntity() )
+					ply:Spectate( OBS_MODE_CHASE )
+					ply.Spectating = ply:GetRagdollEntity()
+				end
+			elseif ply.Spectating then
+				ply.Spectating = nil
+				ply:Spectate( OBS_MODE_ROAMING )
 			end
 		end
 
-		local ent = table.Random(players)
-		if IsValid(ent) then
-			ply:SpectateEntity( ent )
-			ply:Spectate( OBS_MODE_IN_EYE )
-			ply.Spectating = ent
-		elseif IsValid(ply.Spectating) then
-			if ply.Spectating != ply:GetRagdollEntity() then
-				ply:SpectateEntity( ply:GetRagdollEntity() )
-				ply:Spectate( OBS_MODE_CHASE )
-				ply.Spectating = ply:GetRagdollEntity()
-			end
-		elseif ply.Spectating then
-			ply.Spectating = nil
-			ply:Spectate( OBS_MODE_ROAMING )
-		end
 	end
 	
 end
@@ -417,7 +419,7 @@ function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
 end
 
 function GM:PlayerSay( ply, text, team)
-	if ply:Team() == 2 && ply:Alive() then
+	if ply:Team() == 2 && ply:Alive() && self:GetRound() != 0 then
 		local ct = ChatText()
 		local col = ply:GetPlayerColor()
 		ct:Add("Bystander", Color(col.x * 255, col.y * 255, col.z * 255))

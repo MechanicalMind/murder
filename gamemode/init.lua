@@ -9,6 +9,7 @@ AddCSLuaFile("cl_fixplayercolor.lua")
 AddCSLuaFile("cl_ragdoll.lua")
 AddCSLuaFile("cl_chattext.lua")
 AddCSLuaFile("cl_voicepanels.lua")
+AddCSLuaFile("cl_rounds.lua")
 
 include("shared.lua")
 include("sv_player.lua")

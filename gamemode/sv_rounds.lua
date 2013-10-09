@@ -1,21 +1,43 @@
 
+util.AddNetworkString("SetRound")
+
 GM.RoundStage = 0
 if GAMEMODE then
 	GM.RoundStage = GAMEMODE.RoundStage
+end
+
+function GM:GetRound()
+	return self.RoundStage or 0
+end
+
+function GM:SetRound(round)
+	self.RoundStage = round
+	net.Start("SetRound")
+	net.WriteUInt(round, 8)
+	net.Broadcast()
+	self.RoundTime = CurTime()
 end
 
 // 0 not enough players
 // 1 playing
 // 2 end, about to restart
 function GM:RoundThink()
+	local players = team.GetPlayers(2)
 	if self.RoundStage == 0 then
-		local players = team.GetPlayers(2)
 		if #players > 1 then 
 			self:StartNewRound()
 		end
 	elseif self.RoundStage == 1 then
 		if !self.RoundLastDeath || self.RoundLastDeath < CurTime() then
 			self:RoundCheckForWin()
+		end
+		if self.RoundUnFreezePlayers && self.RoundUnFreezePlayers < CurTime() then
+			self.RoundUnFreezePlayers = nil
+			for k, ply in pairs(players) do
+				if ply:Alive() then
+					ply:Freeze(false)
+				end
+			end
 		end
 	elseif self.RoundStage == 2 then
 		if self.RoundTime + 5 < CurTime() then
@@ -28,7 +50,7 @@ function GM:RoundCheckForWin()
 	local murderer
 	local players = team.GetPlayers(2)
 	if #players <= 0 then 
-		self.RoundStage = 0
+		self:SetRound(0)
 		return 
 	end
 	local survivors = {}
@@ -76,6 +98,14 @@ end
 function GM:EndTheRound(reason, murderer)
 	if self.RoundStage != 1 then return end
 
+	local players = team.GetPlayers(2)
+	for k, ply in pairs(players) do
+		if ply:Alive() then
+			ply:Freeze(false)
+		end
+	end
+	self.RoundUnFreezePlayers = nil
+
 	if reason == 3 then
 		local ct = ChatText()
 		ct:Add("Murderer rage quit")
@@ -101,8 +131,7 @@ function GM:EndTheRound(reason, murderer)
 		ct:SendAll()
 	end
 	self:OnEndRound()
-	self.RoundStage = 2
-	self.RoundTime = CurTime()
+	self:SetRound(2)
 end
 
 function GM:StartNewRound()
@@ -111,7 +140,7 @@ function GM:StartNewRound()
 		local ct = ChatText()
 		ct:Add("Not enough players to start round", Color(255, 150, 50))
 		ct:SendAll()
-		self.RoundStage = 0
+		self:SetRound(0)
 		return
 	end
 
@@ -119,8 +148,8 @@ function GM:StartNewRound()
 	ct:Add("New round has started")
 	ct:SendAll()
 
-	self.RoundStage = 1
-	self.RoundTime = CurTime()
+	self:SetRound(1)
+	self.RoundUnFreezePlayers = CurTime() + 10
 
 	local players = team.GetPlayers(2)
 	for k,ply in pairs(players) do
@@ -151,6 +180,7 @@ function GM:StartNewRound()
 		ply:StripWeapons()
 		ply:KillSilent()
 		ply:Spawn()
+		ply:Freeze(true)
 	end
 	local noobs = table.Copy(players)
 	table.RemoveByValue(noobs, murderer)

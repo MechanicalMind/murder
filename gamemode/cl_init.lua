@@ -9,6 +9,7 @@ include("cl_fixplayercolor.lua")
 include("cl_ragdoll.lua")
 include("cl_chattext.lua")
 include("cl_voicepanels.lua")
+include("cl_rounds.lua")
 
 
 function GM:Initialize() 
@@ -45,23 +46,26 @@ function GM:PostDrawTranslucentRenderables()
 end
 
 function GM:PreDrawHalos()
+	local client = LocalPlayer()
 
-	local entL = ents.FindByClass( "weapon_mu_magnum" )
-	for k,v in pairs(entL) do
-		if IsValid(v.Owner) then
-			entL[k] = nil
-		end
-	end
-	halo.Add(entL, Color(0, 0, 255), 5, 5, 5, true, false)
-
-	if self:GetAmMurderer() then
-		local knives = ents.FindByClass( "weapon_mu_knife" )
-		for k,v in pairs(knives) do
+	if IsValid(client) && client:Alive() then
+		local entL = ents.FindByClass( "weapon_mu_magnum" )
+		for k,v in pairs(entL) do
 			if IsValid(v.Owner) then
-				knives[k] = nil
+				entL[k] = nil
 			end
 		end
-		halo.Add(knives, Color(220, 0, 0), 5, 5, 5, true, false)
-		halo.Add(ents.FindByClass( "mu_knife" ), Color(220, 0, 0), 5, 5, 5, true, false)
+		halo.Add(entL, Color(0, 0, 255), 5, 5, 5, true, false)
+
+		if self:GetAmMurderer() then
+			local knives = ents.FindByClass( "weapon_mu_knife" )
+			for k,v in pairs(knives) do
+				if IsValid(v.Owner) then
+					knives[k] = nil
+				end
+			end
+			halo.Add(knives, Color(220, 0, 0), 5, 5, 5, true, false)
+			halo.Add(ents.FindByClass( "mu_knife" ), Color(220, 0, 0), 5, 5, 5, true, false)
+		end
 	end
 end

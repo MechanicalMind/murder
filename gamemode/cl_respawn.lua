@@ -10,7 +10,9 @@ function GM:RenderDeathOverlay()
 		surface.DrawRect(-1,-1,sw + 2,sh + 2)
 
 		render.SetColorModulation(1, 1, 1)
+		render.SetBlend(1)
 
+		
 		// render body
 		cam.Start3D( EyePos(), EyeAngles() )
 		cam.IgnoreZ(true)
