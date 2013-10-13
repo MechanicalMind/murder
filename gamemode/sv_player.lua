@@ -26,6 +26,7 @@ function GM:PlayerSpawn( ply )
 	end
 
 	-- Stop observer mode
+	ply.Spectating = nil
 	ply:UnSpectate()
 
 	player_manager.OnPlayerSpawn( ply )
@@ -161,6 +162,7 @@ function plyMeta:CalculateSpeed()
 
 	if self:GetMurderer() then
 		canrun = true
+		run = 400
 	end
 
 	// handcuffs
@@ -348,17 +350,27 @@ function GM:PlayerFootstep(ply, pos, foot, sound, volume, filter)
 	self:FootstepsOnFootstep(ply, pos, foot, sound, volume, filter)
 end
 
-function GM:PlayerCanPickupWeapon( ply, ent ) 
+function GM:PlayerCanPickupWeapon( ply, ent )
+
+	// can't pickup a weapon twice
+	if ply:HasWeapon(ent:GetClass()) then
+		return false
+	end
+
 	if ent:GetClass() == "weapon_mu_magnum" then
+		// murderer can't have the gun
 		if ply:GetMurderer() then
 			return false
 		end
+
+		// penalty for killing a bystander
 		if ent.LastTK == ply && ent.LastTKTime + 10 > CurTime() then
 			return false
 		end
 	end
 
 	if ent:GetClass() == "weapon_mu_knife" then
+		// bystanders can't have the knife
 		if !ply:GetMurderer() then
 			return false
 		end

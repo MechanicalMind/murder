@@ -37,7 +37,7 @@ function SWEP:GetTrace(ang)
 	trace.mask = MASK_SHOT
 	local vec = self.Owner:GetAimVector()
 	if ang then vec:Rotate(ang) end
-	trace.endpos = trace.start + vec * 50
+	trace.endpos = trace.start + vec * 60
 	//trace.mask = MASK_SHOT
 	local tr = util.TraceLine(trace)
 	tr.TraceAimVector = vec

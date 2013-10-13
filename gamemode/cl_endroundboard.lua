@@ -46,6 +46,7 @@ function GM:DisplayEndRoundBoard(data)
 
 	local murdererPnl = vgui.Create("DPanel", winnerPnl)
 	murdererPnl:Dock(TOP)
+	murdererPnl:SetTall(draw.GetFontHeight("MersRadialSmall"))
 	function murdererPnl:Paint()
 	end
 
