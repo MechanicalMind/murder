@@ -159,7 +159,7 @@ local plyMeta = FindMetaTable("Player")
 
 function plyMeta:CalculateSpeed()
 	// set the defaults
-	local walk,run,canrun = 250,360,false
+	local walk,run,canrun = 250,330,false
 	local jumppower = 200
 
 	if self:GetMurderer() then

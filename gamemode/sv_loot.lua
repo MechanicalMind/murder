@@ -53,7 +53,7 @@ function GM:LootThink()
 	if self:GetRound() == 1 then
 
 		if !self.LastSpawnLoot || self.LastSpawnLoot < CurTime() then
-			self.LastSpawnLoot = CurTime() + 15
+			self.LastSpawnLoot = CurTime() + 12
 
 			local data = table.Random(LootItems)
 			for k, ent in pairs(ents.FindByClass("mu_loot")) do
@@ -102,6 +102,13 @@ end
 
 function GM:PlayerPickupLoot(ply, ent)
 	ply.LootCollected = ply.LootCollected + 1
+
+	if ply.LootCollected == 5 then
+		if ply:HasWeapon("weapon_mu_magnum") then
+			ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
+		end
+		ply:Give("weapon_mu_magnum")
+	end
 
 	ply:EmitSound("ambient/levels/canals/windchime2.wav", 100, math.random(40,160))
 	ent:Remove()

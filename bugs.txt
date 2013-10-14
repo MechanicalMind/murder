@@ -1,5 +1,8 @@
-Spectate fuckes up vis leafs
-	Press E to break func breakable
+Murderer doesn't kill anyone
+Gun with gun is AFK
+Sprint exhaustion
+
+
 
 Press E on corpse to chance to its color (murderer only)
 Loot respawn
