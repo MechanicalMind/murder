@@ -10,6 +10,13 @@ LootModels["beer2"] = "models/props_junk/glassjug01.mdl"
 LootModels["cactus"] = "models/props_lab/cactus.mdl"
 LootModels["lamp"] = "models/props_lab/desklamp01.mdl"
 LootModels["clipboard"] = "models/props_lab/clipboard.mdl"
+LootModels["suitcase1"] = "models/props_c17/suitcase_passenger_physics.mdl"
+LootModels["suitcase2"] = "models/props_c17/suitcase001a.mdl"
+LootModels["battery"] = "models/items/car_battery01.mdl"
+LootModels["turtle"] = "models/props/de_tides/vending_turtle.mdl"
+LootModels["toothbrush"] = "models/props/cs_militia/toothbrushset01.mdl"
+LootModels["circlesaw"] = "models/props/cs_militia/circularsaw01.mdl"
+LootModels["axe"] = "models/props/cs_militia/axe.mdl"
 
 util.AddNetworkString("GrabLoot")
 
@@ -39,6 +46,31 @@ function GM:SpawnLoot()
 		ent:Spawn()
 
 		ent.LootData = data
+	end
+end
+
+function GM:LootThink()
+	if self:GetRound() == 1 then
+
+		if !self.LastSpawnLoot || self.LastSpawnLoot < CurTime() then
+			self.LastSpawnLoot = CurTime() + 15
+
+			local data = table.Random(LootItems)
+			for k, ent in pairs(ents.FindByClass("mu_loot")) do
+				if ent.LootData == data then
+					ent:Remove()
+				end
+			end
+
+			local ent = ents.Create("mu_loot")
+			ent:SetModel(data.model)
+			ent:SetPos(data.pos)
+			ent:SetAngles(data.angle)
+			ent:Spawn()
+
+			ent.LootData = data
+			-- print(data.pos, data.model, ent)
+		end
 	end
 end
 
@@ -73,6 +105,10 @@ function GM:PlayerPickupLoot(ply, ent)
 
 	ply:EmitSound("ambient/levels/canals/windchime2.wav", 100, math.random(40,160))
 	ent:Remove()
+
+	net.Start("GrabLoot")
+	net.WriteUInt(ply.LootCollected, 32)
+	net.Send(ply)
 end
 
 local function getLootPrintString(data, plyPos) 

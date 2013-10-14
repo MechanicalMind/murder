@@ -4,13 +4,15 @@ local EntityMeta = FindMetaTable("Entity")
 function GM:PlayerInitialSpawn( ply )
 	ply.LootCollected = 0
 
-	ply:SetTeam(2)
-
 	timer.Simple(0, function ()
 		if IsValid(ply) then
 			ply:KillSilent()
 		end
 	end)
+	
+	ply:SetTeam(2)
+
+	self:NetworkRound(ply)
 
 end
 
@@ -157,12 +159,11 @@ local plyMeta = FindMetaTable("Player")
 
 function plyMeta:CalculateSpeed()
 	// set the defaults
-	local walk,run,canrun = 250,300,false
+	local walk,run,canrun = 250,360,false
 	local jumppower = 200
 
 	if self:GetMurderer() then
 		canrun = true
-		run = 400
 	end
 
 	// handcuffs
@@ -404,7 +405,6 @@ function GM:PlayerDisconnected(ply)
 end
 
 function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam) 
-	ply:KillSilent()
 	local ct = ChatText()
 	ct:Add(ply:Nick() .. " changed team to ")
 	ct:Add(team.GetName(newTeam), team.GetColor(newTeam))
@@ -416,6 +416,8 @@ function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam)
 	if newteam == 1 then
 		
 	end
+
+	ply:KillSilent()
 end
 
 concommand.Add("th_jointeam", function (ply, com, args)
@@ -445,4 +447,22 @@ end
 
 function GM:PlayerShouldTaunt( ply, actid )
 	return false
+end
+
+function GM:KeyPress( ply, key )
+	if key == IN_USE then
+		local tr = ply:GetEyeTraceNoCursor()
+
+		// press e on windows to break them
+		if IsValid(tr.Entity) && (tr.Entity:GetClass() == "func_breakable" || tr.Entity:GetClass() == "func_breakable_surf") && tr.HitPos:Distance(tr.StartPos) < 50 then
+	 		local dmg = DamageInfo()
+	 		dmg:SetAttacker(game.GetWorld())
+	 		dmg:SetInflictor(game.GetWorld())
+	 		dmg:SetDamage(10)
+	 		dmg:SetDamageType(DMG_BULLET)
+	 		dmg:SetDamageForce(ply:GetAimVector() * 500)
+	 		dmg:SetDamagePosition(tr.HitPos)
+	 		tr.Entity:TakeDamageInfo(dmg)
+		end
+	end
 end

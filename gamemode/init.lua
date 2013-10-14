@@ -56,13 +56,21 @@ function GM:InitPostEntityAndMapCleanup()
 	for k, ent in pairs(ents.FindByClass("mu_loot")) do
 		ent:Remove()
 	end
-	self:SpawnLoot()
+	-- self:SpawnLoot()
 end
 
 function GM:Think()
 	self:ParkourThink()
 	self:RoundThink()
 	self:MurdererThink()
+	self:LootThink()
+
+	for k, ply in pairs(player.GetAll()) do
+		if IsValid(ply.Spectating) && (!ply.LastSpectatePosSet || ply.LastSpectatePosSet < CurTime()) then
+			ply.LastSpectatePosSet = CurTime() + 0.25
+			ply:SetPos(ply.Spectating:GetPos())
+		end
+	end
 end
 
 function GM:AllowPlayerPickup( ply, ent )
@@ -92,7 +100,6 @@ function GM:SendMessageAll(msg)
 end
 
 function GM:EntityTakeDamage( ent, dmginfo )
-
 	// disable all prop damage
 	if IsValid(dmginfo:GetAttacker()) && (dmginfo:GetAttacker():GetClass() == "prop_physics" || dmginfo:GetAttacker():GetClass() == "prop_physics_multiplayer") then
 		return true
@@ -101,6 +108,7 @@ function GM:EntityTakeDamage( ent, dmginfo )
 	if IsValid(dmginfo:GetInflictor()) && (dmginfo:GetInflictor():GetClass() == "prop_physics" || dmginfo:GetInflictor():GetClass() == "prop_physics_multiplayer") then
 		return true
 	end
+
 
 end
 

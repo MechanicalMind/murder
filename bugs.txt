@@ -1,7 +1,5 @@
 Spectate fuckes up vis leafs
-	4 times per second set spectater to spectatee's position
-Not set round on join
-Move to spectate destroys gun
+	Press E to break func breakable
 
 Press E on corpse to chance to its color (murderer only)
 Loot respawn

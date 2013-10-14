@@ -135,15 +135,17 @@ function GM:DrawStartRoundInformation()
 	end
 end
 
+local tex = surface.GetTextureID("SGM/playercircle")
+
 function GM:DrawGameHUD()
 	local client = LocalPlayer()
 	local health = client:Health()
 
-	surface.SetFont("MersRadial")
-	local w,h = surface.GetTextSize("Health")
+	-- surface.SetFont("MersRadial")
+	-- local w,h = surface.GetTextSize("Health")
 
-	drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
-	drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
+	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
+	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
 
 	local name = "Bystander"
 	local color = Color(20,120,255)
@@ -154,6 +156,24 @@ function GM:DrawGameHUD()
 	end
 
 	drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
+
+	// setup size
+	local size = ScrW() * 0.08
+
+	// draw black circle
+	surface.SetTexture(tex)
+	surface.SetDrawColor(color_black)
+	surface.DrawTexturedRect( size * 0.1, ScrH() - size * 1.1, size, size)
+
+	// draw health circle
+	surface.SetTexture(tex)
+	local col = client:GetPlayerColor()
+	col = Color(col.x * 255, col.y * 255, col.z * 255)
+	surface.SetDrawColor(col)
+	local hsize = math.Clamp(health, 0, 100) / 100 * size
+	surface.DrawTexturedRect( size * 0.1 + (size - hsize) / 2, ScrH() - size * 1.1 + (size - hsize) / 2, hsize, hsize)
+
+	drawTextShadow(self.LootCollected or "error", "MersRadialBig", size * 0.6, ScrH() - size * 0.6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 function GM:GUIMousePressed(code, vector)

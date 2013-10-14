@@ -19,6 +19,12 @@ function GM:SetRound(round)
 	self.RoundTime = CurTime()
 end
 
+function GM:NetworkRound(ply)
+	net.Start("SetRound")
+	net.WriteUInt(self.RoundStage, 8)
+	net.Send(ply)
+end
+
 // 0 not enough players
 // 1 playing
 // 2 round ended, about to restart
