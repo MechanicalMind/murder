@@ -1,5 +1,6 @@
 GM.Name 	= "Murder"
 GM.Author 	= "MechanicalMind"
+// credits to Minty Fresh for some styling on the scoreboard
 GM.Email 	= ""
 GM.Website 	= ""
 

@@ -1,7 +1,14 @@
-Murderer doesn't kill anyone
-Gun with gun is AFK
-Sprint exhaustion
+Voice death bug
+Silience knife left click
+Silence murderer footsteps when running
+Remove parkour
 
+Preparing for release
+	Menu Icon
+	Background
+	Credits
+	Add funny taunts
+	Smoke trail on knife ent
 
 
 Press E on corpse to chance to its color (murderer only)

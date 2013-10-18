@@ -61,12 +61,14 @@ local function addElement(name, code, subtitle)
 end
 
 concommand.Add("+menu", function (client, com, args, full)
-	elements = {}
-	addElement("Help", "help", "Yell for help")
-	addElement("Apologise", "apologise")
-	addElement("Scream", "scream", "Like a little girl")
-	addElement("Morose", "morose", "Feel the sadness")
-	GAMEMODE:OpenRadialMenu(elements)
+	if client:Alive() && client:Team() == 2 then
+		elements = {}
+		addElement("Help", "help", "Yell for help")
+		addElement("Apologise", "apologise")
+		addElement("Scream", "scream", "Like a little girl")
+		addElement("Morose", "morose", "Feel the sadness")
+		GAMEMODE:OpenRadialMenu(elements)
+	end
 end)
 
 concommand.Add("-menu", function (client, com, args, full)
