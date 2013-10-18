@@ -86,6 +86,8 @@ function GM:HUDPaint()
 		-- draw.DrawText("Light:" .. tostring(lc), "MersRadial", ScrW() - 20, 80, color_white, 2)
 		-- draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
 	end
+
+	self:DrawRadialMenu()
 end
 
 function GM:DrawStartRoundInformation()
@@ -198,4 +200,8 @@ function GM:HUDShouldDraw( name )
 		return false
 	end
 	return true
+end
+
+function GM:GUIMousePressed(code, vector)
+	return self:RadialMousePressed(code,vector)
 end

@@ -11,6 +11,7 @@ include("cl_chattext.lua")
 include("cl_voicepanels.lua")
 include("cl_rounds.lua")
 include("cl_endroundboard.lua")
+include("cl_qmenu.lua")
 
 
 function GM:Initialize() 

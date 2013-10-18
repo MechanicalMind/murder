@@ -109,6 +109,7 @@ function GM:PlayerPickupLoot(ply, ent)
 				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
 			end
 			ply:Give("weapon_mu_magnum")
+			ply:SelectWeapon("weapon_mu_magnum")
 		end
 	end
 

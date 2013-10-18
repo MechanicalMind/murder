@@ -90,37 +90,45 @@ function GM:PlayerLoadout(ply)
 
 end
 
-local thiefModels = {
-"male03",
-"male04",
-"male05",
-"male07",
-"male06",
-"male09",
-"male01",
-"male02",
-"male08",
-"female05",
-"female06",
-"female01",
-"female03",
-"female02",
-"female04",
-"refugee01",
-"refugee02",
-"refugee03",
-"refugee04"
-}
+local playerModels = {}
+local function addModel(model, sex)
+	local t = {}
+	t.model = model
+	t.sex = sex
+	table.insert(playerModels, t)
+end
+
+addModel("male03", "male")
+addModel("male04", "male")
+addModel("male05", "male")
+addModel("male07", "male")
+addModel("male06", "male")
+addModel("male09", "male")
+addModel("male01", "male")
+addModel("male02", "male")
+addModel("male08", "male")
+addModel("female06", "female")
+addModel("female01", "female")
+addModel("female03", "female")
+addModel("female05", "female")
+addModel("female02", "female")
+addModel("female04", "female")
+addModel("refugee01", "male")
+addModel("refugee02", "male")
+addModel("refugee03", "male")
+addModel("refugee04", "male")
 
 function GM:PlayerSetModel( ply )
 
 	local cl_playermodel = ply:GetInfo( "cl_playermodel" )
 
-	cl_playermodel = table.Random(thiefModels)
+	local playerModel = table.Random(playerModels)
+	cl_playermodel = playerModel.model
 
 	local modelname = player_manager.TranslatePlayerModel( cl_playermodel )
 	util.PrecacheModel( modelname )
 	ply:SetModel( modelname )
+	ply.ModelSex = playerModel.sex
 
 end
 
