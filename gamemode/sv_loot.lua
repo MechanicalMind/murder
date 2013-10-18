@@ -104,7 +104,7 @@ function GM:PlayerPickupLoot(ply, ent)
 	ply.LootCollected = ply.LootCollected + 1
 
 	if !ply:GetMurderer() then
-		if ply.LootCollected == 7 then
+		if ply.LootCollected == 5 then
 			if ply:HasWeapon("weapon_mu_magnum") then
 				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
 			end
