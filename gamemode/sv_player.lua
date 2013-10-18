@@ -253,9 +253,9 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 				-- self:SendMessageAll("The murderer has struck again")
 			elseif attacker != ply then
 				local ct = ChatText()
-				ct:Add("A bystander was killed by ")
 				local col = attacker:GetPlayerColor()
 				ct:Add(attacker:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+				ct:Add(" killed an innocent bystander")
 				ct:SendAll()
 				timer.Simple(0, function () 
 					if IsValid(attacker) && attacker:HasWeapon("weapon_mu_magnum") then
@@ -277,7 +277,9 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 			ct:Add(" killed the murderer")
 			ct:SendAll()
 		else
-			self:SendMessageAll("The murderer died in mysterious circumstances")
+			local ct = ChatText()
+			ct:Add("The murderer died in mysterious circumstances")
+			ct:SendAll()
 		end
 	end
 
