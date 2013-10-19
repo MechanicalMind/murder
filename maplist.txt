@@ -1,2 +1,3 @@
 The gamemode comes with spawn and loot spawning data for these maps
 	cs_office
+	de_chateau
