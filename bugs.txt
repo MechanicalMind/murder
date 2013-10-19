@@ -1,6 +1,3 @@
-Mute on scoreboard
-Admins on scoreboard
-
 Preparing for release
 	Background
 	Smoke trail on knife ent

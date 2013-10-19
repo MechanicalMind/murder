@@ -435,6 +435,20 @@ concommand.Add("mu_jointeam", function (ply, com, args)
 	end
 end)
 
+concommand.Add("mu_movetospectate", function (ply, com, args)
+	if !ply:IsAdmin() then return end
+	if #args < 1 then return end
+
+	local ent = Entity(tonumber(args[1]) or -1)
+	if !IsValid(ent) || !ent:IsPlayer() then return end
+	
+	local curTeam = ent:Team()
+	if 1 != curTeam then
+		ent:SetTeam(1)
+		GAMEMODE:PlayerOnChangeTeam(ent, 1, curTeam)
+	end
+end)
+
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
 	return self:PlayerCanHearChatVoice(listener, speaker) 
 end

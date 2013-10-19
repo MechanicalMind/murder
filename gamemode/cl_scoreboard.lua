@@ -8,11 +8,14 @@ surface.CreateFont( "ScoreboardPlayer" , {
 	italic = false
 })
 
+local muted = Material("icon32/muted.png")
+
 local function addPlayerItem(self, mlist, ply, pteam)
-	local but = vgui.Create("DPanel")
+	local but = vgui.Create("DButton")
 	but.player = ply
 	but.ctime = CurTime()
 	but:SetTall(40)
+	but:SetText("")
 	function but:Paint(w, h)
 		surface.SetDrawColor(team.GetColor(pteam))
 		surface.DrawRect(0, 0, w, h)
@@ -24,12 +27,50 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		surface.DrawOutlinedRect(0, 0, w, h)
 
 		if IsValid(ply) && ply:IsPlayer() then
+			local s = 0
+
+			if ply:IsMuted() then
+				surface.SetMaterial(muted)
+				surface.SetDrawColor(color_white)
+				surface.DrawTexturedRect(4, h / 2 - 16, 32, 32)
+				s = 32
+			end
+
 			draw.DrawText(ply:Ping(), "ScoreboardPlayer", w - 9, 9, color_black, 2)
 			draw.DrawText(ply:Ping(), "ScoreboardPlayer", w - 10, 8, color_white, 2)
 
-			draw.DrawText(ply:Nick(), "ScoreboardPlayer", 11, 9, color_black, 0)
-			draw.DrawText(ply:Nick(), "ScoreboardPlayer", 10, 8, color_white, 0)
+			draw.DrawText(ply:Nick(), "ScoreboardPlayer", s + 11, 9, color_black, 0)
+			draw.DrawText(ply:Nick(), "ScoreboardPlayer", s + 10, 8, color_white, 0)
+
+			
 		end
+	end
+	function but:DoClick()
+		local actions = DermaMenu()
+
+		if ply != LocalPlayer() then
+			local mute = actions:AddOption( "Mute" )
+			mute:SetIcon("icon16/sound_mute.png")
+			function mute:DoClick()
+				if IsValid(ply) then
+					ply:SetMuted(!ply:IsMuted())
+				end
+			end
+		end
+
+		if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
+			actions:AddSpacer()
+
+			if ply:Team() == 2 then
+				local spectate = actions:AddOption( "Move to " .. team.GetName(1) )
+				spectate:SetIcon( "icon16/lorry.png" )
+				function spectate:DoClick()
+					RunConsoleCommand("mu_movetospectate", ply:EntIndex())
+				end
+			end
+		end
+
+		actions:Open()
 	end
 
 	mlist:AddItem(but)
