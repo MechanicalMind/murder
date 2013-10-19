@@ -64,7 +64,7 @@ concommand.Add("+menu", function (client, com, args, full)
 	if client:Alive() && client:Team() == 2 then
 		elements = {}
 		addElement("Help", "help", "Yell for help")
-		addElement("Apologise", "apologise")
+		addElement("Funny", "funny", "Bit of a joke")
 		addElement("Scream", "scream", "Like a little girl")
 		addElement("Morose", "morose", "Feel the sadness")
 		GAMEMODE:OpenRadialMenu(elements)
