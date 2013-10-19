@@ -4,5 +4,6 @@
 	"title"		"Murder"
 	"maps"		"^md_"
 	"menusystem"	"1"
+	"workshopid" "187073946"
 
 }
