@@ -1,7 +1,6 @@
 Voice death bug
 Silience knife left click
 Silence murderer footsteps when running
-Remove parkour
 
 Preparing for release
 	Menu Icon

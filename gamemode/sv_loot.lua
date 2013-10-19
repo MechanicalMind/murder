@@ -17,6 +17,15 @@ LootModels["turtle"] = "models/props/de_tides/vending_turtle.mdl"
 LootModels["toothbrush"] = "models/props/cs_militia/toothbrushset01.mdl"
 LootModels["circlesaw"] = "models/props/cs_militia/circularsaw01.mdl"
 LootModels["axe"] = "models/props/cs_militia/axe.mdl"
+LootModels["skull"] = "models/Gibs/HGIBS.mdl"
+LootModels["baby"] = "models/props_c17/doll01.mdl"
+LootModels["antlionhead"] = "models/Gibs/Antlion_gib_Large_2.mdl"
+LootModels["briefcase"] = "models/props_c17/BriefCase001a.mdl"
+LootModels["breenclock"] = "models/props_combine/breenclock.mdl"
+LootModels["sawblade"] = "models/props_junk/sawblade001a.mdl"
+LootModels["wrench"] = "models/props_c17/tools_wrench01a.mdl"
+LootModels["consolebox"] = "models/props_c17/consolebox01a.mdl"
+LootModels["cashregister"] = "models/props_c17/cashregister01a.mdl"
 
 util.AddNetworkString("GrabLoot")
 
