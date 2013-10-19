@@ -53,7 +53,9 @@ net.Receive("DeclareWinner" , function (length)
 	GAMEMODE:DisplayEndRoundBoard(data)
 
 	local pitch = math.random(80, 120)
-	LocalPlayer():EmitSound("ambient/alarms/warningbell1.wav", 100, pitch)
+	if IsValid(LocalPlayer()) then
+		LocalPlayer():EmitSound("ambient/alarms/warningbell1.wav", 100, pitch)
+	end
 end)
 
 net.Receive("GrabLoot", function (length)
