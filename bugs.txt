@@ -1,15 +1,6 @@
+Mute on scoreboard
+Admins on scoreboard
 
 Preparing for release
 	Background
 	Smoke trail on knife ent
-
-
-Press E on corpse to chance to its color (murderer only)
-Loot respawn
-Press Q to buy stuff
-	Mine
-	Poison gas
-Circle at bttom of screen indicating colour, white number on top with loot amount
-Mute on scoreboard
-Admins on scoreboard
-Murderer loses after 2 minute without a kill (reset timer on kill)
