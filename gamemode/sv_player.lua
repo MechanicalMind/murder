@@ -426,7 +426,7 @@ function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam)
 	ply:KillSilent()
 end
 
-concommand.Add("th_jointeam", function (ply, com, args)
+concommand.Add("mu_jointeam", function (ply, com, args)
 	local curTeam = ply:Team()
 	local newTeam = tonumber(args[1] or "") or 0
 	if newTeam >= 1 && newTeam <= 2 && newTeam != curTeam then

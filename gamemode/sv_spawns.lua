@@ -40,7 +40,7 @@ local function getPosPrintString(pos, plyPos)
 	return math.Round(pos.x) .. "," .. math.Round(pos.y) .. "," .. math.Round(pos.z) .. " " .. math.Round(pos:Distance(plyPos) / 12) .. "ft"
 end
 
-concommand.Add("th_spawn_add", function (ply, com, args, full)
+concommand.Add("mu_spawn_add", function (ply, com, args, full)
 	if (!ply:IsAdmin()) then return end
 
 	if #args < 1 then
@@ -61,7 +61,7 @@ concommand.Add("th_spawn_add", function (ply, com, args, full)
 	GAMEMODE:SaveSpawns()
 end)
 
-concommand.Add("th_spawn_list", function (ply, com, args, full)
+concommand.Add("mu_spawn_list", function (ply, com, args, full)
 	if (!ply:IsAdmin()) then return end
 
 	if #args < 1 then
@@ -81,7 +81,7 @@ concommand.Add("th_spawn_list", function (ply, com, args, full)
 	end
 end)
 
-concommand.Add("th_spawn_closest", function (ply, com, args, full)
+concommand.Add("mu_spawn_closest", function (ply, com, args, full)
 	if (!ply:IsAdmin()) then return end
 
 	if #args < 1 then
@@ -110,7 +110,7 @@ concommand.Add("th_spawn_closest", function (ply, com, args, full)
 	ply:ChatPrint(closest .. ": " .. getPosPrintString(spawnList[closest],ply:GetPos()) )
 end)
 
-concommand.Add("th_spawn_remove", function (ply, com, args, full)
+concommand.Add("mu_spawn_remove", function (ply, com, args, full)
 	if (!ply:IsAdmin()) then return end
 
 	if #args < 2 then

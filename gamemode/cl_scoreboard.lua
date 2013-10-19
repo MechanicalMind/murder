@@ -101,7 +101,7 @@ local function makeTeamList(parent, pteam)
 	but:SetTextColor(color_white)
 	but:SetFont("Trebuchet18")
 	function but:DoClick()
-		RunConsoleCommand("th_jointeam", pteam)
+		RunConsoleCommand("mu_jointeam", pteam)
 	end
 	function but:Paint(w, h)
 		surface.SetDrawColor(team.GetColor(pteam))
