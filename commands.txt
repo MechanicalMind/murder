@@ -1,0 +1,18 @@
+Spawns
+	mu_spawn_add spawns - Adds a spawn at your current position
+	mu_spawn_list spawns - Lists all spawns
+	mu_spawn_remove spawns <key> - Removes the spawn with the specified key
+	mu_spawn_closest spawns - Lists the closest spawn
+
+Loot
+	mu_loot_add <model> - Adds a loot spawn where you are looking
+	mu_loot_list - Lists all loot spawns
+	mu_loot_closest - Lists closest loot spawn
+	mu_loot_remove - Removes loot spawn with specified id
+	mu_loot_adjustpos - Sets the loot spawn position to the current position of the loot object you are looking at 
+	mu_loot_respawn - Respawns all loot
+	mu_loot_models_list - Lists all model aliases
+
+Misc
+	mu_taunt <category> - Plays a random taunt sound
+	mu_jointeam <team> - Trys to join the specified team
