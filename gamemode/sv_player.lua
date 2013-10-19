@@ -411,10 +411,6 @@ function GM:PlayerDisconnected(ply)
 end
 
 function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam) 
-	local ct = ChatText()
-	ct:Add(ply:Nick() .. " changed team to ")
-	ct:Add(team.GetName(newTeam), team.GetColor(newTeam))
-	ct:SendAll()
 	if oldTeam == 2 then
 		self:PlayerLeavePlay(ply)	
 	end
@@ -432,6 +428,10 @@ concommand.Add("mu_jointeam", function (ply, com, args)
 	if newTeam >= 1 && newTeam <= 2 && newTeam != curTeam then
 		ply:SetTeam(newTeam)
 		GAMEMODE:PlayerOnChangeTeam(ply, newTeam, curTeam)
+		local ct = ChatText()
+		ct:Add(ply:Nick() .. " changed team to ")
+		ct:Add(team.GetName(newTeam), team.GetColor(newTeam))
+		ct:SendAll()
 	end
 end)
 
@@ -446,6 +446,10 @@ concommand.Add("mu_movetospectate", function (ply, com, args)
 	if 1 != curTeam then
 		ent:SetTeam(1)
 		GAMEMODE:PlayerOnChangeTeam(ent, 1, curTeam)
+		local ct = ChatText()
+		ct:Add(ent:Nick() .. " was moved to ")
+		ct:Add(team.GetName(1), team.GetColor(1))
+		ct:SendAll()
 	end
 end)
 
