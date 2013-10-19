@@ -15,7 +15,6 @@ AddCSLuaFile("cl_qmenu.lua")
 
 include("shared.lua")
 include("sv_player.lua")
-include("sv_parkour.lua")
 include("sv_spawns.lua")
 include("sv_stealth.lua")
 include("sv_ragdoll.lua")
@@ -62,7 +61,6 @@ function GM:InitPostEntityAndMapCleanup()
 end
 
 function GM:Think()
-	self:ParkourThink()
 	self:RoundThink()
 	self:MurdererThink()
 	self:LootThink()

@@ -1,7 +1,7 @@
 if ( SERVER ) then
 	AddCSLuaFile( "shared.lua" )
 else
-	killicon.AddFont( "weapon_parkoursniper", "HL2MPTypeDeath", "1", Color( 0, 0, 255, 255 ) )
+	killicon.AddFont( "weapon_mu_magnum", "HL2MPTypeDeath", "1", Color( 255, 0, 0 ) )
 end
 SWEP.Base = "weapon_base"
 

@@ -197,10 +197,6 @@ function plyMeta:CalculateSpeed()
 	self:SetJumpPower(jumppower)
 end
 
-function plyMeta:CanParkour()
-	return true
-end
-
 local function isValid() return true end
 local function getPos(self) return self.pos end
 
