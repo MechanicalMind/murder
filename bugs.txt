@@ -1,5 +1,3 @@
-Silience knife left click
-Silence murderer footsteps when running
 
 Preparing for release
 	Background

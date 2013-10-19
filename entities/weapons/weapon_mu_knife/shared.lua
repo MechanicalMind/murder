@@ -88,7 +88,6 @@ function SWEP:Think()
 	end	
 	if self.FistHit && self.FistHit < CurTime() then
 		self.Owner:LagCompensation(true)
-		-- print(SERVER and "SERVER" or "CLIENT", self.Owner:GetShootPos())
 		self.FistHit = nil
 		local tr = self:GetTrace()
 
@@ -98,10 +97,12 @@ function SWEP:Think()
 		if !tr.Hit then tr = self:GetTrace(Angle(0,0,20)) end
 		if !tr.Hit then tr = self:GetTrace(Angle(0,0,-20)) end
 		if tr.Hit then
-			-- print(SERVER and "SERVER" or "CLIENT", "HIT", CurTime(), tr.TraceAngle)
 			self.Owner:ViewPunch(Angle(0, 3, 0))
 			if IsValid(tr.Entity) then
-				self:EmitSound("Weapon_Crowbar.Melee_Hit")
+				// only play the sound for the murderer
+				if CLIENT && LocalPlayer() == self.Owner then
+					self:EmitSound("Weapon_Crowbar.Melee_Hit")
+				end
 			else
 				self:EmitSound("Weapon_Crowbar.Melee_Hit")
 			end
@@ -115,8 +116,10 @@ function SWEP:Think()
 			bullet.Damage = self.Primary.Damage
 			self.Owner:FireBullets( bullet )
 		else
-			-- print(SERVER and "SERVER" or "CLIENT", "MISSED", CurTime())
-			self:EmitSound("Weapon_Crowbar.Single")
+			// only play the sound for the murderer
+			if CLIENT && LocalPlayer() == self.Owner then
+				self:EmitSound("Weapon_Crowbar.Single")
+			end
 		end
 		self.Owner:LagCompensation(false)
 	end
