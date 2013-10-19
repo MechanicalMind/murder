@@ -49,12 +49,30 @@ end
 function PANEL:CheckBystanderState(state)
 	if IsValid(self.ply) then
 		local newBystanderState = false
-		if self.ply:Team() == 2 && self.ply:Alive() then
+		local client = LocalPlayer()
+		if !IsValid(client) then
 			newBystanderState = true
+		else
+			if client:Team() == 2 && client:Alive() then
+				newBystanderState = true
+			else
+				if self.ply:Team() == 2 && self.ply:Alive() then
+					newBystanderState = true
+				end
+			end
 		end
 
 		if self.Bystander != newBystanderState then
 			self:SetBystanderState(newBystanderState)
+		end
+		if newBystanderState then
+			local col = self.ply:GetPlayerColor()
+			if col != self.PrevColor then
+				local color = Color(col.x * 255, col.y * 255, col.z * 255)
+				self.Color = color
+				self.LabelName:SetTextColor(color)
+			end
+			self.PrevColor = col
 		end
 	end
 end
@@ -86,7 +104,7 @@ function PANEL:Paint( w, h )
 end
 
 function PANEL:Think( )
-	self:CheckBystanderState()	
+	self:CheckBystanderState()
 
 	if ( self.fadeAnim ) then
 		self.fadeAnim:Run()
