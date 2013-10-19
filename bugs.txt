@@ -3,8 +3,6 @@ Silence murderer footsteps when running
 
 Preparing for release
 	Background
-	Credits
-	Add funny taunts
 	Smoke trail on knife ent
 
 

@@ -184,6 +184,33 @@ function GM:ScoreboardShow()
 			surface.DrawRect(0, 0, menu:GetWide(), menu:GetTall())
 		end
 
+		menu.Credits = vgui.Create("DPanel", menu)
+		menu.Credits:Dock(TOP)
+		menu.Credits:DockPadding(8,6,8,0)
+		function menu.Credits:Paint() end
+
+		local name = Label(GAMEMODE.Name or "derp errors", menu.Credits)
+		name:Dock(LEFT)
+		name:SetFont("MersRadial")
+		name:SetTextColor(team.GetColor(2))
+		function name:PerformLayout()
+			surface.SetFont(self:GetFont())
+			local w,h = surface.GetTextSize(self:GetText())
+			self:SetSize(w,h)
+		end
+
+		local lab = Label("by Mechanical Mind", menu.Credits)
+		lab:Dock(RIGHT)
+		lab:SetFont("MersText1")
+		lab.PerformLayout = name.PerformLayout
+		lab:SetTextColor(team.GetColor(1))
+
+		function menu.Credits:PerformLayout()
+			surface.SetFont(name:GetFont())
+			local w,h = surface.GetTextSize(name:GetText())
+			self:SetTall(h)
+		end
+
 		menu.Cops = makeTeamList(menu, 2)
 		menu.Cops:Dock(LEFT)
 		menu.Robbers = makeTeamList(menu, 1)
