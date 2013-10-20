@@ -174,13 +174,11 @@ function plyMeta:CalculateSpeed()
 		canrun = true
 	end
 
-	print(self, self.LastTKTime)
 	if self.LastTKTime then
 		walk = walk * 0.8
 		run = run * 0.8
 		jumppower = jumppower * 0.8
 	end
-	print(walk, run, jumppower)
 
 	// handcuffs
 	-- if self:GetHandcuffed() then
