@@ -72,7 +72,8 @@ function GM:Think()
 			ply:SetPos(ply.Spectating:GetPos())
 		end
 		if !ply.HasMoved then
-			if ply:IsBot() || ply:KeyPressed(IN_FORWARD) || ply:KeyPressed(IN_JUMP) || ply:KeyPressed(IN_ATTACK) then
+			if ply:IsBot() || ply:KeyPressed(IN_FORWARD) || ply:KeyPressed(IN_JUMP) || ply:KeyPressed(IN_ATTACK) || ply:KeyPressed(IN_ATTACK2)
+				|| ply:KeyPressed(IN_MOVELEFT) || ply:KeyPressed(IN_MOVERIGHT) || ply:KeyPressed(IN_BACK) || ply:KeyPressed(IN_DUCK) then
 				ply.HasMoved = true
 			end
 		end
