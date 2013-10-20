@@ -10,6 +10,7 @@ function GM:PlayerInitialSpawn( ply )
 		end
 	end)
 	
+	ply.HasMoved = true
 	ply:SetTeam(2)
 
 	self:NetworkRound(ply)
