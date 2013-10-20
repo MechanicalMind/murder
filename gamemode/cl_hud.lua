@@ -174,7 +174,7 @@ function GM:DrawGameHUD()
 
 	drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
 
-	// draw eye trace player
+	// draw names
 	local tr = client:GetEyeTraceNoCursor()
 	if IsValid(tr.Entity) && tr.Entity:IsPlayer() && tr.HitPos:Distance(tr.StartPos) < 500 then
 		self.LastLooked = tr.Entity
@@ -185,7 +185,7 @@ function GM:DrawGameHUD()
 		local col = self.LastLooked:GetPlayerColor()
 		col = Color(col.x * 255, col.y * 255, col.z * 255)
 		col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
-		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 
 	// setup size
