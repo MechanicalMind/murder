@@ -176,9 +176,9 @@ function plyMeta:CalculateSpeed()
 	end
 
 	if self.LastTKTime then
-		walk = walk * 0.8
-		run = run * 0.8
-		jumppower = jumppower * 0.8
+		walk = walk * 0.7
+		run = run * 0.7
+		jumppower = jumppower * 0.5
 	end
 
 	// handcuffs
