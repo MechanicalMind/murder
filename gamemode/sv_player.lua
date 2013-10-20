@@ -174,6 +174,14 @@ function plyMeta:CalculateSpeed()
 		canrun = true
 	end
 
+	print(self, self.LastTKTime)
+	if self.LastTKTime then
+		walk = walk * 0.8
+		run = run * 0.8
+		jumppower = jumppower * 0.8
+	end
+	print(walk, run, jumppower)
+
 	// handcuffs
 	-- if self:GetHandcuffed() then
 	-- 	walk = walk * 0.3
@@ -261,6 +269,8 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 				ct:Add(attacker:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
 				ct:Add(" killed an innocent bystander")
 				ct:SendAll()
+				attacker.LastTKTime = CurTime()
+				attacker:CalculateSpeed()
 				timer.Simple(0, function () 
 					if IsValid(attacker) && attacker:HasWeapon("weapon_mu_magnum") then
 						local wep = attacker:GetWeapon("weapon_mu_magnum")

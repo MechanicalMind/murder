@@ -73,8 +73,11 @@ function GM:Think()
 		if !ply.HasMoved then
 			if ply:IsBot() || ply:KeyPressed(IN_FORWARD) || ply:KeyPressed(IN_JUMP) || ply:KeyPressed(IN_ATTACK) then
 				ply.HasMoved = true
-				print(ply, " has moved")
 			end
+		end
+		if ply.LastTKTime && ply.LastTKTime + 20 < CurTime() then
+			ply.LastTKTime = nil
+			ply:CalculateSpeed()
 		end
 	end
 end

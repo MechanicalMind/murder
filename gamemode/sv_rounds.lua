@@ -122,6 +122,7 @@ function GM:EndTheRound(reason, murderer)
 			ply:Freeze(false)
 			ply.Frozen = false
 		end
+		ply.LastTKTime = nil
 	end
 	self.RoundUnFreezePlayers = nil
 
@@ -219,6 +220,7 @@ function GM:StartNewRound()
 		ply.LootCollected = 0
 		ply.HasMoved = false
 		ply.Frozen = true
+		ply.LastTKTime = nil
 	end
 	local noobs = table.Copy(players)
 	table.RemoveByValue(noobs, murderer)
