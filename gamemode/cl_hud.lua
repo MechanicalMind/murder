@@ -48,8 +48,10 @@ surface.CreateFont( "MersDeathBig" , {
 })
 
 local function drawTextShadow(t,f,x,y,c,px,py)
+	color_black.a = c.a
 	draw.SimpleText(t,f,x + 1,y + 1,color_black,px,py)
 	draw.SimpleText(t,f,x,y,c,px,py)
+	color_black.a = 255
 end
 
 
@@ -154,6 +156,7 @@ local tex = surface.GetTextureID("SGM/playercircle")
 function GM:DrawGameHUD()
 	local client = LocalPlayer()
 	local health = client:Health()
+	if !IsValid(client) then return end
 
 	-- surface.SetFont("MersRadial")
 	-- local w,h = surface.GetTextSize("Health")
@@ -170,6 +173,20 @@ function GM:DrawGameHUD()
 	end
 
 	drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
+
+	// draw eye trace player
+	local tr = client:GetEyeTraceNoCursor()
+	if IsValid(tr.Entity) && tr.Entity:IsPlayer() then
+		self.LastLooked = tr.Entity
+		self.LookedFade = CurTime()
+	end
+	if IsValid(self.LastLooked) && self.LookedFade + 2 > CurTime() then
+		local name = self.LastLooked:GetBystanderName()
+		local col = self.LastLooked:GetPlayerColor()
+		col = Color(col.x * 255, col.y * 255, col.z * 255)
+		col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
+		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
 
 	// setup size
 	local size = ScrW() * 0.08
@@ -188,6 +205,8 @@ function GM:DrawGameHUD()
 	surface.DrawTexturedRect( size * 0.1 + (size - hsize) / 2, ScrH() - size * 1.1 + (size - hsize) / 2, hsize, hsize)
 
 	drawTextShadow(self.LootCollected or "error", "MersRadialBig", size * 0.6, ScrH() - size * 0.6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+	drawTextShadow(client:GetBystanderName(), "MersRadialSmall", size * 0.6, ScrH() - size * 1.1, col, 1, TEXT_ALIGN_TOP)
 end
 
 function GM:GUIMousePressed(code, vector)

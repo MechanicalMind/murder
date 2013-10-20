@@ -84,7 +84,7 @@ function PANEL:SetBystanderState(state)
 
 	self.Bystander = state
 	if state then
-		self.LabelName:SetText("Bystander")
+		self.LabelName:SetText(self.ply:GetBystanderName())
 		self.LabelName:SetTextColor(color)
 		self.ColorBlock:SetVisible(true)
 		self.Avatar:SetVisible(false)

@@ -264,7 +264,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 			elseif attacker != ply then
 				local ct = ChatText()
 				local col = attacker:GetPlayerColor()
-				ct:Add(attacker:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+				ct:Add(attacker:Nick() .. ", " .. attacker:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 				ct:Add(" killed an innocent bystander")
 				ct:SendAll()
 				attacker.LastTKTime = CurTime()
@@ -285,7 +285,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		if attacker != ply && IsValid(attacker) && attacker:IsPlayer() then
 			local ct = ChatText()
 			local col = attacker:GetPlayerColor()
-			ct:Add(attacker:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+			ct:Add(attacker:Nick() .. ", " .. attacker:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 			ct:Add(" killed the murderer")
 			ct:SendAll()
 		else
@@ -426,7 +426,7 @@ function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam)
 	if newteam == 1 then
 		
 	end
-
+	ply.HasMoved = true
 	ply:KillSilent()
 end
 
@@ -472,7 +472,7 @@ function GM:PlayerSay( ply, text, team)
 	if ply:Team() == 2 && ply:Alive() && self:GetRound() != 0 then
 		local ct = ChatText()
 		local col = ply:GetPlayerColor()
-		ct:Add("Bystander", Color(col.x * 255, col.y * 255, col.z * 255))
+		ct:Add(ply:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 		ct:Add(": " .. text, color_white)
 		ct:SendAll()
 		return false

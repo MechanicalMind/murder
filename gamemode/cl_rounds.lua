@@ -44,6 +44,7 @@ net.Receive("DeclareWinner" , function (length)
 		t.player = net.ReadEntity()
 		if IsValid(t.player) then
 			t.playerName = t.player:Nick()
+			t.playerBystanderName = t.player:GetBystanderName()
 			t.playerColor = t.player:GetPlayerColor()
 		end
 		t.count = net.ReadUInt(32)

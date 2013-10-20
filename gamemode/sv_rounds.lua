@@ -132,7 +132,7 @@ function GM:EndTheRound(reason, murderer)
 		if murderer then
 			ct:Add(", it was ")
 			local col = murderer:GetPlayerColor()
-			ct:Add(murderer:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+			ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 		end
 		ct:SendAll()
 	elseif reason == 2 then
@@ -140,14 +140,14 @@ function GM:EndTheRound(reason, murderer)
 		ct:Add("Bystanders win! ", Color(20, 120, 255))
 		ct:Add("The murderer was ")
 		local col = murderer:GetPlayerColor()
-		ct:Add(murderer:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+		ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 		ct:SendAll()
 	elseif reason == 1 then
 		local ct = ChatText()
 		ct:Add("The murderer wins! ", Color(190, 20, 20))
 		ct:Add("He was ")
 		local col = murderer:GetPlayerColor()
-		ct:Add(murderer:Nick(), Color(col.x * 255, col.y * 255, col.z * 255))
+		ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 		ct:SendAll()
 	end
 
@@ -221,6 +221,7 @@ function GM:StartNewRound()
 		ply.HasMoved = false
 		ply.Frozen = true
 		ply.LastTKTime = nil
+		ply:GenerateBystanderName()
 	end
 	local noobs = table.Copy(players)
 	table.RemoveByValue(noobs, murderer)

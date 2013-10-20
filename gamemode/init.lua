@@ -25,6 +25,7 @@ include("sv_footsteps.lua")
 include("sv_chattext.lua")
 include("sv_loot.lua")
 include("sv_taunt.lua")
+include("sv_bystandername.lua")
 
 resource.AddFile("materials/thieves/footprint.vmt")
 

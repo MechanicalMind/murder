@@ -97,7 +97,10 @@ function GM:DisplayEndRoundBoard(data)
 		end
 		function pnl:PerformLayout()
 			if self.NamePnl then
-				self.NamePnl:SetWidth(self:GetWide() * 0.8)
+				self.NamePnl:SetWidth(self:GetWide() * 0.5)
+			end
+			if self.BNamePnl then
+				self.BNamePnl:SetWidth(self:GetWide() * 0.3)
 			end
 			self:SizeToChildren(false, true)
 		end
@@ -118,6 +121,18 @@ function GM:DisplayEndRoundBoard(data)
 			end
 		end
 
+		local bname = vgui.Create("DButton", pnl)
+		pnl.BNamePnl = bname
+		bname:Dock(LEFT)
+		bname:SetAutoStretchVertical(true)
+		bname:SetText(v.playerBystanderName)
+		bname:SetFont("MersRadialSmall")
+		local col = v.playerColor
+		bname:SetTextColor(Color(col.x * 255, col.y * 255, col.z * 255))
+		bname:SetContentAlignment(4)
+		function bname:Paint() end
+		bname.DoClick = name.DoClick
+
 
 		local count = vgui.Create("DLabel", pnl)
 		pnl.CountPnl = count
@@ -127,6 +142,7 @@ function GM:DisplayEndRoundBoard(data)
 		count:SetFont("MersRadialSmall")
 		local col = v.playerColor
 		count:SetTextColor(Color(col.x * 255, col.y * 255, col.z * 255))
+		count.DoClick = count.DoClick
 
 		lootList:AddItem(pnl)
 	end
