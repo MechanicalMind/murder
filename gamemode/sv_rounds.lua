@@ -43,6 +43,7 @@ function GM:RoundThink()
 			for k, ply in pairs(players) do
 				if ply:Alive() then
 					ply:Freeze(false)
+					ply.Frozen = false
 				end
 			end
 		end
@@ -107,8 +108,19 @@ function GM:EndTheRound(reason, murderer)
 
 	local players = team.GetPlayers(2)
 	for k, ply in pairs(players) do
+		if !ply.HasMoved && !ply.Frozen then
+			local oldTeam = ply:Team()
+			ply:SetTeam(1)
+			GAMEMODE:PlayerOnChangeTeam(ply, 1, oldTeam)
+			local ct = ChatText()
+			ct:Add(ply:Nick() .. " was moved to ")
+			ct:Add(team.GetName(1), team.GetColor(1))
+			ct:Add(" for being AFK", color_white)
+			ct:SendAll()
+		end
 		if ply:Alive() then
 			ply:Freeze(false)
+			ply.Frozen = false
 		end
 	end
 	self.RoundUnFreezePlayers = nil
@@ -205,6 +217,8 @@ function GM:StartNewRound()
 		ply:Freeze(true)
 
 		ply.LootCollected = 0
+		ply.HasMoved = false
+		ply.Frozen = true
 	end
 	local noobs = table.Copy(players)
 	table.RemoveByValue(noobs, murderer)

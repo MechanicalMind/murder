@@ -70,6 +70,12 @@ function GM:Think()
 			ply.LastSpectatePosSet = CurTime() + 0.25
 			ply:SetPos(ply.Spectating:GetPos())
 		end
+		if !ply.HasMoved then
+			if ply:IsBot() || ply:KeyPressed(IN_FORWARD) || ply:KeyPressed(IN_JUMP) || ply:KeyPressed(IN_ATTACK) then
+				ply.HasMoved = true
+				print(ply, " has moved")
+			end
+		end
 	end
 end
 

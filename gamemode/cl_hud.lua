@@ -62,29 +62,33 @@ function GM:HUDPaint()
 		drawTextShadow("Not enough players to start round", "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 	end
 
-	if !client:Alive() then
-		self:RenderRespawnText()
-	else
+	if client:Team() == 2 then
+		if !client:Alive() then
+			self:RenderRespawnText()
+		else
 
-		if round == 1 then
-			if self.RoundStart && self.RoundStart + 10 > CurTime() then
-				self:DrawStartRoundInformation()
-			else
+			if round == 1 then
+				if self.RoundStart && self.RoundStart + 10 > CurTime() then
+					self:DrawStartRoundInformation()
+				else
+					self:DrawGameHUD()
+				end
+			elseif round == 2 then
+				// display who won
 				self:DrawGameHUD()
+			else // round = 0
+
 			end
-		elseif round == 2 then
-			// display who won
-			self:DrawGameHUD()
-		else // round = 0
 
+			-- local tr = LocalPlayer():GetEyeTrace()
+
+			-- local lc = render.GetLightColor(LocalPlayer():GetPos() + Vector(0,0,30))
+			-- local lt = (lc.r + lc.g + lc.b) / 3
+			-- draw.DrawText("Light:" .. tostring(lc), "MersRadial", ScrW() - 20, 80, color_white, 2)
+			-- draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
 		end
-
-		-- local tr = LocalPlayer():GetEyeTrace()
-
-		-- local lc = render.GetLightColor(LocalPlayer():GetPos() + Vector(0,0,30))
-		-- local lt = (lc.r + lc.g + lc.b) / 3
-		-- draw.DrawText("Light:" .. tostring(lc), "MersRadial", ScrW() - 20, 80, color_white, 2)
-		-- draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
+	else
+		draw.DrawText("Spectating", "MersRadialSmall", ScrW() / 2, ScrH() - 100, color_white, 1)
 	end
 
 	if self.Debug:GetBool() then

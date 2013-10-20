@@ -423,6 +423,9 @@ function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam)
 end
 
 concommand.Add("mu_jointeam", function (ply, com, args)
+	if ply.LastChangeTeam && ply.LastChangeTeam + 10 > CurTime() then return end
+	ply.LastChangeTeam = CurTime()
+
 	local curTeam = ply:Team()
 	local newTeam = tonumber(args[1] or "") or 0
 	if newTeam >= 1 && newTeam <= 2 && newTeam != curTeam then
