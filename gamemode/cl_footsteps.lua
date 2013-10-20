@@ -1,5 +1,9 @@
+GM.FootstepMaxLifeTime = CreateClientConVar( "mu_footstep_maxlifetime", 30, true, true )
 
 local FootSteps = {}
+if FootStepsG then
+	FootSteps = FootStepsG
+end
 FootStepsG = FootSteps
 
 function GM:FootStepsInit()
@@ -8,17 +12,22 @@ end
 
 local footMat = Material( "thieves/footprint" )
 -- local CircleMat = Material( "Decals/burn02a" )
+local maxDistance = 600 ^ 2
 local function renderfoot(self)
+	cam.Start3D(EyePos(), EyeAngles())
+	local pos = EyePos()
+	local lifeTime = math.Clamp(self.FootstepMaxLifeTime:GetInt(), 0, 30)
 	for k, footstep in pairs(FootSteps) do
-		if footstep.curtime + 30 > CurTime() then
-			cam.Start3D(EyePos(), EyeAngles())
-			render.SetMaterial( footMat )
-			render.DrawQuadEasy( footstep.pos + footstep.normal * 0.01, footstep.normal, 10, 20, footstep.col, footstep.angle )  
-			cam.End3D()
+		if footstep.curtime + lifeTime > CurTime() then
+			if (footstep.pos - EyePos()):LengthSqr() < maxDistance then
+				render.SetMaterial( footMat )
+				render.DrawQuadEasy( footstep.pos + footstep.normal * 0.01, footstep.normal, 10, 20, footstep.col, footstep.angle )  
+			end
 		else
 			FootSteps[k] = nil
 		end
 	end
+	cam.End3D()
 end
 
 function GM:DrawFootprints()

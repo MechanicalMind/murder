@@ -13,6 +13,7 @@ include("cl_rounds.lua")
 include("cl_endroundboard.lua")
 include("cl_qmenu.lua")
 
+GM.Debug = CreateClientConVar( "mu_debug", 0, true, true )
 
 function GM:Initialize() 
 	self:FootStepsInit()
