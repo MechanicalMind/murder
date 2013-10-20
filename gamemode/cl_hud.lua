@@ -176,7 +176,7 @@ function GM:DrawGameHUD()
 
 	// draw eye trace player
 	local tr = client:GetEyeTraceNoCursor()
-	if IsValid(tr.Entity) && tr.Entity:IsPlayer() && tr.HitPos:Distance(tr.StartPos) < 300 then
+	if IsValid(tr.Entity) && tr.Entity:IsPlayer() && tr.HitPos:Distance(tr.StartPos) < 500 then
 		self.LastLooked = tr.Entity
 		self.LookedFade = CurTime()
 	end
