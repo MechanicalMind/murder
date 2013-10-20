@@ -28,9 +28,9 @@ local parts = {"Alfa",
 
 local PlayerMeta = FindMetaTable("Player")
 
-function GM:GenerateName(points)
+function GM:GenerateName(words)
 	local name
-	for i = 1, points do
+	for i = 1, words do
 		local word = parts[math.random(#parts)]
 		if !name then
 			name = word
@@ -42,7 +42,7 @@ function GM:GenerateName(points)
 end
 
 function PlayerMeta:GenerateBystanderName()
-	local name = GAMEMODE:GenerateName(2)
+	local name = GAMEMODE:GenerateName(1)
 	self:SetNWString("bystanderName", name)
 	self.BystanderName = name
 end
