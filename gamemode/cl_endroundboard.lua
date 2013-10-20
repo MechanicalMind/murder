@@ -102,7 +102,7 @@ function GM:DisplayEndRoundBoard(data)
 			self:SizeToChildren(false, true)
 		end
 
-		local name = vgui.Create("DLabel", pnl)
+		local name = vgui.Create("DButton", pnl)
 		pnl.NamePnl = name
 		name:Dock(LEFT)
 		name:SetAutoStretchVertical(true)
@@ -110,6 +110,14 @@ function GM:DisplayEndRoundBoard(data)
 		name:SetFont("MersRadialSmall")
 		local col = v.playerColor
 		name:SetTextColor(Color(col.x * 255, col.y * 255, col.z * 255))
+		name:SetContentAlignment(4)
+		function name:Paint() end
+		function name:DoClick()
+			if IsValid(v.player) then
+				GAMEMODE:DoScoreboardActionPopup(v.player)
+			end
+		end
+
 
 		local count = vgui.Create("DLabel", pnl)
 		pnl.CountPnl = count

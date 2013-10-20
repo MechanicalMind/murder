@@ -46,34 +46,42 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		end
 	end
 	function but:DoClick()
-		local actions = DermaMenu()
-
-		if ply != LocalPlayer() then
-			local mute = actions:AddOption( "Mute" )
-			mute:SetIcon("icon16/sound_mute.png")
-			function mute:DoClick()
-				if IsValid(ply) then
-					ply:SetMuted(!ply:IsMuted())
-				end
-			end
-		end
-
-		if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
-			actions:AddSpacer()
-
-			if ply:Team() == 2 then
-				local spectate = actions:AddOption( "Move to " .. team.GetName(1) )
-				spectate:SetIcon( "icon16/lorry.png" )
-				function spectate:DoClick()
-					RunConsoleCommand("mu_movetospectate", ply:EntIndex())
-				end
-			end
-		end
-
-		actions:Open()
+		GAMEMODE:DoScoreboardActionPopup(ply)
 	end
 
 	mlist:AddItem(but)
+end
+
+function GM:DoScoreboardActionPopup(ply)
+	local actions = DermaMenu()
+
+	if ply != LocalPlayer() then
+		local t = "Mute"
+		if ply:IsMuted() then
+			t = "Unmute"
+		end
+		local mute = actions:AddOption( t )
+		mute:SetIcon("icon16/sound_mute.png")
+		function mute:DoClick()
+			if IsValid(ply) then
+				ply:SetMuted(!ply:IsMuted())
+			end
+		end
+	end
+
+	if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
+		actions:AddSpacer()
+
+		if ply:Team() == 2 then
+			local spectate = actions:AddOption( "Move to " .. team.GetName(1) )
+			spectate:SetIcon( "icon16/lorry.png" )
+			function spectate:DoClick()
+				RunConsoleCommand("mu_movetospectate", ply:EntIndex())
+			end
+		end
+	end
+
+	actions:Open()
 end
 
 local function doPlayerItems(self, mlist, pteam)
