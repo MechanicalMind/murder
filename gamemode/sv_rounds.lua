@@ -221,6 +221,7 @@ function GM:StartNewRound()
 		ply.HasMoved = false
 		ply.Frozen = true
 		ply.LastTKTime = nil
+		ply:CalculateSpeed()
 		ply:GenerateBystanderName()
 	end
 	local noobs = table.Copy(players)
