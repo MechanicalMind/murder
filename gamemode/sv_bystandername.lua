@@ -54,3 +54,17 @@ function PlayerMeta:GetBystanderName()
 	end
 	return name
 end
+
+concommand.Add("mu_print_players", function (admin, com, args)
+	if !admin:IsAdmin() then return end
+
+	for k, ply in pairs(player.GetAll()) do
+		local c = ChatText()
+		c:Add(ply:Nick())
+		local col = ply:GetPlayerColor()
+		c:Add(" " .. ply:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
+		c:Add(" " .. ply:SteamID())
+		c:Add(" " .. team.GetName(ply:Team()), team.GetColor(ply:Team()))
+		c:Send(admin)
+	end
+end)

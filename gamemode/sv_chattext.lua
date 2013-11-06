@@ -17,6 +17,12 @@ function meta:SendAll()
 	return self
 end
 
+function meta:Send(ply)
+	self:NetConstructMsg()
+	net.Send(ply)
+	return self
+end
+
 function meta:NetConstructMsg()
 	net.Start("chattext_msg")
 	for k, msg in pairs(self.msgs) do
