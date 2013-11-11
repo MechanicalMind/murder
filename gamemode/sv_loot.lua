@@ -48,14 +48,27 @@ function GM:SpawnLoot()
 	end
 
 	for k, data in pairs(LootItems) do
-		local ent = ents.Create("mu_loot")
-		ent:SetModel(data.model)
-		ent:SetPos(data.pos)
-		ent:SetAngles(data.angle)
-		ent:Spawn()
-
-		ent.LootData = data
+		self:SpawnLootItem(data)
 	end
+end
+
+function GM:SpawnLootItem(data)
+	for k, ent in pairs(ents.FindByClass("mu_loot")) do
+		if ent.LootData == data then
+			ent:Remove()
+		end
+	end
+
+	local ent = ents.Create("mu_loot")
+	ent:SetModel(data.model)
+	ent:SetPos(data.pos)
+	ent:SetAngles(data.angle)
+	ent:Spawn()
+
+	ent.LootData = data
+	-- print(data.pos, data.model, ent)
+
+	return ent
 end
 
 function GM:LootThink()
@@ -65,20 +78,9 @@ function GM:LootThink()
 			self.LastSpawnLoot = CurTime() + 12
 
 			local data = table.Random(LootItems)
-			for k, ent in pairs(ents.FindByClass("mu_loot")) do
-				if ent.LootData == data then
-					ent:Remove()
-				end
+			if data then
+				self:SpawnLootItem(data)
 			end
-
-			local ent = ents.Create("mu_loot")
-			ent:SetModel(data.model)
-			ent:SetPos(data.pos)
-			ent:SetAngles(data.angle)
-			ent:Spawn()
-
-			ent.LootData = data
-			-- print(data.pos, data.model, ent)
 		end
 	end
 end
@@ -166,6 +168,15 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 
 	ply:ChatPrint("Added " .. #LootItems .. ": " .. getLootPrintString(data, ply:GetPos()) )
 
+	GAMEMODE:SaveLootData()
+
+	local ent = GAMEMODE:SpawnLootItem(data)
+	local mins, maxs = ent:OBBMins(), ent:OBBMaxs()
+	local pos = ent:GetPos()
+	pos.z = pos.z + (maxs - mins).z
+	ent:SetPos(pos)
+
+	data.pos = pos
 	GAMEMODE:SaveLootData()
 end)
 
