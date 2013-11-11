@@ -28,6 +28,8 @@ local parts = {"Alfa",
 
 local PlayerMeta = FindMetaTable("Player")
 
+GM.BystanderWords = CreateClientConVar( "mu_bystandername_words", 1, FCVAR_ARCHIVE, "Number of words to generate for bystander name" )
+
 function GM:GenerateName(words)
 	local name
 	for i = 1, words do
@@ -42,7 +44,8 @@ function GM:GenerateName(words)
 end
 
 function PlayerMeta:GenerateBystanderName()
-	local name = GAMEMODE:GenerateName(1)
+	local words = math.max(1, GAMEMODE.BystanderWords:GetInt())
+	local name = GAMEMODE:GenerateName(words)
 	self:SetNWString("bystanderName", name)
 	self.BystanderName = name
 end
