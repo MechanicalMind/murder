@@ -164,7 +164,7 @@ function GM:EndTheRound(reason, murderer)
 
 	net.Broadcast()
 
-	self:OnEndRound()
+	hook.Call("OnEndRound")
 	self:SetRound(2)
 end
 
@@ -231,7 +231,7 @@ function GM:StartNewRound()
 		magnum:Give("weapon_mu_magnum")
 	end
 
-	self:OnStartRound()
+	hook.Call("OnStartRound")
 end
 
 function GM:PlayerLeavePlay(ply)

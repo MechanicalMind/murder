@@ -97,11 +97,9 @@ function GM:PlayerSwitchFlashlight(ply, turningOn)
 end
 
 function GM:OnEndRound()
-
 end
 
 function GM:OnStartRound()
-	
 end
 
 function GM:SendMessageAll(msg) 
