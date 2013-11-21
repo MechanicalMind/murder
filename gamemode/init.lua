@@ -1,4 +1,5 @@
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("weightedrandom.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_footsteps.lua")
@@ -14,6 +15,7 @@ AddCSLuaFile("cl_endroundboard.lua")
 AddCSLuaFile("cl_qmenu.lua")
 
 include("shared.lua")
+include("weightedrandom.lua")
 include("sv_player.lua")
 include("sv_spawns.lua")
 include("sv_stealth.lua")
