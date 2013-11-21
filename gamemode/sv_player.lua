@@ -3,6 +3,7 @@ local EntityMeta = FindMetaTable("Entity")
 
 function GM:PlayerInitialSpawn( ply )
 	ply.LootCollected = 0
+	ply.MurdererChance = 1
 
 	timer.Simple(0, function ()
 		if IsValid(ply) then

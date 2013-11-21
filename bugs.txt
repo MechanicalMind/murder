@@ -1,0 +1,5 @@
+Hide TKs convar
+Show who you are spectating
+	Show admins additional info (with convar)
+Show admins on scoreboard (with convar)
+Command to make a player murderer next round

@@ -22,3 +22,4 @@ Convars
 	mu_debug <0/1> - Shows debug information
 	mu_footstep_maxlifetime <numberOfSecond> - The number of seconds footsteps should last for, caps at 30
 	mu_bystandername_words <num> - Number of words to generate for bystander name
+	mu_murder_weight_multiplier <num> - Multiplier for the weight of the murderer chance

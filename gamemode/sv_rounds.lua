@@ -199,11 +199,17 @@ function GM:StartNewRound()
 			oldMurderer = v
 		end
 	end
+	
+	// get the weight multiplier
+	local weightMul = self.MurdererWeight:GetFloat()
 
-	// don't pick same murderer as last round
-	local moMurderer = table.Copy(players)
-	table.RemoveByValue(moMurderer, oldMurderer)
-	local murderer = table.Random(moMurderer)
+	// pick a random murderer, weighted
+	local rand = WeightedRandom()
+	for k, ply in pairs(players) do
+		rand:Add(ply.MurdererChance ^ weightMul, ply)
+		ply.MurdererChance = ply.MurdererChance + 1
+	end
+	local murderer = rand:Roll()
 
 	if IsValid(murderer) then
 		murderer:SetMurderer(true)
