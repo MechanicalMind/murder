@@ -17,9 +17,13 @@ Misc
 	mu_taunt <category> - Plays a random taunt sound
 	mu_jointeam <team> - Trys to join the specified team
 	mu_print_players - Prints all the players, there bystander names and steam ids
+	mu_admin_panel - Brings up an admin panel where you can view information
 
 Convars
 	mu_debug <0/1> - Shows debug information
 	mu_footstep_maxlifetime <numberOfSecond> - The number of seconds footsteps should last for, caps at 30
 	mu_bystandername_words <num> - Number of words to generate for bystander name
 	mu_murder_weight_multiplier <num> - Multiplier for the weight of the murderer chance
+	mu_scoreboard_show_admins <0/1> - Should show admins on scoreboard
+	mu_show_bystander_tks <0/1> - Should show name of killer in chat on a bystander team kill
+	mu_allow_admin_panel <0/1> - Should allow admins to use mu_admin_panel
