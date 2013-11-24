@@ -13,6 +13,7 @@ AddCSLuaFile("cl_voicepanels.lua")
 AddCSLuaFile("cl_rounds.lua")
 AddCSLuaFile("cl_endroundboard.lua")
 AddCSLuaFile("cl_qmenu.lua")
+AddCSLuaFile("cl_adminpanel.lua")
 
 include("shared.lua")
 include("weightedrandom.lua")
@@ -28,6 +29,7 @@ include("sv_chattext.lua")
 include("sv_loot.lua")
 include("sv_taunt.lua")
 include("sv_bystandername.lua")
+include("sv_adminpanel.lua")
 
 resource.AddFile("materials/thieves/footprint.vmt")
 

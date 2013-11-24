@@ -12,6 +12,7 @@ include("cl_voicepanels.lua")
 include("cl_rounds.lua")
 include("cl_endroundboard.lua")
 include("cl_qmenu.lua")
+include("cl_adminpanel.lua")
 
 GM.Debug = CreateClientConVar( "mu_debug", 0, true, true )
 

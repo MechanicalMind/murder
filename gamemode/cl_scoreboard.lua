@@ -20,7 +20,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 	function but:Paint(w, h)
 		local showAdmins = GetConVarNumber("mu_scoreboard_show_admins") != 0
 
-		if showAdmins && ply:IsAdmin() then
+		if IsValid(ply) && showAdmins && ply:IsAdmin() then
 			surface.SetDrawColor(Color(150,50,50))
 		else
 			surface.SetDrawColor(team.GetColor(pteam))
@@ -39,14 +39,14 @@ local function addPlayerItem(self, mlist, ply, pteam)
 			if showAdmins && ply:IsAdmin() then
 				surface.SetMaterial(admin)
 				surface.SetDrawColor(color_white)
-				surface.DrawTexturedRect(4, h / 2 - 16, s + 32, 32)
+				surface.DrawTexturedRect(s + 4, h / 2 - 16, 32, 32)
 				s = s + 32
 			end
 
 			if ply:IsMuted() then
 				surface.SetMaterial(muted)
 				surface.SetDrawColor(color_white)
-				surface.DrawTexturedRect(4, h / 2 - 16, s + 32, 32)
+				surface.DrawTexturedRect(s + 4, h / 2 - 16, 32, 32)
 				s = s + 32
 			end
 
