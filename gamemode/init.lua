@@ -36,7 +36,6 @@ resource.AddFile("materials/thieves/footprint.vmt")
 util.AddNetworkString("your_are_a_murderer")
 
 GM.ShowBystanderTKs = CreateConVar("mu_show_bystander_tks", 1, bit.bor(FCVAR_NOTIFY), "Should show name of killer in chat on a bystander team kill" )
-GM.ShowAdminsOnScoreboard = CreateConVar("mu_scoreboard_show_admins", 1, bit.bor(FCVAR_NOTIFY, FCVAR_REPLICATED), "Should show admins on scoreboard" )
 
 function GM:Initialize() 
 	self:LoadSpawns()

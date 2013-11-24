@@ -1,4 +1,3 @@
-GM.AdminPanelAllowed = CreateConVar("mu_allow_admin_panel", 1, bit.bor(FCVAR_NOTIFY, FCVAR_REPLICATED), "Should allow admins to use mu_admin_panel" )
 
 util.AddNetworkString("mu_adminpanel_details")
 
