@@ -96,7 +96,7 @@ function GM:AllowPlayerPickup( ply, ent )
 end
 
 function GM:PlayerNoClip( ply )
-	return ply:IsAdmin() || ply:GetMoveType() == MOVETYPE_NOCLIP
+	return ply:IsSuperAdmin() || ply:GetMoveType() == MOVETYPE_NOCLIP
 end
 
 function GM:PlayerSwitchFlashlight(ply, turningOn)
