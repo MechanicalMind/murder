@@ -1,3 +1,2 @@
 Show who you are spectating
 	Show admins additional info (with convar)
-Command to make a player murderer next round
