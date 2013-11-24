@@ -9,6 +9,7 @@ surface.CreateFont( "ScoreboardPlayer" , {
 })
 
 local muted = Material("icon32/muted.png")
+local admin = Material("icon32/wand.png")
 
 local function addPlayerItem(self, mlist, ply, pteam)
 	local but = vgui.Create("DButton")
@@ -17,7 +18,13 @@ local function addPlayerItem(self, mlist, ply, pteam)
 	but:SetTall(40)
 	but:SetText("")
 	function but:Paint(w, h)
-		surface.SetDrawColor(team.GetColor(pteam))
+		local showAdmins = GetConVarNumber("mu_scoreboard_show_admins") != 0
+
+		if showAdmins && ply:IsAdmin() then
+			surface.SetDrawColor(Color(150,50,50))
+		else
+			surface.SetDrawColor(team.GetColor(pteam))
+		end
 		surface.DrawRect(0, 0, w, h)
 
 		surface.SetDrawColor(255,255,255,10)
@@ -29,11 +36,18 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		if IsValid(ply) && ply:IsPlayer() then
 			local s = 0
 
+			if showAdmins && ply:IsAdmin() then
+				surface.SetMaterial(admin)
+				surface.SetDrawColor(color_white)
+				surface.DrawTexturedRect(4, h / 2 - 16, s + 32, 32)
+				s = s + 32
+			end
+
 			if ply:IsMuted() then
 				surface.SetMaterial(muted)
 				surface.SetDrawColor(color_white)
-				surface.DrawTexturedRect(4, h / 2 - 16, 32, 32)
-				s = 32
+				surface.DrawTexturedRect(4, h / 2 - 16, s + 32, 32)
+				s = s + 32
 			end
 
 			draw.DrawText(ply:Ping(), "ScoreboardPlayer", w - 9, 9, color_black, 2)
@@ -55,6 +69,11 @@ end
 function GM:DoScoreboardActionPopup(ply)
 	local actions = DermaMenu()
 
+	if ply:IsAdmin() then
+		local admin = actions:AddOption("Is an Admin")
+		admin:SetIcon("icon16/shield.png")
+	end
+
 	if ply != LocalPlayer() then
 		local t = "Mute"
 		if ply:IsMuted() then
@@ -68,7 +87,7 @@ function GM:DoScoreboardActionPopup(ply)
 			end
 		end
 	end
-
+	
 	if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
 		actions:AddSpacer()
 
