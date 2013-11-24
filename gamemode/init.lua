@@ -33,6 +33,8 @@ resource.AddFile("materials/thieves/footprint.vmt")
 
 util.AddNetworkString("your_are_a_murderer")
 
+GM.ShowBystanderTKs = CreateConVar("mu_show_bystander_tks", 1, bit.bor(FCVAR_NOTIFY), "Should show name of killer in chat on a bystander team kill" )
+
 function GM:Initialize() 
 	self:LoadSpawns()
 	self.DeathRagdolls = {}

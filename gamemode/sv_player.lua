@@ -264,11 +264,13 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 			if attacker:GetMurderer() then
 				-- self:SendMessageAll("The murderer has struck again")
 			elseif attacker != ply then
-				local ct = ChatText()
-				local col = attacker:GetPlayerColor()
-				ct:Add(attacker:Nick() .. ", " .. attacker:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
-				ct:Add(" killed an innocent bystander")
-				ct:SendAll()
+				if self.ShowBystanderTKs:GetBool() then
+					local ct = ChatText()
+					local col = attacker:GetPlayerColor()
+					ct:Add(attacker:Nick() .. ", " .. attacker:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
+					ct:Add(" killed an innocent bystander")
+					ct:SendAll()
+				end
 				attacker.LastTKTime = CurTime()
 				attacker:CalculateSpeed()
 				timer.Simple(0, function () 
