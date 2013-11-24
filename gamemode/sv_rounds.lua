@@ -200,6 +200,8 @@ function GM:StartNewRound()
 		end
 	end
 	
+	local murderer
+
 	// get the weight multiplier
 	local weightMul = self.MurdererWeight:GetFloat()
 
@@ -209,7 +211,13 @@ function GM:StartNewRound()
 		rand:Add(ply.MurdererChance ^ weightMul, ply)
 		ply.MurdererChance = ply.MurdererChance + 1
 	end
-	local murderer = rand:Roll()
+	murderer = rand:Roll()
+
+	// allow admins to specify next murderer
+	if self.ForceNextMurderer && IsValid(self.ForceNextMurderer) && self.ForceNextMurderer:Team() == 2 then
+		murderer = self.ForceNextMurderer
+		self.ForceNextMurderer = nil
+	end
 
 	if IsValid(murderer) then
 		murderer:SetMurderer(true)
@@ -251,3 +259,20 @@ function GM:PlayerLeavePlay(ply)
 		end
 	end
 end
+
+concommand.Add("mu_forcenextmurderer", function (ply, com, args)
+	if !ply:IsAdmin() then return end
+	if #args < 1 then return end
+
+	local ent = Entity(tonumber(args[1]) or -1)
+	if !IsValid(ent) || !ent:IsPlayer() then 
+		ply:ChatPrint("not a player")
+		return 
+	end
+
+	GAMEMODE.ForceNextMurderer = ent
+	local ct = ChatText()
+	ct:Add(ent:Nick(), team.GetColor(2))
+	ct:Add(" will be Murderer next round")
+	ct:Send(ply)
+end)

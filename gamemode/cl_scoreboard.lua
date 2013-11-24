@@ -97,6 +97,12 @@ function GM:DoScoreboardActionPopup(ply)
 			function spectate:DoClick()
 				RunConsoleCommand("mu_movetospectate", ply:EntIndex())
 			end
+
+			local force = actions:AddOption( "Force murderer next round" )
+			force:SetIcon( "icon16/delete.png" )
+			function force:DoClick()
+				RunConsoleCommand("mu_forcenextmurderer", ply:EntIndex())
+			end
 		end
 	end
 
