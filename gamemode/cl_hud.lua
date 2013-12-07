@@ -158,6 +158,14 @@ function GM:DrawGameHUD()
 	local health = client:Health()
 	if !IsValid(client) then return end
 
+	if client:GetNWBool("MurdererFog") && self:GetAmMurderer() then
+		surface.SetDrawColor(10,10,10,50)
+		surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+	
+		drawTextShadow("Your evil presence is showing", "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
+		drawTextShadow("Kill someone to hide", "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
+	end
+
 	-- surface.SetFont("MersRadial")
 	-- local w,h = surface.GetTextSize("Health")
 

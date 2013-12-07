@@ -47,6 +47,21 @@ function GM:RoundThink()
 				end
 			end
 		end
+		// after 2 minutes without a kill reveal the murderer
+		if self.MurdererLastKill && self.MurdererLastKill + (60 * 2) < CurTime() then
+			local murderer
+			local players = team.GetPlayers(2)
+			for k,v in pairs(players) do
+				if v:GetMurderer() then
+					murderer = v
+				end
+			end
+			if murderer && !murderer:GetMurdererRevealed() then
+				murderer:SetMurdererRevealed(true)
+				self.MurdererLastKill = nil
+			end
+		end
+
 	elseif self.RoundStage == 2 then
 		if self.RoundTime + 5 < CurTime() then
 			self:StartNewRound()
@@ -123,6 +138,7 @@ function GM:EndTheRound(reason, murderer)
 			ply.Frozen = false
 		end
 		ply.LastTKTime = nil
+		ply:SetMurdererRevealed(false)
 	end
 	self.RoundUnFreezePlayers = nil
 
@@ -163,6 +179,8 @@ function GM:EndTheRound(reason, murderer)
 	net.WriteUInt(0, 8)
 
 	net.Broadcast()
+
+	self.MurdererLastKill = nil
 
 	hook.Call("OnEndRound")
 	self:SetRound(2)
@@ -244,6 +262,8 @@ function GM:StartNewRound()
 	if IsValid(magnum) then
 		magnum:Give("weapon_mu_magnum")
 	end
+
+	self.MurdererLastKill = CurTime()
 
 	hook.Call("OnStartRound")
 end

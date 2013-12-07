@@ -22,7 +22,41 @@ end
 
 
 function GM:Think()
+	for k,ply in pairs(player.GetAll()) do
+		if ply:Alive() && ply:GetNWBool("MurdererFog") then
+			ply.FogEmitter = ParticleEmitter(ply:GetPos())
+			if !ply.FogNextPart then ply.FogNextPart = CurTime() end
 
+			local pos = ply:GetPos() + Vector(0,0,30)
+			local client = LocalPlayer()
+
+			if ply.FogNextPart < CurTime() then
+
+				if client:GetPos():Distance(pos) > 1000 then return end
+
+				ply.FogEmitter:SetPos(pos)
+				ply.FogNextPart = CurTime() + math.Rand(0.01, 0.03)
+				local vec = Vector(math.Rand(-8, 8), math.Rand(-8, 8), math.Rand(10, 55))
+				local pos = ply:LocalToWorld(vec)
+				local particle = ply.FogEmitter:Add( "particle/snow.vmt", pos)
+				particle:SetVelocity(  Vector(0,0, 4) + VectorRand() * 3 )
+				particle:SetDieTime( 5 )
+				particle:SetStartAlpha( 180 )
+				particle:SetEndAlpha( 0 )
+				particle:SetStartSize( 6 )
+				particle:SetEndSize( 7 )   
+				particle:SetRoll( 0 )
+				particle:SetRollDelta( 0 )
+				particle:SetColor( 0, 0, 0 )
+				//particle:SetGravity( Vector( 0, 0, 10 ) )
+			end
+		else
+			if ply.FogEmitter then
+				ply.FogEmitter:Finish()
+				ply.FogEmitter = nil
+			end
+		end
+	end
 end
 
 

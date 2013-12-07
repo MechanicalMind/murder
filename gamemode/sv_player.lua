@@ -32,6 +32,7 @@ function GM:PlayerSpawn( ply )
 	-- Stop observer mode
 	ply.Spectating = nil
 	ply:UnSpectate()
+	ply:SetMurdererRevealed(false)
 
 	player_manager.OnPlayerSpawn( ply )
 	player_manager.RunClass( ply, "Spawn" )
@@ -260,6 +261,19 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 	self:DoRoundDeaths(ply, attacker)
 
 	if !ply:GetMurderer() then
+
+		self.MurdererLastKill = CurTime()
+		local murderer
+		local players = team.GetPlayers(2)
+		for k,v in pairs(players) do
+			if v:GetMurderer() then
+				murderer = v
+			end
+		end
+		if murderer then
+			murderer:SetMurdererRevealed(false)
+		end
+
 		if IsValid(attacker) && attacker:IsPlayer() then
 			if attacker:GetMurderer() then
 				-- self:SendMessageAll("The murderer has struck again")

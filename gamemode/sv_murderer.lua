@@ -16,6 +16,22 @@ function PlayerMeta:GetMurderer(bool)
 	return self.Murderer
 end
 
+function PlayerMeta:SetMurdererRevealed(bool)
+	self:SetNWBool("MurdererFog", bool)
+	if bool then
+		if !self.MurdererRevealed then
+		end
+	else
+		if self.MurdererRevealed then
+		end
+	end
+	self.MurdererRevealed = bool
+end
+
+function PlayerMeta:GetMurdererRevealed()
+	return self.MurdererRevealed
+end
+
 local NO_KNIFE_TIME = 30
 function GM:MurdererThink()
 	local players = team.GetPlayers(2)
