@@ -47,8 +47,11 @@ function GM:RoundThink()
 				end
 			end
 		end
-		// after 2 minutes without a kill reveal the murderer
-		if self.MurdererLastKill && self.MurdererLastKill + (60 * 2) < CurTime() then
+		// after x minutes without a kill reveal the murderer
+		local time = self.MurdererFogTime:GetFloat()
+		time = math.max(0, time)
+
+		if time > 0 && self.MurdererLastKill && self.MurdererLastKill + time < CurTime() then
 			local murderer
 			local players = team.GetPlayers(2)
 			for k,v in pairs(players) do
