@@ -13,13 +13,14 @@ AddCSLuaFile("cl_voicepanels.lua")
 AddCSLuaFile("cl_rounds.lua")
 AddCSLuaFile("cl_endroundboard.lua")
 AddCSLuaFile("cl_qmenu.lua")
+AddCSLuaFile("cl_spectate.lua")
 AddCSLuaFile("cl_adminpanel.lua")
 
 include("shared.lua")
 include("weightedrandom.lua")
 include("sv_player.lua")
+include("sv_spectate.lua")
 include("sv_spawns.lua")
-include("sv_stealth.lua")
 include("sv_ragdoll.lua")
 include("sv_respawn.lua")
 include("sv_murderer.lua")
@@ -74,9 +75,9 @@ function GM:Think()
 	self:LootThink()
 
 	for k, ply in pairs(player.GetAll()) do
-		if IsValid(ply.Spectating) && (!ply.LastSpectatePosSet || ply.LastSpectatePosSet < CurTime()) then
+		if ply:IsCSpectating() && IsValid(ply:GetCSpectatee()) && (!ply.LastSpectatePosSet || ply.LastSpectatePosSet < CurTime()) then
 			ply.LastSpectatePosSet = CurTime() + 0.25
-			ply:SetPos(ply.Spectating:GetPos())
+			ply:SetPos(ply:GetCSpectatee():GetPos())
 		end
 		if !ply.HasMoved then
 			if ply:IsBot() || ply:KeyDown(IN_FORWARD) || ply:KeyDown(IN_JUMP) || ply:KeyDown(IN_ATTACK) || ply:KeyDown(IN_ATTACK2)

@@ -1,5 +1,0 @@
-
-
-function GM:StealthThink()
-
-end

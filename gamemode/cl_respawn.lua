@@ -39,6 +39,7 @@ function GM:RenderRespawnText()
 	local t = math.max(math.ceil(GAMEMODE.SpectateTime - CurTime()), 0)
 	
 	if t <= 0 then
+		self:RenderSpectate()
 	else
 		draw.DrawText(tostring(t), "MersDeathBig",sw / 2,sh  * 0.25,color_white,1)
 	end

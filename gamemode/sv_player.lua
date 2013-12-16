@@ -30,8 +30,7 @@ function GM:PlayerSpawn( ply )
 	end
 
 	-- Stop observer mode
-	ply.Spectating = nil
-	ply:UnSpectate()
+	ply:UnCSpectate()
 	ply:SetMurdererRevealed(false)
 
 	player_manager.OnPlayerSpawn( ply )
@@ -143,13 +142,12 @@ function GM:DoPlayerDeath( ply, attacker, dmginfo )
 		end
 	end
 
+	ply:Freeze(false) // why?, *sigh*
 	ply:CreateRagdoll()
 
 	local ent = ply:GetNWEntity("DeathRagdoll")
 	if IsValid(ent) then
-		ply:SpectateEntity( ent )
-		ply:Spectate( OBS_MODE_CHASE )
-		ply.Spectating = ent
+		ply:CSpectate(OBS_MODE_CHASE, ent)
 	end
 
 	ply:AddDeaths( 1 )
@@ -332,40 +330,11 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 	self:RagdollSetDeathDetails(ply, Inflictor, attacker)
 end
 
-function GM:PlayerDeathThink( ply )
+function GM:PlayerDeathThink(ply)
 	if self:CanRespawn(ply) then
 		ply:Spawn()
-
 	else
-
-		if ((!ply.SpectateTime || ply.SpectateTime < CurTime()) && ply:KeyPressed(IN_ATTACK))
-		 || !IsValid(ply.Spectating) || (ply.Spectating:IsPlayer() && !ply.Spectating:Alive()) then
-
-			// recalculate spectating
-			local players = team.GetPlayers(2)
-			for k,v in pairs(players) do
-				if !(v:Alive()) then
-					players[k] = nil
-				end
-			end
-
-			local ent = table.Random(players)
-			if IsValid(ent) then
-				ply:SpectateEntity( ent )
-				ply:Spectate( OBS_MODE_IN_EYE )
-				ply.Spectating = ent
-			elseif IsValid(ply.Spectating) then
-				if ply.Spectating != ply:GetRagdollEntity() then
-					ply:SpectateEntity( ply:GetRagdollEntity() )
-					ply:Spectate( OBS_MODE_CHASE )
-					ply.Spectating = ply:GetRagdollEntity()
-				end
-			elseif ply.Spectating then
-				ply.Spectating = nil
-				ply:Spectate( OBS_MODE_ROAMING )
-			end
-		end
-
+		self:ChooseSpectatee(ply)
 	end
 	
 end
@@ -480,6 +449,16 @@ concommand.Add("mu_movetospectate", function (ply, com, args)
 		ct:Add(team.GetName(1), team.GetColor(1))
 		ct:SendAll()
 	end
+end)
+
+concommand.Add("mu_spectate", function (ply, com, args)
+	if !ply:IsAdmin() then return end
+	if #args < 1 then return end
+
+	local ent = Entity(tonumber(args[1]) or -1)
+	if !IsValid(ent) || !ent:IsPlayer() then return end
+	
+	ply:CSpectate(OBS_MODE_IN_EYE, ent)
 end)
 
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )

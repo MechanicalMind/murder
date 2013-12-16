@@ -73,11 +73,11 @@ function GM:HUDPaint()
 				if self.RoundStart && self.RoundStart + 10 > CurTime() then
 					self:DrawStartRoundInformation()
 				else
-					self:DrawGameHUD()
+					self:DrawGameHUD(LocalPlayer())
 				end
 			elseif round == 2 then
 				// display who won
-				self:DrawGameHUD()
+				self:DrawGameHUD(LocalPlayer())
 			else // round = 0
 
 			end
@@ -90,7 +90,7 @@ function GM:HUDPaint()
 			-- draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
 		end
 	else
-		draw.DrawText("Spectating", "MersRadialSmall", ScrW() / 2, ScrH() - 100, color_white, 1)
+		self:RenderSpectate()
 	end
 
 	if self.Debug:GetBool() then
@@ -153,12 +153,12 @@ end
 
 local tex = surface.GetTextureID("SGM/playercircle")
 
-function GM:DrawGameHUD()
-	local client = LocalPlayer()
-	local health = client:Health()
-	if !IsValid(client) then return end
+function GM:DrawGameHUD(ply)
+	if !IsValid(ply) then return end
+	local health = ply:Health()
+	if !IsValid(ply) then return end
 
-	if client:GetNWBool("MurdererFog") && self:GetAmMurderer() then
+	if LocalPlayer() == ply && ply:GetNWBool("MurdererFog") && self:GetAmMurderer() then
 		surface.SetDrawColor(10,10,10,50)
 		surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
 	
@@ -175,7 +175,7 @@ function GM:DrawGameHUD()
 	local name = "Bystander"
 	local color = Color(20,120,255)
 
-	if self:GetAmMurderer() then
+	if LocalPlayer() == ply && self:GetAmMurderer() then
 		name = "Murderer"
 		color = Color(190, 20, 20)
 	end
@@ -183,7 +183,7 @@ function GM:DrawGameHUD()
 	drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
 
 	// draw names
-	local tr = client:GetEyeTraceNoCursor()
+	local tr = ply:GetEyeTraceNoCursor()
 	if IsValid(tr.Entity) && tr.Entity:IsPlayer() && tr.HitPos:Distance(tr.StartPos) < 500 then
 		self.LastLooked = tr.Entity
 		self.LookedFade = CurTime()
@@ -206,15 +206,17 @@ function GM:DrawGameHUD()
 
 	// draw health circle
 	surface.SetTexture(tex)
-	local col = client:GetPlayerColor()
+	local col = ply:GetPlayerColor()
 	col = Color(col.x * 255, col.y * 255, col.z * 255)
 	surface.SetDrawColor(col)
 	local hsize = math.Clamp(health, 0, 100) / 100 * size
 	surface.DrawTexturedRect( size * 0.1 + (size - hsize) / 2, ScrH() - size * 1.1 + (size - hsize) / 2, hsize, hsize)
 
-	drawTextShadow(self.LootCollected or "error", "MersRadialBig", size * 0.6, ScrH() - size * 0.6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	if LocalPlayer() == ply then
+		drawTextShadow(self.LootCollected or "error", "MersRadialBig", size * 0.6, ScrH() - size * 0.6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
 
-	drawTextShadow(client:GetBystanderName(), "MersRadialSmall", size * 0.6, ScrH() - size * 1.1, col, 1, TEXT_ALIGN_TOP)
+	drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", size * 0.6, ScrH() - size * 1.1, col, 1, TEXT_ALIGN_TOP)
 end
 
 function GM:GUIMousePressed(code, vector)

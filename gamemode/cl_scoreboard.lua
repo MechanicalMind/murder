@@ -93,7 +93,7 @@ function GM:DoScoreboardActionPopup(ply)
 
 		if ply:Team() == 2 then
 			local spectate = actions:AddOption( "Move to " .. team.GetName(1) )
-			spectate:SetIcon( "icon16/lorry.png" )
+			spectate:SetIcon( "icon16/status_busy.png" )
 			function spectate:DoClick()
 				RunConsoleCommand("mu_movetospectate", ply:EntIndex())
 			end
@@ -102,6 +102,14 @@ function GM:DoScoreboardActionPopup(ply)
 			force:SetIcon( "icon16/delete.png" )
 			function force:DoClick()
 				RunConsoleCommand("mu_forcenextmurderer", ply:EntIndex())
+			end
+
+			if ply:Alive() then
+				local specateThem = actions:AddOption( "Spectate" )
+				specateThem:SetIcon( "icon16/status_online.png" )
+				function specateThem:DoClick()
+					RunConsoleCommand("mu_spectate", ply:EntIndex())
+				end
 			end
 		end
 	end
