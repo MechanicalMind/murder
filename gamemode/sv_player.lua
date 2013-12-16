@@ -458,6 +458,12 @@ concommand.Add("mu_spectate", function (ply, com, args)
 	local ent = Entity(tonumber(args[1]) or -1)
 	if !IsValid(ent) || !ent:IsPlayer() then return end
 	
+	if ply:Alive() && ply:Team() != 1 then
+		local ct = ChatText()
+		ct:Add("You can't spectate. You ain't dead.")
+		ct:SendAll()
+		return
+	end
 	ply:CSpectate(OBS_MODE_IN_EYE, ent)
 end)
 
