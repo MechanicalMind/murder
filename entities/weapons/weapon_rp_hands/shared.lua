@@ -19,14 +19,7 @@ else
 		-- draw.DrawText("Hands","Default",x + w * 0.44,y + h * 0.20,Color(0,50,200,alpha),1)
 	end
 
-	local tex = surface.GetTextureID("awolroleplay/handcuffs")
 	function SWEP:DrawHUD()
-		local sw,sh = ScrW(),ScrH()
-		if self.Owner:GetNWBool("Handcuffed") then
-			surface.SetTexture(tex)
-			surface.SetDrawColor(0,0,0,255)
-			surface.DrawTexturedRect(sw/ 2 - 128,sh / 2 + 50,256,128)
-		end
 	end
 
 end
@@ -76,15 +69,6 @@ function SWEP:Deploy()
 end
 
 function SWEP:Holster()
-	if self.Owner.Handcuffed || (CLIENT && self.Owner:GetNWBool("Handcuffed")) then
-		return false
-	end
-	-- if self.Owner.Lockpicking || (CLIENT && GAMEMODE.Lockpicking) then
-	-- 	return false
-	-- end
-	-- if (SERVER && self.Owner:GetTasered()) || (CLIENT && self:GetNWBool("Tasered")) then
-	-- 	return false
-	-- end
 	return true
 end
 
@@ -93,26 +77,10 @@ function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:SecondaryAttack()
-	if SERVER then
-		if IsValid(self.Owner) && self.Owner:IsPlayer() then
-			if self.AntiInteractSpam && self.AntiInteractSpam > CurTime() then return end
-			self.AntiInteractSpam = CurTime() + 0.1
-			local tr = self.Owner:GetEyeTraceNoCursor()
-			if tr.Hit && tr.HitPos:Distance(tr.StartPos) < 300 then
-				
-			end
-		end
-	end
 end
 
 function SWEP:Think()
 	local nht = self.HoldType
-	if self.Owner.Handcuffed || (CLIENT && self.Owner:GetNWBool("Handcuffed")) then
-		nht = "shotgun"
-	end
-	-- if self.Owner.Lockpicking || (CLIENT && GAMEMODE.Lockpicking) then
-	-- 	nht = "pistol"
-	-- end
 	if self.CurHoldType != nht then
 		self.CurHoldType = nht
 		self:SetWeaponHoldType(nht)
