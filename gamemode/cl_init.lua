@@ -16,6 +16,9 @@ include("cl_spectate.lua")
 include("cl_adminpanel.lua")
 
 GM.Debug = CreateClientConVar( "mu_debug", 0, true, true )
+GM.HaloRender = CreateClientConVar( "mu_halo_render", 1, true, true ) // should we render halos
+GM.HaloRenderLoot = CreateClientConVar( "mu_halo_loot", 1, true, true ) // shouuld we render loot halos
+GM.HaloRenderKnife = CreateClientConVar( "mu_halo_knife", 1, true, true ) // shouuld we render murderer's knife halos
 
 function GM:Initialize() 
 	self:FootStepsInit()
@@ -87,17 +90,19 @@ end
 function GM:PreDrawHalos()
 	local client = LocalPlayer()
 
-	if IsValid(client) && client:Alive() then
-		local tab = {}
-		for k,v in pairs(ents.FindByClass( "weapon_mu_magnum" )) do
-			if !IsValid(v.Owner) then
-				table.insert(tab, v)
+	if IsValid(client) && client:Alive() && self.HaloRender:GetBool() then
+		if self.HaloRenderLoot:GetBool() then
+			local tab = {}
+			for k,v in pairs(ents.FindByClass( "weapon_mu_magnum" )) do
+				if !IsValid(v.Owner) then
+					table.insert(tab, v)
+				end
 			end
+			table.Add(tab, ents.FindByClass( "mu_loot" ))
+			halo.Add(tab, Color(0, 220, 0), 4, 4, 2, true, false)
 		end
-		table.Add(tab, ents.FindByClass( "mu_loot" ))
-		halo.Add(tab, Color(0, 220, 0), 4, 4, 2, true, false)
 
-		if self:GetAmMurderer() then
+		if self:GetAmMurderer() && self.HaloRenderKnife:GetBool() then
 			local tab = {}
 			for k,v in pairs(ents.FindByClass( "weapon_mu_knife" )) do
 				if !IsValid(v.Owner) then
