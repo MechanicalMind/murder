@@ -88,24 +88,24 @@ function GM:PreDrawHalos()
 	local client = LocalPlayer()
 
 	if IsValid(client) && client:Alive() then
-		local entL = ents.FindByClass( "weapon_mu_magnum" )
-		for k,v in pairs(entL) do
-			if IsValid(v.Owner) then
-				entL[k] = nil
+		local tab = {}
+		for k,v in pairs(ents.FindByClass( "weapon_mu_magnum" )) do
+			if !IsValid(v.Owner) then
+				table.insert(tab, v)
 			end
 		end
-		halo.Add(entL, Color(0, 0, 255), 5, 5, 5, true, false)
-		halo.Add(ents.FindByClass( "mu_loot" ), Color(0, 220, 0), 4, 4, 2, true, false)
+		table.Add(tab, ents.FindByClass( "mu_loot" ))
+		halo.Add(tab, Color(0, 220, 0), 4, 4, 2, true, false)
 
 		if self:GetAmMurderer() then
-			local knives = ents.FindByClass( "weapon_mu_knife" )
-			for k,v in pairs(knives) do
-				if IsValid(v.Owner) then
-					knives[k] = nil
+			local tab = {}
+			for k,v in pairs(ents.FindByClass( "weapon_mu_knife" )) do
+				if !IsValid(v.Owner) then
+					table.insert(tab, v)
 				end
 			end
-			halo.Add(knives, Color(220, 0, 0), 5, 5, 5, true, false)
-			halo.Add(ents.FindByClass( "mu_knife" ), Color(220, 0, 0), 5, 5, 5, true, false)
+			table.Add(tab, ents.FindByClass( "mu_knife" ))
+			halo.Add(tab, Color(220, 0, 0), 5, 5, 5, true, false)
 		end
 	end
 end
