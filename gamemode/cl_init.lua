@@ -24,11 +24,15 @@ function GM:Initialize()
 	self:FootStepsInit()
 end
 
-
+GM.FogEmitters = {}
+if GAMEMODE then GM.FogEmitters = GAMEMODE.FogEmitters end
 function GM:Think()
-	for k,ply in pairs(player.GetAll()) do
+	for k, ply in pairs(player.GetAll()) do
 		if ply:Alive() && ply:GetNWBool("MurdererFog") then
-			ply.FogEmitter = ParticleEmitter(ply:GetPos())
+			if !ply.FogEmitter then
+				ply.FogEmitter = ParticleEmitter(ply:GetPos())
+				self.FogEmitters[ply] = ply.FogEmitter
+			end
 			if !ply.FogNextPart then ply.FogNextPart = CurTime() end
 
 			local pos = ply:GetPos() + Vector(0,0,30)
@@ -58,7 +62,16 @@ function GM:Think()
 			if ply.FogEmitter then
 				ply.FogEmitter:Finish()
 				ply.FogEmitter = nil
+				self.FogEmitters[ply] = nil
 			end
+		end
+	end
+
+	// clean up old fog emitters
+	for ply, emitter in pairs(self.FogEmitters) do
+		if !IsValid(ply) || !ply:IsPlayer() then
+			emitter:Finish()
+			self.FogEmitters[ply] = nil
 		end
 	end
 end
