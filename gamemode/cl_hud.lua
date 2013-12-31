@@ -216,7 +216,10 @@ function GM:DrawGameHUD(ply)
 		drawTextShadow(self.LootCollected or "error", "MersRadialBig", size * 0.6, ScrH() - size * 0.6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 
-	drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", size * 0.6, ScrH() - size * 1.1, col, 1, TEXT_ALIGN_TOP)
+	surface.SetFont("MersRadialSmall")
+	local w,h = surface.GetTextSize(ply:GetBystanderName())
+	local x = math.max(size * 0.6 + w / -2, size * 0.1)
+	drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_TOP)
 end
 
 function GM:GUIMousePressed(code, vector)
