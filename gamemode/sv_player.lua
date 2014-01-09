@@ -367,6 +367,10 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 
 		// penalty for killing a bystander
 		if ply.LastTKTime && ply.LastTKTime + 20 > CurTime() then
+			if ply.TempGiveMagnum then
+				ply.TempGiveMagnum = nil
+				return true
+			end
 			return false
 		end
 	end
