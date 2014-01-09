@@ -366,7 +366,7 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 		end
 
 		// penalty for killing a bystander
-		if ent.LastTK == ply && ent.LastTKTime + 20 > CurTime() then
+		if ply.LastTKTime && ply.LastTKTime + 20 > CurTime() then
 			return false
 		end
 	end
