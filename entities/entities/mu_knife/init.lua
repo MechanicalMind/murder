@@ -29,7 +29,6 @@ end
 
 function ENT:Use(ply)
 	self.RemoveNext = true
-	print(ply)
 end
 
 function ENT:Think()
