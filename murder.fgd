@@ -1,0 +1,9 @@
+//-------------------------------------------------------------------------
+//
+// MURDER by Mechanical Mind
+//
+//-------------------------------------------------------------------------
+
+@PointClass base(Targetname, Origin, Angles, Shadow, Studiomodel) = mu_loot : "Murder Loot Spawn Position"
+[
+]
