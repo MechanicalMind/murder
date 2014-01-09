@@ -366,7 +366,7 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 		end
 
 		// penalty for killing a bystander
-		if ply.LastTKTime && ply.LastTKTime + 20 > CurTime() then
+		if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() > CurTime() then
 			if ply.TempGiveMagnum then
 				ply.TempGiveMagnum = nil
 				return true
@@ -507,4 +507,8 @@ function GM:KeyPress( ply, key )
 	 		tr.Entity:TakeDamageInfo(dmg)
 		end
 	end
+end
+
+function GM:GetTKPenaltyTime()
+	return math.max(0, self.TKPenaltyTime:GetFloat())
 end

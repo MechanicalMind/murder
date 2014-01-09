@@ -38,6 +38,7 @@ util.AddNetworkString("your_are_a_murderer")
 
 GM.ShowBystanderTKs = CreateConVar("mu_show_bystander_tks", 1, bit.bor(FCVAR_NOTIFY), "Should show name of killer in chat on a bystander team kill" )
 GM.MurdererFogTime = CreateConVar("mu_murderer_fogtime", 60 * 4, bit.bor(FCVAR_NOTIFY), "Time (in seconds) it takes for a Murderer to show fog for no kills, 0 to disable" )
+GM.TKPenaltyTime = CreateConVar("mu_tk_penalty_time", 20, bit.bor(FCVAR_NOTIFY), "Time (in seconds) for a bystander to be penalised for a team kill" )
 
 function GM:Initialize() 
 	self:LoadSpawns()
@@ -89,7 +90,7 @@ function GM:Think()
 				ply.HasMoved = true
 			end
 		end
-		if ply.LastTKTime && ply.LastTKTime + 20 < CurTime() then
+		if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() < CurTime() then
 			ply.LastTKTime = nil
 			ply:CalculateSpeed()
 		end

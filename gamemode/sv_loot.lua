@@ -119,7 +119,7 @@ function GM:PlayerPickupLoot(ply, ent)
 			if ply:HasWeapon("weapon_mu_magnum") then
 				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
 			end
-			if ply.LastTKTime && ply.LastTKTime + 20 > CurTime() then
+			if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() > CurTime() then
 				ply.TempGiveMagnum = true
 				ply:Give("weapon_mu_magnum")
 				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
