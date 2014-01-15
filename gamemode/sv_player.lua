@@ -386,6 +386,7 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 end
 
 function GM:PlayerCanHearPlayersVoice( listener, talker ) 
+	if !IsValid(talker) then return true end
 	return self:PlayerCanHearChatVoice(listener, talker) 
 end
 
@@ -472,6 +473,7 @@ concommand.Add("mu_spectate", function (ply, com, args)
 end)
 
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
+	if !IsValid(speaker) then return true end
 	return self:PlayerCanHearChatVoice(listener, speaker) 
 end
 
