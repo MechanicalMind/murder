@@ -155,7 +155,9 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 	local mdl = args[1]
 
 	local name = args[1]:lower()
-	if !name:find("%.mdl$") then
+	if name == "rand" || name == "random" then
+		mdl = LootModels[math.random(#LootModels)]
+	elseif !name:find("%.mdl$") then
 		if !LootModels[name] then
 			ply:ChatPrint("Invalid model alias " .. name)
 			return
