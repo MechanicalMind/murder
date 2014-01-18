@@ -179,7 +179,7 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 	local ent = GAMEMODE:SpawnLootItem(data)
 	local mins, maxs = ent:OBBMins(), ent:OBBMaxs()
 	local pos = ent:GetPos()
-	pos.z = pos.z + (maxs - mins).z
+	pos.z = pos.z + mins.z
 	ent:SetPos(pos)
 
 	data.pos = pos
