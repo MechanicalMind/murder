@@ -63,7 +63,11 @@ function GM:InitPostEntityAndMapCleanup()
 			ent:Fire("unlock","",0)
 		end
 
-		if ent:IsWeapon() || ent:GetClass():find("weapon_") then
+		if ent:IsWeapon() || ent:GetClass():match("^weapon_") then
+			ent:Remove()
+		end
+
+		if ent:GetClass():match("^item_") then
 			ent:Remove()
 		end
 	end
