@@ -276,7 +276,9 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		if IsValid(attacker) && attacker:IsPlayer() then
 			if attacker:GetMurderer() then
 				-- self:SendMessageAll("The murderer has struck again")
-				attacker:UnMurdererDisguise()
+				if self.RemoveDisguiseOnKill:GetBool() then
+					attacker:UnMurdererDisguise()
+				end
 			elseif attacker != ply then
 				if self.ShowBystanderTKs:GetBool() then
 					local ct = ChatText()
