@@ -387,7 +387,7 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 end
 
 function GM:PlayerCanHearPlayersVoice( listener, talker ) 
-	if !IsValid(talker) then return true end
+	if !IsValid(talker) then return false end
 	return self:PlayerCanHearChatVoice(listener, talker) 
 end
 
@@ -395,16 +395,30 @@ function GM:PlayerCanHearChatVoice(listener, talker)
 	if self.RoundStage != 1 then
 		return true
 	end
-	if !listener:Alive() || listener:Team() != 2 then
+	if self.LocalChat:GetBool() then
+		local ply = listener
+
+		// listen as if spectatee when spectating
+		if listener:IsCSpectating() && IsValid(listener:GetCSpectatee()) then
+			ply = listener:GetCSpectatee()
+		end
+		local dis = ply:GetPos():Distance(talker:GetPos())
+		if dis < 300 then
+			return true
+		end
+		return false
+	else
+		if !listener:Alive() || listener:Team() != 2 then
+			return true
+		end
+		if talker:Team() != 2 then
+			return false
+		end
+		if !talker:Alive() then
+			return false
+		end
 		return true
 	end
-	if talker:Team() != 2 then
-		return false
-	end
-	if !talker:Alive() then
-		return false
-	end
-	return true
 end
 
 function GM:PlayerDisconnected(ply)
@@ -474,8 +488,9 @@ concommand.Add("mu_spectate", function (ply, com, args)
 end)
 
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
-	if !IsValid(speaker) then return true end
-	return self:PlayerCanHearChatVoice(listener, speaker) 
+	if !IsValid(speaker) then return false end
+	local canhear = self:PlayerCanHearChatVoice(listener, speaker) 
+	return canhear
 end
 
 function GM:PlayerSay( ply, text, team)
