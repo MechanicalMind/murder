@@ -388,10 +388,10 @@ end
 
 function GM:PlayerCanHearPlayersVoice( listener, talker ) 
 	if !IsValid(talker) then return false end
-	return self:PlayerCanHearChatVoice(listener, talker) 
+	return self:PlayerCanHearChatVoice(listener, talker, "voice") 
 end
 
-function GM:PlayerCanHearChatVoice(listener, talker) 
+function GM:PlayerCanHearChatVoice(listener, talker, typ) 
 	if self.RoundStage != 1 then
 		return true
 	end
@@ -403,7 +403,7 @@ function GM:PlayerCanHearChatVoice(listener, talker)
 			ply = listener:GetCSpectatee()
 		end
 		local dis = ply:GetPos():Distance(talker:GetPos())
-		if dis < 300 then
+		if dis < self.LocalChatRange:GetFloat() then
 			return true
 		end
 		return false
