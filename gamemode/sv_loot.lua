@@ -115,22 +115,31 @@ function GM:AddLootItem(ent)
 	table.insert(LootItems, data)
 end
 
+local function giveMagnum(ply)
+	// if they already have the gun, drop the first and give them a new one
+	if ply:HasWeapon("weapon_mu_magnum") then
+		ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
+	end
+	if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() > CurTime() then
+		// if they are penalised, drop the gun on the floor
+		ply.TempGiveMagnum = true // temporarily allow them to pickup the gun
+		ply:Give("weapon_mu_magnum")
+		ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
+	else
+		ply:Give("weapon_mu_magnum")
+		ply:SelectWeapon("weapon_mu_magnum")
+	end
+end
+
 function GM:PlayerPickupLoot(ply, ent)
 	ply.LootCollected = ply.LootCollected + 1
 
 	if !ply:GetMurderer() then
 		if ply.LootCollected == 5 then
-			if ply:HasWeapon("weapon_mu_magnum") then
-				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
-			end
-			if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() > CurTime() then
-				ply.TempGiveMagnum = true
-				ply:Give("weapon_mu_magnum")
-				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
-			else
-				ply:Give("weapon_mu_magnum")
-				ply:SelectWeapon("weapon_mu_magnum")
-			end
+			giveMagnum(ply)
+		end
+		if ply.LootCollected % 15 == 0 then
+			giveMagnum(ply)
 		end
 	end
 
