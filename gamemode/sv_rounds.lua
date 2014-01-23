@@ -179,6 +179,8 @@ function GM:EndTheRound(reason, murderer)
 		net.WriteUInt(1, 8)
 		net.WriteEntity(ply)
 		net.WriteUInt(ply.LootCollected, 32)
+		net.WriteVector(ply:GetPlayerColor())
+		net.WriteString(ply:GetBystanderName())
 	end
 	net.WriteUInt(0, 8)
 
