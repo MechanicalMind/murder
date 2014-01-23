@@ -1,2 +1,3 @@
-Show who you are spectating
-	Show admins additional info (with convar)
+Local chat
+Disguising
+More gun penalty

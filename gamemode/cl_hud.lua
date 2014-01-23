@@ -184,13 +184,13 @@ function GM:DrawGameHUD(ply)
 
 	// draw names
 	local tr = ply:GetEyeTraceNoCursor()
-	if IsValid(tr.Entity) && tr.Entity:IsPlayer() && tr.HitPos:Distance(tr.StartPos) < 500 then
+	if IsValid(tr.Entity) && (tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll") && tr.HitPos:Distance(tr.StartPos) < 500 then
 		self.LastLooked = tr.Entity
 		self.LookedFade = CurTime()
 	end
 	if IsValid(self.LastLooked) && self.LookedFade + 2 > CurTime() then
-		local name = self.LastLooked:GetBystanderName()
-		local col = self.LastLooked:GetPlayerColor()
+		local name = self.LastLooked:GetBystanderName() or "error"
+		local col = self.LastLooked:GetPlayerColor() or Vector()
 		col = Color(col.x * 255, col.y * 255, col.z * 255)
 		col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
 		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)

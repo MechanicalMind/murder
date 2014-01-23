@@ -148,6 +148,7 @@ function GM:DoPlayerDeath( ply, attacker, dmginfo )
 	local ent = ply:GetNWEntity("DeathRagdoll")
 	if IsValid(ent) then
 		ply:CSpectate(OBS_MODE_CHASE, ent)
+		ent:SetBystanderName(ply:GetBystanderName())
 	end
 
 	ply:AddDeaths( 1 )

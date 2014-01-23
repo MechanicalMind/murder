@@ -10,7 +10,7 @@ function EntityMeta:GetPlayerColor()
 	return self:GetNWVector("playerColor") or Vector()
 end
 
-function PlayerMeta:GetBystanderName()
+function EntityMeta:GetBystanderName()
 	local name = self:GetNWString("bystanderName")
 	if !name || name == "" then
 		return "Bystander" 
