@@ -107,21 +107,24 @@ function GM:DrawRadialMenu()
 		end
 
 		surface.SetTexture(tex)
-		surface.SetDrawColor(55,50,55,180)
+		local defaultTextCol = color_white
+		if selected <= 0 || selected ~= selected then
+			surface.SetDrawColor(20,20,20,180)
+		else
+			surface.SetDrawColor(20,20,20,120)
+			defaultTextCol = Color(150,150,150)
+		end
 		surface.DrawPoly(circleVertex)
 
 		local add = math.pi * 1.5 + math.pi / total
 		local add2 = math.pi * 1.5 - math.pi / total
 
 		for k,ment in pairs(ments) do
-			-- if k > 1 then break end
 			local x,y = math.cos((k - 1) / total * math.pi * 2 + math.pi * 1.5), math.sin((k - 1) / total * math.pi * 2 + math.pi * 1.5)
 
 			local lx, ly = math.cos((k - 1) / total * math.pi * 2 + add), math.sin((k - 1) / total * math.pi * 2 + add)
 
-			-- surface.SetDrawColor(225,50,55,120)
-			-- surface.DrawLine(sx + lx * w * 0.4, sy + ly * h * 0.4, sx + w * lx, sy + h * ly)
-
+			local textCol = defaultTextCol
 			if selected == k then
 				local vertexes = prevSelectedVertex
 
@@ -133,10 +136,8 @@ function GM:DrawRadialMenu()
 
 					table.insert(vertexes, {x = sx, y = sy})
 
-					-- table.insert(vertexes, {x = sx + w* 0.4 * lx2, y= sy + h* 0.4 * ly2})
 					table.insert(vertexes, {x = sx + w* 1 * lx2, y= sy + h* 1 * ly2})
 
-					-- table.insert(vertexes, {x = sx + w* 1 * x, y= sy + h* 1 * y})
 					local max = math.floor(50 / total)
 					for i = 0, max do
 						local addv = (add - add2) * i / max + add2
@@ -146,35 +147,21 @@ function GM:DrawRadialMenu()
 					end
 
 					table.insert(vertexes, {x = sx + w* 1 * lx, y= sy + h* 1 * ly})
-					-- table.insert(vertexes, {x = sx + w* 0.4 * lx, y= sy + h* 0.4 * ly})
 
 				end
 
 				surface.SetTexture(tex)
-				surface.SetDrawColor(25,150,25,180)
+				surface.SetDrawColor(20,120,255,120)
 				surface.DrawPoly(vertexes)
 
-				-- surface.SetDrawColor(255,0,255,255)
-				-- local x,y = vertexes[#vertexes].x,vertexes[#vertexes].y
-				-- surface.DrawLine(sx,sy,x,y)
-
-				-- surface.SetDrawColor(50,150,255,255)
-				-- for i = 1, #vertexes do
-				-- 	local x,y = vertexes[i].x,vertexes[i].y
-				-- 	local t = i + 1
-				-- 	if i >= #vertexes then t = 1 end
-				-- 	local x2,y2 = vertexes[t].x,vertexes[t].y
-				-- 	surface.DrawLine(x,y,x2,y2)
-				-- end
+				textCol = color_white
 			end
 
-			drawShadow(ment.Name,"MersRadial",sx + w * 0.6 * x, sy + h * 0.6 * y - fontHeight / 3,color_white,1)
+			drawShadow(ment.Name,"MersRadial",sx + w * 0.6 * x, sy + h * 0.6 * y - fontHeight / 3,textCol,1)
 			if ment.Subtitle then
-				drawShadow(ment.Subtitle,"MersRadialSmall",sx + w * 0.6 * x, sy + h * 0.6 * y + fontHeight / 2,color_white,1)
+				drawShadow(ment.Subtitle,"MersRadialSmall",sx + w * 0.6 * x, sy + h * 0.6 * y + fontHeight / 2,textCol,1)
 			end
 
-			-- surface.SetDrawColor(255,0,255,255)
-			-- surface.DrawLine(sx, sy, sx + w* 0.7 * x, sy + h* 0.7 * y)
 		end
 	end
 end
