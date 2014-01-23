@@ -5,13 +5,13 @@ Spawns
 	mu_spawn_closest spawns - Lists the closest spawn
 
 Loot
-	mu_loot_add <model> - Adds a loot spawn where you are looking
+	mu_loot_add <model> - Adds a loot spawn where you are looking, use "random" as the model to create a spawn with a random model
 	mu_loot_list - Lists all loot spawns
 	mu_loot_closest - Lists closest loot spawn
 	mu_loot_remove - Removes loot spawn with specified id
 	mu_loot_adjustpos - Sets the loot spawn position to the current position of the loot object you are looking at 
 	mu_loot_respawn - Respawns all loot
-	mu_loot_models_list - Lists all model aliases
+	mu_loot_models_list - Lists all model aliases, these can be used instead of model filenames in mu_loot_add
 
 Misc
 	mu_taunt <category> - Plays a random taunt sound
@@ -27,3 +27,13 @@ Convars
 	mu_scoreboard_show_admins <0/1> - Should show admins on scoreboard
 	mu_show_bystander_tks <0/1> - Should show name of killer in chat on a bystander team kill
 	mu_allow_admin_panel <0/1> - Should allow admins to use mu_admin_panel
+	mu_tk_penalty_time <time> - Time (in seconds) for a bystander to be penalised for a team kill
+	mu_murderer_fogtime <time> - Time (in seconds) it takes for a Murderer to show fog for no kills, 0 to disable
+	mu_localchat <0/1> - Local chat, when enabled only nearby players can hear other players
+	mu_localchat_range <distance> - The range at which you can hear other players, default 550
+	mu_disguise <0/1> - Whether the murderer can disguise as dead players
+	mu_disguise_removeonkill <0/1> - Remove the murderer's disguise when he kills someone
+	
+
+
+
