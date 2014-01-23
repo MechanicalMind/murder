@@ -1,3 +1,6 @@
+local PlayerMeta = FindMetaTable("Player")
+local EntityMeta = FindMetaTable("Entity")
+
 if !LootItems then
 	LootItems = {}
 end
@@ -28,6 +31,7 @@ LootModels["consolebox"] = "models/props_c17/consolebox01a.mdl"
 LootModels["cashregister"] = "models/props_c17/cashregister01a.mdl"
 
 util.AddNetworkString("GrabLoot")
+util.AddNetworkString("SetLoot")
 
 function GM:LoadLootData() 
 	local mapName = game.GetMap()
@@ -136,6 +140,17 @@ function GM:PlayerPickupLoot(ply, ent)
 	net.Start("GrabLoot")
 	net.WriteUInt(ply.LootCollected, 32)
 	net.Send(ply)
+end
+
+function PlayerMeta:GetLootCollected()
+	return self.LootCollected
+end
+
+function PlayerMeta:SetLootCollected(loot)
+	self.LootCollected = loot
+	net.Start("SetLoot")
+	net.WriteUInt(self.LootCollected, 32)
+	net.Send(self)
 end
 
 local function getLootPrintString(data, plyPos) 

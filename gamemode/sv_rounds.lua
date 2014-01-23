@@ -142,6 +142,7 @@ function GM:EndTheRound(reason, murderer)
 		end
 		ply.LastTKTime = nil
 		ply:SetMurdererRevealed(false)
+		ply:UnMurdererDisguise()
 	end
 	self.RoundUnFreezePlayers = nil
 

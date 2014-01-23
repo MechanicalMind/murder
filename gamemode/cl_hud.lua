@@ -195,6 +195,11 @@ function GM:DrawGameHUD(ply)
 		col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
 		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
+	if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
+		local h = draw.GetFontHeight("MersRadial")
+		drawTextShadow("[E] Disguise as for 1 loot", "MersRadialSmall", ScrW() / 2, ScrH() / 2 + 80 + h * 0.7, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
+
 
 	// setup size
 	local size = ScrW() * 0.08

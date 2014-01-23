@@ -276,6 +276,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		if IsValid(attacker) && attacker:IsPlayer() then
 			if attacker:GetMurderer() then
 				-- self:SendMessageAll("The murderer has struck again")
+				attacker:UnMurdererDisguise()
 			elseif attacker != ply then
 				if self.ShowBystanderTKs:GetBool() then
 					local ct = ChatText()
@@ -529,4 +530,43 @@ end
 
 function GM:GetTKPenaltyTime()
 	return math.max(0, self.TKPenaltyTime:GetFloat())
+end
+
+function GM:PlayerUse(ply, ent)
+	return true
+end
+
+function GM:KeyPress(ply, key)
+	if key == IN_USE then
+		local tr = ply:GetEyeTraceNoCursor()
+		if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
+			if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
+				ply:MurdererDisguise(tr.Entity)
+				ply:SetLootCollected(ply:GetLootCollected() - 1)
+			end
+		end
+	end
+end
+
+function PlayerMeta:MurdererDisguise(copyent)
+	if !self.Disguised then
+		self.DisguiseColor = self:GetPlayerColor()
+		self.DisguiseName = self:GetBystanderName()
+	end
+	self.Disguised = true
+	self.DisguisedStart = CurTime()
+	self:SetBystanderName(copyent:GetBystanderName())
+	self:SetPlayerColor(copyent:GetPlayerColor())
+end
+
+function PlayerMeta:UnMurdererDisguise()
+	if self.Disguised then
+		self:SetPlayerColor(self.DisguiseColor)
+		self:SetBystanderName(self.DisguiseName)
+	end
+	self.Disguised = false
+end
+
+function PlayerMeta:GetMurdererDisguised()
+	return self.Disguised and true or false
 end

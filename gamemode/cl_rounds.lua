@@ -62,3 +62,7 @@ end)
 net.Receive("GrabLoot", function (length)
 	GAMEMODE.LootCollected = net.ReadUInt(32)
 end)
+
+net.Receive("SetLoot", function (length)
+	GAMEMODE.LootCollected = net.ReadUInt(32)
+end)
