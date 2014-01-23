@@ -153,6 +153,16 @@ end
 
 local tex = surface.GetTextureID("SGM/playercircle")
 
+local function colorDif(col1, col2)
+	local x = col1.x - col2.x
+	local y = col1.y - col2.y
+	local z = col1.z - col2.z
+	x = x > 0 and x or -x
+	y = y > 0 and y or -y
+	z = z > 0 and z or -z
+	return x + y + z
+end
+
 function GM:DrawGameHUD(ply)
 	if !IsValid(ply) then return end
 	local health = ply:Health()
@@ -195,11 +205,14 @@ function GM:DrawGameHUD(ply)
 		col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
 		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
-	if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
-		local h = draw.GetFontHeight("MersRadial")
-		drawTextShadow("[E] Disguise as for 1 loot", "MersRadialSmall", ScrW() / 2, ScrH() / 2 + 80 + h * 0.7, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	if self:GetAmMurderer() && self.LootCollected && self.LootCollected > 1 then
+		if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
+			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || colorDif(tr.Entity:GetPlayerColor(), ply:GetPlayerColor()) > 0.1 then 
+				local h = draw.GetFontHeight("MersRadial")
+				drawTextShadow("[E] Disguise as for 1 loot", "MersRadialSmall", ScrW() / 2, ScrH() / 2 + 80 + h * 0.7, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			end
+		end
 	end
-
 
 	// setup size
 	local size = ScrW() * 0.08

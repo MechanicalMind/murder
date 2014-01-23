@@ -41,6 +41,7 @@ GM.MurdererFogTime = CreateConVar("mu_murderer_fogtime", 60 * 4, bit.bor(FCVAR_N
 GM.TKPenaltyTime = CreateConVar("mu_tk_penalty_time", 20, bit.bor(FCVAR_NOTIFY), "Time (in seconds) for a bystander to be penalised for a team kill" )
 GM.LocalChat = CreateConVar("mu_localchat", 1, bit.bor(FCVAR_NOTIFY), "Local chat, when enabled only nearby players can hear other players" )
 GM.LocalChatRange = CreateConVar("mu_localchat_range", 550, bit.bor(FCVAR_NOTIFY), "The range at which you can hear other players" )
+GM.CanDisguise = CreateConVar("mu_disguise", 1, bit.bor(FCVAR_NOTIFY), "Whether the murderer can disguise as dead players" )
 
 function GM:Initialize() 
 	self:LoadSpawns()

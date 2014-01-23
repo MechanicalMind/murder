@@ -541,8 +541,10 @@ function GM:KeyPress(ply, key)
 		local tr = ply:GetEyeTraceNoCursor()
 		if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
 			if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
-				ply:MurdererDisguise(tr.Entity)
-				ply:SetLootCollected(ply:GetLootCollected() - 1)
+				if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then 
+					ply:MurdererDisguise(tr.Entity)
+					ply:SetLootCollected(ply:GetLootCollected() - 1)
+				end
 			end
 		end
 	end
@@ -553,10 +555,14 @@ function PlayerMeta:MurdererDisguise(copyent)
 		self.DisguiseColor = self:GetPlayerColor()
 		self.DisguiseName = self:GetBystanderName()
 	end
-	self.Disguised = true
-	self.DisguisedStart = CurTime()
-	self:SetBystanderName(copyent:GetBystanderName())
-	self:SetPlayerColor(copyent:GetPlayerColor())
+	if GAMEMODE.CanDisguise:GetBool() then
+		self.Disguised = true
+		self.DisguisedStart = CurTime()
+		self:SetBystanderName(copyent:GetBystanderName())
+		self:SetPlayerColor(copyent:GetPlayerColor())
+	else
+		self:UnMurdererDisguise()
+	end
 end
 
 function PlayerMeta:UnMurdererDisguise()
