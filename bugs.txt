@@ -1,2 +1,7 @@
 More gun penalty
 Round timer
+Improve knife throw
+Network round murderer board palyer color and bystander name
+Move to spec convar
+Murderer can xray tkers
+Fix replicated convars

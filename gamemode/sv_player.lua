@@ -177,8 +177,8 @@ function plyMeta:CalculateSpeed()
 	end
 
 	if self.LastTKTime then
-		walk = walk * 0.7
-		run = run * 0.7
+		walk = walk * 0.5
+		run = run * 0.5
 		jumppower = jumppower * 0.5
 	end
 
@@ -399,6 +399,9 @@ function GM:PlayerCanHearChatVoice(listener, talker, typ)
 		return true
 	end
 	if self.LocalChat:GetBool() then
+		if !talker:Alive() || talker:Team() != 2 then
+			return !listener:Alive() || listener:Team() != 2
+		end
 		local ply = listener
 
 		// listen as if spectatee when spectating
@@ -493,6 +496,7 @@ end)
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
 	if !IsValid(speaker) then return false end
 	local canhear = self:PlayerCanHearChatVoice(listener, speaker) 
+	-- print( canhear, listener, speaker, listener:Alive())
 	return canhear
 end
 
@@ -502,7 +506,13 @@ function GM:PlayerSay( ply, text, team)
 		local col = ply:GetPlayerColor()
 		ct:Add(ply:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 		ct:Add(": " .. text, color_white)
-		ct:SendAll()
+		for k, ply2 in pairs(player.GetAll()) do
+			local can = hook.Call("PlayerCanSeePlayersChat", GAMEMODE, text, team, ply2, ply)
+			if can then
+				ct:Send(ply2)
+			end
+		end
+		-- ct:SendAll()
 		return false
 	end
 	return true
