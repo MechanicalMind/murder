@@ -59,25 +59,41 @@ function SWEP:SecondaryAttack()
 	if self.FistCanAttack then return end
 	if self.IdleTime && self.IdleTime > CurTime() then return end
 	self.FistCanAttack = CurTime() + self.Primary.Delay
-	self.Owner:SetAnimation( PLAYER_ATTACK1 )
-	self:SendWeaponAnim( ACT_VM_HITCENTER )
+	-- self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	-- self:SendWeaponAnim( ACT_VM_HITCENTER )
 
 	if SERVER then
-		local ent = ents.Create("mu_knife")
-		ent:SetOwner(self.Owner)
-		ent:SetPos(self.Owner:GetShootPos())
-		local knife_ang = Angle(-28,0,0) + self.Owner:EyeAngles()
-		knife_ang:RotateAroundAxis(knife_ang:Right(), -90)
-		ent:SetAngles(knife_ang)
-		ent:Spawn()
-
-		local phys = ent:GetPhysicsObject()
-		phys:SetVelocity(self.Owner:GetAimVector() * 1000)
-		phys:AddAngleVelocity(Vector(0, 1500, 0))
-
-		self:Remove()
+		self.ChargeStart = CurTime()
+		net.Start("mu_knife_charge")
+		net.WriteEntity(self)
+		net.WriteUInt(1, 8)
+		net.WriteDouble(self.ChargeStart)
+		net.Send(self.Owner)
 	end
 
+end
+
+function SWEP:GetCharge()
+	local start = CurTime() - (self.ChargeStart or 0)
+	return math.Clamp((math.sin(start - 1) + 1) / 2, 0, 1) * 0.85 + 0.15
+end
+
+function SWEP:ThrowKnife(force)
+	local ent = ents.Create("mu_knife")
+	ent:SetOwner(self.Owner)
+	ent:SetPos(self.Owner:GetShootPos())
+	local knife_ang = Angle(-28,0,0) + self.Owner:EyeAngles()
+	knife_ang:RotateAroundAxis(knife_ang:Right(), -90)
+	ent:SetAngles(knife_ang)
+	ent:Spawn()
+
+	print(force * 1000, force)
+
+	local phys = ent:GetPhysicsObject()
+	phys:SetVelocity(self.Owner:GetAimVector() * force * 1600)
+	phys:AddAngleVelocity(Vector(0, 1500, 0))
+
+	self:Remove()
 end
 
 function SWEP:Think()
@@ -122,5 +138,18 @@ function SWEP:Think()
 			end
 		end
 		self.Owner:LagCompensation(false)
+	end
+
+	if SERVER && self.ChargeStart then
+		if !IsValid(self.Owner) || !self.Owner:KeyDown(IN_ATTACK2) then
+			if IsValid(self.Owner) then
+				self:ThrowKnife(self:GetCharge())
+				net.Start("mu_knife_charge")
+				net.WriteEntity(self)
+				net.WriteUInt(0, 8)
+				net.Send(self.Owner)
+			end
+			self.ChargeStart = nil
+		end
 	end
 end
