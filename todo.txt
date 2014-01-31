@@ -1,9 +1,0 @@
-More gun penalty
-Round timer, 5 minute base, +1.2 minute per player
-Improve knife throw, add charge time
-Network round murderer board palyer color and bystander name
-Move to spec convar
-Murderer can xray tkers
-Fix replicated convars
-Add more supported cs maps
-Add a custom map, use vertical space
