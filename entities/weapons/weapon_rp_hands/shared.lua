@@ -76,7 +76,51 @@ function SWEP:CanPrimaryAttack()
 	return true
 end
 
+function SWEP:CanPickup(ent)
+	if ent:IsWeapon() || ent:IsPlayer() || ent:IsNPC() then
+		return false
+	end
+	local class = ent:GetClass()
+	if class == "prop_ragdoll" then return true end
+	if class == "prop_physics" then return true end
+	if class == "prop_physics_multiplayer" then return true end
+	return false
+end
+
 function SWEP:SecondaryAttack()
+	if SERVER then
+		self.CarryEnt = nil
+		local tr = self.Owner:GetEyeTraceNoCursor()
+
+		if IsValid(tr.Entity) && self:CanPickup(tr.Entity) then
+			self.CarryEnt = tr.Entity
+			self.CarryBone = tr.PhysicsBone
+
+			self:ApplyForce()
+		end
+	end
+end
+
+function SWEP:ApplyForce()
+	local target = self.Owner:GetAimVector() * 30 + self.Owner:GetShootPos()
+	local phys = self.CarryEnt:GetPhysicsObjectNum( self.CarryBone )
+	if IsValid(phys) then
+		local vec = target - phys:GetPos()
+		local len = vec:Length()
+		if len > 40 then
+			self.CarryEnt = nil
+			return
+		end
+
+		vec:Normalize()
+		
+		local tvec = vec * len * 15
+		local avec = tvec - phys:GetVelocity()
+		avec = avec:GetNormal() * math.min(45, avec:Length())
+		avec.z = avec.z * 0.7
+		phys:AddVelocity( avec)
+
+	end
 end
 
 function SWEP:Think()
@@ -89,6 +133,12 @@ function SWEP:Think()
 			umsg.Entity(self)
 			umsg.String(nht)
 			umsg.End()
+		end
+	end
+
+	if IsValid(self.Owner) && self.Owner:KeyDown(IN_ATTACK2) then
+		if IsValid(self.CarryEnt) then
+			self:ApplyForce()
 		end
 	end
 end
