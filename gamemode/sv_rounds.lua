@@ -174,6 +174,8 @@ function GM:EndTheRound(reason, murderer)
 	net.Start("DeclareWinner")
 	net.WriteUInt(reason, 8)
 	net.WriteEntity(murderer)
+	net.WriteVector(murderer:GetPlayerColor())
+	net.WriteString(murderer:GetBystanderName())
 
 	for k, ply in pairs(team.GetPlayers(2)) do
 		net.WriteUInt(1, 8)
