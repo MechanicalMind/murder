@@ -31,6 +31,7 @@ include("sv_loot.lua")
 include("sv_taunt.lua")
 include("sv_bystandername.lua")
 include("sv_adminpanel.lua")
+include("sv_tker.lua")
 
 resource.AddFile("materials/thieves/footprint.vmt")
 
@@ -104,8 +105,7 @@ function GM:Think()
 			end
 		end
 		if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() < CurTime() then
-			ply.LastTKTime = nil
-			ply:CalculateSpeed()
+			ply:SetTKer(false)
 		end
 	end
 end

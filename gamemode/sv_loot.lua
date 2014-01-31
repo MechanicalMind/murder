@@ -120,7 +120,7 @@ local function giveMagnum(ply)
 	if ply:HasWeapon("weapon_mu_magnum") then
 		ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
 	end
-	if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() > CurTime() then
+	if ply:GetTKer() then
 		// if they are penalised, drop the gun on the floor
 		ply.TempGiveMagnum = true // temporarily allow them to pickup the gun
 		ply:Give("weapon_mu_magnum")

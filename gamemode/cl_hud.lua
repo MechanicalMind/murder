@@ -238,6 +238,15 @@ function GM:DrawGameHUD(ply)
 	local w,h = surface.GetTextSize(ply:GetBystanderName())
 	local x = math.max(size * 0.6 + w / -2, size * 0.1)
 	drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_TOP)
+
+	-- if self:GetRound() == 1 then
+
+	-- 	if self.ScreenDarkness > 0 then
+	-- 		local sw, sh = ScrW(), ScrH()
+	-- 		surface.SetDrawColor(0,0,0, self.ScreenDarkness)
+	-- 		surface.DrawRect(-1, -1, sw + 2, sh + 2)
+	-- 	end
+	-- end
 end
 
 function GM:GUIMousePressed(code, vector)
@@ -253,6 +262,27 @@ function GM:RenderScreenspaceEffects()
 		local sw, sh = ScrW(), ScrH()
 		surface.SetDrawColor(0,0,0,255)
 		surface.DrawRect(-1,-1,sw + 2,sh + 2)
+	end
+
+
+end
+
+function GM:PostDrawHUD()
+	if self:GetRound() == 1 then
+		local dest = 0
+		if self.TKerPenalty then
+			-- dest = (math.sin(CurTime()) + 1) * 30 / 2 + 230
+			dest = 254
+		end
+		self.ScreenDarkness = math.Clamp(math.Approach(self.ScreenDarkness or 0, dest, FrameTime() * 120), 0, 255)
+
+		if self.ScreenDarkness > 0 then
+			local sw, sh = ScrW(), ScrH()
+			surface.SetDrawColor(0,0,0, self.ScreenDarkness)
+			surface.DrawRect(-1, -1, sw + 2, sh + 2)
+		end
+	else
+		self.ScreenDarkness = 0
 	end
 end
 

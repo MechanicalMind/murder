@@ -176,7 +176,7 @@ function plyMeta:CalculateSpeed()
 		canrun = true
 	end
 
-	if self.LastTKTime then
+	if self:GetTKer() then
 		walk = walk * 0.5
 		run = run * 0.5
 		jumppower = jumppower * 0.5
@@ -287,16 +287,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 					ct:Add(" killed an innocent bystander")
 					ct:SendAll()
 				end
-				attacker.LastTKTime = CurTime()
-				attacker:CalculateSpeed()
-				timer.Simple(0, function () 
-					if IsValid(attacker) && attacker:HasWeapon("weapon_mu_magnum") then
-						local wep = attacker:GetWeapon("weapon_mu_magnum")
-						wep.LastTK = attacker
-						wep.LastTKTime = CurTime()
-						attacker:DropWeapon(wep)
-					end
-				end)
+				attacker:SetTKer(true)
 			end
 		else
 			-- self:SendMessageAll("An bystander died in mysterious circumstances")
@@ -370,7 +361,7 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 		end
 
 		// penalty for killing a bystander
-		if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() > CurTime() then
+		if ply:GetTKer() then
 			if ply.TempGiveMagnum then
 				ply.TempGiveMagnum = nil
 				return true
