@@ -66,18 +66,18 @@ function GM:PlayerSpawn( ply )
 		ply:DeleteOnRemove( hands )
 
 		hands:Spawn()
- 	end
+	end
 
- 	local spawnPoint = self:PlayerSelectTeamSpawn(ply:Team(), ply)
- 	if IsValid(spawnPoint) then
- 		ply:SetPos(spawnPoint:GetPos())
- 	end
+	local spawnPoint = self:PlayerSelectTeamSpawn(ply:Team(), ply)
+	if IsValid(spawnPoint) then
+		ply:SetPos(spawnPoint:GetPos())
+	end
 
- 	local vec = Vector(0,0,0)
- 	vec.x = math.Rand(0, 1)
- 	vec.y = math.Rand(0, 1)
- 	vec.z = math.Rand(0, 1)
- 	ply:SetPlayerColor(vec)
+	local vec = Vector(0,0,0)
+	vec.x = math.Rand(0, 1)
+	vec.y = math.Rand(0, 1)
+	vec.z = math.Rand(0, 1)
+	ply:SetPlayerColor(vec)
 end
 
 function GM:PlayerLoadout(ply)
@@ -528,14 +528,14 @@ function GM:KeyPress( ply, key )
 
 		// press e on windows to break them
 		if IsValid(tr.Entity) && (tr.Entity:GetClass() == "func_breakable" || tr.Entity:GetClass() == "func_breakable_surf") && tr.HitPos:Distance(tr.StartPos) < 50 then
-	 		local dmg = DamageInfo()
-	 		dmg:SetAttacker(game.GetWorld())
-	 		dmg:SetInflictor(game.GetWorld())
-	 		dmg:SetDamage(10)
-	 		dmg:SetDamageType(DMG_BULLET)
-	 		dmg:SetDamageForce(ply:GetAimVector() * 500)
-	 		dmg:SetDamagePosition(tr.HitPos)
-	 		tr.Entity:TakeDamageInfo(dmg)
+			local dmg = DamageInfo()
+			dmg:SetAttacker(game.GetWorld())
+			dmg:SetInflictor(game.GetWorld())
+			dmg:SetDamage(10)
+			dmg:SetDamageType(DMG_BULLET)
+			dmg:SetDamageForce(ply:GetAimVector() * 500)
+			dmg:SetDamagePosition(tr.HitPos)
+			tr.Entity:TakeDamageInfo(dmg)
 		end
 	end
 end

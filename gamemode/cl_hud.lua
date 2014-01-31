@@ -205,7 +205,7 @@ function GM:DrawGameHUD(ply)
 		col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
 		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
-	if self:GetAmMurderer() && self.LootCollected && self.LootCollected > 1 then
+	if self:GetAmMurderer() && self.LootCollected && self.LootCollected >= 1 then
 		if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
 			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || colorDif(tr.Entity:GetPlayerColor(), ply:GetPlayerColor()) > 0.1 then 
 				local h = draw.GetFontHeight("MersRadial")
