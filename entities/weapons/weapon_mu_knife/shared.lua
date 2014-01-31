@@ -90,7 +90,7 @@ function SWEP:ThrowKnife(force)
 	print(force * 1000, force)
 
 	local phys = ent:GetPhysicsObject()
-	phys:SetVelocity(self.Owner:GetAimVector() * force * 1600)
+	phys:SetVelocity(self.Owner:GetAimVector() * force * 1500)
 	phys:AddAngleVelocity(Vector(0, 1500, 0))
 
 	self:Remove()
