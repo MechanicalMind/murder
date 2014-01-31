@@ -18,7 +18,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 	but:SetTall(40)
 	but:SetText("")
 	function but:Paint(w, h)
-		local showAdmins = GetConVarNumber("mu_scoreboard_show_admins") != 0
+		local showAdmins = GAMEMODE.RoundSettings.ShowAdminsOnScoreboard
 
 		if IsValid(ply) && showAdmins && ply:IsAdmin() then
 			surface.SetDrawColor(Color(150,50,50))

@@ -202,7 +202,7 @@ end)
 
 concommand.Add("mu_adminpanel", function (client)
 	if !client:IsAdmin() then return end
-	local canUse = GetConVarNumber("mu_allow_admin_panel") != 0
+	local canUse = GAMEMODE.RoundSettings.AdminPanelAllowed
 	if !canUse then return end
 
 	if IsValid(menu) then

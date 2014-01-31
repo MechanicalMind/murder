@@ -1,6 +1,7 @@
 
 GM.RoundStage = 0
 GM.LootCollected = 0
+GM.RoundSettings = GAMEMODE.RoundSettings or {}
 if GAMEMODE then
 	GM.RoundStage = GAMEMODE.RoundStage
 	GM.LootCollected = GAMEMODE.LootCollected
@@ -12,8 +13,17 @@ end
 
 net.Receive("SetRound", function (length)
 	local r = net.ReadUInt(8)
+	local start = net.ReadDouble()
 	GAMEMODE.RoundStage = r
-	GAMEMODE.RoundStart = CurTime()
+	GAMEMODE.RoundStart = start
+
+	GAMEMODE.RoundSettings = {}
+	local settings = net.ReadUInt(8)
+	if settings != 0 then
+		GAMEMODE.RoundSettings.ShowAdminsOnScoreboard = net.ReadUInt(8) != 0
+		GAMEMODE.RoundSettings.AdminPanelAllowed = net.ReadUInt(8) != 0
+		GAMEMODE.RoundSettings.ShowSpectateInfo = net.ReadUInt(8) != 0
+	end
 
 	if r == 1 then
 		timer.Simple(0.2, function ()

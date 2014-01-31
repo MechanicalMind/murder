@@ -13,16 +13,36 @@ end
 
 function GM:SetRound(round)
 	self.RoundStage = round
-	net.Start("SetRound")
-	net.WriteUInt(round, 8)
-	net.Broadcast()
 	self.RoundTime = CurTime()
+
+	self.RoundSettings = {}
+
+	self.RoundSettings.ShowAdminsOnScoreboard = self.ShowAdminsOnScoreboard:GetBool()
+	self.RoundSettings.AdminPanelAllowed = self.AdminPanelAllowed:GetBool()
+	self.RoundSettings.ShowSpectateInfo = self.ShowSpectateInfo:GetBool()
+
+	self:NetworkRound()
 end
 
 function GM:NetworkRound(ply)
 	net.Start("SetRound")
 	net.WriteUInt(self.RoundStage, 8)
-	net.Send(ply)
+	net.WriteDouble(self.RoundTime)
+
+	if self.RoundSettings then
+		net.WriteUInt(1, 8)
+		net.WriteUInt(self.RoundSettings.ShowAdminsOnScoreboard and 1 or 0, 8)
+		net.WriteUInt(self.RoundSettings.AdminPanelAllowed and 1 or 0, 8)
+		net.WriteUInt(self.RoundSettings.ShowSpectateInfo and 1 or 0, 8)
+	else
+		net.WriteUInt(0, 8)
+	end
+
+	if ply == nil then
+		net.Broadcast()
+	else
+		net.Send(ply)
+	end
 end
 
 // 0 not enough players
@@ -218,6 +238,8 @@ function GM:StartNewRound()
 	game.CleanUpMap()
 	self:InitPostEntityAndMapCleanup()
 	self:ClearAllFootsteps()
+
+
 
 	local oldMurderer
 	for k,v in pairs(players) do
