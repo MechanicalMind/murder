@@ -1,10 +1,11 @@
 
 GM.RoundStage = 0
 GM.LootCollected = 0
-GM.RoundSettings = GAMEMODE.RoundSettings or {}
+GM.RoundSettings = {}
 if GAMEMODE then
 	GM.RoundStage = GAMEMODE.RoundStage
 	GM.LootCollected = GAMEMODE.LootCollected
+	GM.RoundSettings = GAMEMODE.RoundSettings
 end
 
 function GM:GetRound()
