@@ -119,14 +119,8 @@ function GM:PlayerPickupLoot(ply, ent)
 			if ply:HasWeapon("weapon_mu_magnum") then
 				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
 			end
-			if ply.LastTKTime && ply.LastTKTime + self:GetTKPenaltyTime() > CurTime() then
-				ply.TempGiveMagnum = true
-				ply:Give("weapon_mu_magnum")
-				ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
-			else
-				ply:Give("weapon_mu_magnum")
-				ply:SelectWeapon("weapon_mu_magnum")
-			end
+			ply:Give("weapon_mu_magnum")
+			ply:SelectWeapon("weapon_mu_magnum")
 		end
 	end
 
@@ -144,6 +138,14 @@ local function getLootPrintString(data, plyPos)
 	return str
 end
 
+local function generate_random_key(t)
+    local keys = {}
+    for k, v in pairs(t) do
+        keys[#keys+1] = k
+    end
+    return keys[math.random(#keys)]
+end
+
 concommand.Add("mu_loot_add", function (ply, com, args, full)
 	if (!ply:IsAdmin()) then return end
 
@@ -156,12 +158,16 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 
 	local name = args[1]:lower()
 	if !name:find("%.mdl$") then
-		if !LootModels[name] then
+		if name == "random" then
+			mdl = LootModels[generate_random_key(LootModels)]
+		elseif !LootModels[name] then
 			ply:ChatPrint("Invalid model alias " .. name)
 			return
+		else
+			mdl = LootModels[name]
 		end
 
-		mdl = LootModels[name]
+		
 	end
 
 
