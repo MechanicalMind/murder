@@ -91,22 +91,22 @@ function ENT:PhysicsCollide( data, physobj )
 				pos = pos + vec
 				addangle(ang, Angle(30, -90, 0))
 
-				local knife = ents.Create("prop_physics")
-				knife:SetModel("models/weapons/w_knife_t.mdl")
-				knife:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-				knife:SetPos(pos)
-				knife:SetAngles(ang)
-				knife:Spawn()
+				-- local knife = ents.Create("prop_physics")
+				-- knife:SetModel("models/weapons/w_knife_t.mdl")
+				-- knife:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
+				-- knife:SetPos(pos)
+				-- knife:SetAngles(ang)
+				-- knife:Spawn()
 
-				local phys = knife:GetPhysicsObject()
-				if IsValid(phys) then
-					phys:EnableCollisions(false)
-				end
+				-- local phys = knife:GetPhysicsObject()
+				-- if IsValid(phys) then
+				-- 	phys:EnableCollisions(false)
+				-- end
 
 
-				constraint.Weld(rag, knife, 0, 0, 0, true)
+				-- constraint.Weld(rag, knife, 0, 0, 0, true)
 
-				rag:CallOnRemove("knife_cleanup", function() SafeRemoveEntity(knife) end)
+				-- rag:CallOnRemove("knife_cleanup", function() SafeRemoveEntity(knife) end)
 
 			end
 
