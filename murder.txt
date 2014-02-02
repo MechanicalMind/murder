@@ -2,7 +2,7 @@
 {
 	"base"		"base"
 	"title"		"Murder"
-	"maps"		"^md_"
+	"maps"		"^mu_"
 	"menusystem"	"1"
 	"workshopid" "187073946"
 

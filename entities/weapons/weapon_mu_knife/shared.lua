@@ -47,6 +47,17 @@ end
 
 
 function SWEP:PrimaryAttack()	
+	if self.ChargeStart then
+		self.ChargeStart = nil
+		if SERVER then
+			net.Start("mu_knife_charge")
+			net.WriteEntity(self)
+			net.WriteUInt(0, 8)
+			net.Send(self.Owner)
+		end
+		self.FistCanAttack = CurTime() + self.Primary.Delay
+		return
+	end
 	if self.FistCanAttack then return end
 	if self.IdleTime && self.IdleTime > CurTime() then return end
 	self.FistCanAttack = CurTime() + self.Primary.Delay
@@ -75,7 +86,7 @@ end
 
 function SWEP:GetCharge()
 	local start = CurTime() - (self.ChargeStart or 0)
-	return math.Clamp((math.sin(start - 1) + 1) / 2, 0, 1) * 0.85 + 0.15
+	return math.Clamp((math.sin(start - 1) + 1) / 2, 0, 1)
 end
 
 function SWEP:ThrowKnife(force)
@@ -89,7 +100,7 @@ function SWEP:ThrowKnife(force)
 
 
 	local phys = ent:GetPhysicsObject()
-	phys:SetVelocity(self.Owner:GetAimVector() * force * 1500)
+	phys:SetVelocity(self.Owner:GetAimVector() * (force * 1300 + 200))
 	phys:AddAngleVelocity(Vector(0, 1500, 0))
 
 	self:Remove()

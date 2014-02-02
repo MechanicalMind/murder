@@ -1,9 +1,11 @@
-//-------------------------------------------------------------------------
+ //-------------------------------------------------------------------------
 //
-// MURDER by Mechanical Mind
+// MURDER FGD BY MECHANICAL MIND
 //
 //-------------------------------------------------------------------------
 
-@PointClass base(Targetname, Origin, Angles, Shadow, Studiomodel) = mu_loot : "Murder Loot Spawn Position"
+@include "base.fgd" 
+
+@PointClass base(Targetname, Angles, Shadow, Studiomodel) studioprop()= mu_loot : "Murder Loot Spawn Position"
 [
 ]
