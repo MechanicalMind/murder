@@ -1,5 +1,7 @@
 local PlayerMeta = FindMetaTable("Player")
 
+util.AddNetworkString("your_are_a_murderer")
+
 GM.MurdererWeight = CreateConVar("mu_murder_weight_multiplier", 2, bit.bor(FCVAR_NOTIFY), "Multiplier for the weight of the murderer chance" )
 
 function PlayerMeta:SetMurderer(bool)

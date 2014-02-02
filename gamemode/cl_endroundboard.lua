@@ -11,6 +11,7 @@ function GM:DisplayEndRoundBoard(data)
 	menu:SetTitle("")
 	menu:MakePopup()
 	menu:SetKeyboardInputEnabled(false)
+	menu:SetDeleteOnClose(false)
 
 	function menu:Paint()
 		surface.SetDrawColor(Color(40,40,40,255))
@@ -148,3 +149,9 @@ function GM:DisplayEndRoundBoard(data)
 	end
 
 end
+
+net.Receive("reopen_round_board", function ()
+	if IsValid(menu) then
+		menu:SetVisible(true)
+	end
+end)

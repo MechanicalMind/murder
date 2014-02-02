@@ -35,12 +35,10 @@ include("sv_tker.lua")
 
 resource.AddFile("materials/thieves/footprint.vmt")
 
-util.AddNetworkString("your_are_a_murderer")
-
 GM.ShowBystanderTKs = CreateConVar("mu_show_bystander_tks", 1, bit.bor(FCVAR_NOTIFY), "Should show name of killer in chat on a bystander team kill" )
 GM.MurdererFogTime = CreateConVar("mu_murderer_fogtime", 60 * 4, bit.bor(FCVAR_NOTIFY), "Time (in seconds) it takes for a Murderer to show fog for no kills, 0 to disable" )
 GM.TKPenaltyTime = CreateConVar("mu_tk_penalty_time", 20, bit.bor(FCVAR_NOTIFY), "Time (in seconds) for a bystander to be penalised for a team kill" )
-GM.LocalChat = CreateConVar("mu_localchat", 1, bit.bor(FCVAR_NOTIFY), "Local chat, when enabled only nearby players can hear other players" )
+GM.LocalChat = CreateConVar("mu_localchat", 0, bit.bor(FCVAR_NOTIFY), "Local chat, when enabled only nearby players can hear other players" )
 GM.LocalChatRange = CreateConVar("mu_localchat_range", 550, bit.bor(FCVAR_NOTIFY), "The range at which you can hear other players" )
 GM.CanDisguise = CreateConVar("mu_disguise", 1, bit.bor(FCVAR_NOTIFY), "Whether the murderer can disguise as dead players" )
 GM.RemoveDisguiseOnKill = CreateConVar("mu_disguise_removeonkill", 1, bit.bor(FCVAR_NOTIFY), "Remove the murderer's disguise when he kills someone" )
@@ -153,4 +151,10 @@ function file.ReadDataAndContent(path)
 	if f then return f end
 	f = file.Read(GAMEMODE.Folder .. "/content/data/" .. path, "GAME")
 	return f
+end
+
+util.AddNetworkString("reopen_round_board")
+function GM:ShowTeam(ply) // F2
+	net.Start("reopen_round_board")
+	net.Send(ply)
 end
