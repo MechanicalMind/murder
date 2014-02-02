@@ -146,7 +146,7 @@ function GM:EndTheRound(reason, murderer)
 
 	local players = team.GetPlayers(2)
 	for k, ply in pairs(players) do
-		if !ply.HasMoved && !ply.Frozen then
+		if !ply.HasMoved && !ply.Frozen && self.AFKMoveToSpec:GetBool() then
 			local oldTeam = ply:Team()
 			ply:SetTeam(1)
 			GAMEMODE:PlayerOnChangeTeam(ply, 1, oldTeam)

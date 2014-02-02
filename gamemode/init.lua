@@ -44,6 +44,7 @@ GM.LocalChat = CreateConVar("mu_localchat", 1, bit.bor(FCVAR_NOTIFY), "Local cha
 GM.LocalChatRange = CreateConVar("mu_localchat_range", 550, bit.bor(FCVAR_NOTIFY), "The range at which you can hear other players" )
 GM.CanDisguise = CreateConVar("mu_disguise", 1, bit.bor(FCVAR_NOTIFY), "Whether the murderer can disguise as dead players" )
 GM.RemoveDisguiseOnKill = CreateConVar("mu_disguise_removeonkill", 1, bit.bor(FCVAR_NOTIFY), "Remove the murderer's disguise when he kills someone" )
+GM.AFKMoveToSpec = CreateConVar("mu_moveafktospectator", 1, bit.bor(FCVAR_NOTIFY), "Should we remove AFK players to spectator" )
 
 // replicated
 GM.ShowAdminsOnScoreboard = CreateConVar("mu_scoreboard_show_admins", 1, bit.bor(0), "Should show admins on scoreboard" )
