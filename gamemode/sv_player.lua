@@ -16,6 +16,7 @@ function GM:PlayerInitialSpawn( ply )
 
 	self:NetworkRound(ply)
 
+	self.LastPlayerSpawn = CurTime()
 end
 
 function GM:PlayerSpawn( ply )
@@ -187,7 +188,6 @@ function plyMeta:CalculateSpeed()
 	local wep = self:GetActiveWeapon()
 	if IsValid(wep) then
 		if wep.GetCarrying && wep:GetCarrying() then
-			print(wep:GetCarrying())
 			walk = walk * 0.3
 			run = run * 0.3
 			jumppower = jumppower * 0.3
@@ -447,7 +447,7 @@ function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam)
 end
 
 concommand.Add("mu_jointeam", function (ply, com, args)
-	if ply.LastChangeTeam && ply.LastChangeTeam + 10 > CurTime() then return end
+	if ply.LastChangeTeam && ply.LastChangeTeam + 5 > CurTime() then return end
 	ply.LastChangeTeam = CurTime()
 
 	local curTeam = ply:Team()

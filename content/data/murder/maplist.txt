@@ -1,6 +1,0 @@
-clue
-cs_italy
-cs_office
-de_chateau
-de_dust
-ttt_clue

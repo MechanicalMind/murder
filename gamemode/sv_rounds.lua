@@ -3,8 +3,10 @@ util.AddNetworkString("SetRound")
 util.AddNetworkString("DeclareWinner")
 
 GM.RoundStage = 0
+GM.RoundCount = 0
 if GAMEMODE then
 	GM.RoundStage = GAMEMODE.RoundStage
+	GM.RoundCount = GAMEMODE.RoundCount
 end
 
 function GM:GetRound()
@@ -48,10 +50,11 @@ end
 // 0 not enough players
 // 1 playing
 // 2 round ended, about to restart
+// 4 waiting for map switch
 function GM:RoundThink()
 	local players = team.GetPlayers(2)
 	if self.RoundStage == 0 then
-		if #players > 1 then 
+		if #players > 1 && (!self.LastPlayerSpawn || self.LastPlayerSpawn + 1 < CurTime()) then 
 			self:StartNewRound()
 		end
 	elseif self.RoundStage == 1 then
@@ -214,6 +217,15 @@ function GM:EndTheRound(reason, murderer)
 	self.MurdererLastKill = nil
 
 	hook.Call("OnEndRound")
+	self.RoundCount = self.RoundCount + 1
+	local limit = self.RoundLimit:GetInt()
+	if limit > 0 then
+		if self.RoundCount >= limit then
+			self:ChangeMap()
+			self:SetRound(4)
+			return
+		end
+	end
 	self:SetRound(2)
 end
 
@@ -329,3 +341,89 @@ concommand.Add("mu_forcenextmurderer", function (ply, com, args)
 	ct:Add(" will be Murderer next round")
 	ct:Send(ply)
 end)
+
+function GM:ChangeMap()
+	if #self.MapList > 0 then
+		if MapVote then
+			// only match maps that we have specified
+			local prefix = {}
+			for k, map in pairs(self.MapList) do
+				table.insert(prefix, map .. "%.bsp$")
+			end
+			MapVote.Start(nil, nil, nil, prefix)
+			return
+		end
+		self:RotateMap()
+	end
+end
+
+function GM:RotateMap()
+	local map = game.GetMap()
+	local index 
+	for k, map2 in pairs(self.MapList) do
+		if map == map2 then
+			index = k
+		end
+	end
+	if !index then index = 1 end
+	index = index + 1
+	if index > #self.MapList then
+		index = 1
+	end
+	local nextMap = self.MapList[index]
+	print("[Murder] Rotate changing map to " .. nextMap)
+	local ct = ChatText()
+	ct:Add("Changing map to " .. nextMap)
+	ct:SendAll()
+	hook.Call("OnChangeMap", GAMEMODE)
+	timer.Simple(5, function ()
+		RunConsoleCommand("changelevel", nextMap)
+	end)
+end
+
+GM.MapList = {}
+
+local defaultMapList = {
+	"clue",
+	"cs_italy",
+	"ttt_clue",
+	"cs_office",
+	"de_chateau",
+	"de_dust",
+}
+
+function GM:SaveMapList()
+
+	// ensure the folders are there
+	if !file.Exists("murder/","DATA") then
+		file.CreateDir("murder")
+	end
+
+	local txt = ""
+	for k, map in pairs(self.MapList) do
+		txt = txt .. map .. "\r\n"
+	end
+	file.Write("murder/maplist.txt", txt)
+end
+
+function GM:LoadMapList() 
+	local mapName = game.GetMap()
+	local jason = file.ReadDataAndContent("murder/maplist.txt")
+	if jason then
+		local tbl = {}
+		local i = 1
+		for map in jason:gmatch("[^\r\n]+") do
+			table.insert(tbl, map)
+		end
+		self.MapList = tbl
+	else
+		local tbl = {}
+		for k, map in pairs(defaultMapList) do
+			if file.Exists("maps/" .. map .. ".bsp", "GAME") then
+				table.insert(tbl, map)
+			end
+		end
+		self.MapList = tbl
+		self:SaveMapList()
+	end
+end
