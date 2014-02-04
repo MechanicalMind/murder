@@ -56,6 +56,7 @@ function GM:Initialize()
 	self:StartNewRound()
 	self:LoadLootData()
 	self:LoadMapList()
+	self:LoadBystanderNames()
 end
 
 function GM:InitPostEntity() 

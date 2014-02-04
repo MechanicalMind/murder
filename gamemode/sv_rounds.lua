@@ -407,7 +407,6 @@ function GM:SaveMapList()
 end
 
 function GM:LoadMapList() 
-	local mapName = game.GetMap()
 	local jason = file.ReadDataAndContent("murder/maplist.txt")
 	if jason then
 		local tbl = {}

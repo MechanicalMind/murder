@@ -1,4 +1,4 @@
-local parts = {"Alfa",
+GM.BystanderNameParts = {"Alfa",
 "Bravo",
 "Charlie",
 "Delta",
@@ -33,23 +33,26 @@ GM.BystanderWords = CreateClientConVar( "mu_bystandername_words", 1, FCVAR_ARCHI
 
 // adds a name to the bystander parts generation table
 function GM:AddBystanderNamePart(name)
-	table.insert(parts, name)
+	table.insert(self.BystanderNameParts, name)
 end
 
 // removes a name to the bystander parts generation table
 function GM:RemoveBystanderNamePart(name)
-	table.RemoveByValue(parts, name)
+	table.RemoveByValue(self.BystanderNameParts, name)
 end
 
 // returns the bystander parts generation table
 function GM:GetBystanderNameParts()
-	return parts
+	return self.BystanderNameParts
 end
 
 function GM:GenerateName(words)
+	if #self.BystanderNameParts <= 0 then
+		return "error"
+	end
 	local name
 	for i = 1, words do
-		local word = parts[math.random(#parts)]
+		local word = self.BystanderNameParts[math.random(#self.BystanderNameParts)]
 		if !name then
 			name = word
 		else
@@ -57,6 +60,18 @@ function GM:GenerateName(words)
 		end
 	end
 	return name
+end
+
+function GM:LoadBystanderNames()
+	local jason = file.ReadDataAndContent("murder/bystander_name_parts.txt")
+	if jason then
+		local tbl = {}
+		local i = 1
+		for name in jason:gmatch("[^\r\n]+") do
+			table.insert(tbl, name)
+		end
+		self.BystanderNameParts = tbl
+	end
 end
 
 function EntityMeta:GenerateBystanderName()
