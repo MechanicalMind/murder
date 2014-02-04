@@ -33,6 +33,8 @@ Convars
 	mu_localchat_range <distance> - The range at which you can hear other players, default 550
 	mu_disguise <0/1> - Whether the murderer can disguise as dead players
 	mu_disguise_removeonkill <0/1> - Remove the murderer's disguise when he kills someone
+	mu_moveafktospectator <0/1> - Should we move AFK players to spectator on round end
+	mu_roundlimit <number> - Number of rounds we should play before map change
 	
 
 
