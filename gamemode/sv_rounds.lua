@@ -146,25 +146,10 @@ function GM:EndTheRound(reason, murderer)
 
 	local players = team.GetPlayers(2)
 	for k, ply in pairs(players) do
-		if !ply.HasMoved && !ply.Frozen && self.AFKMoveToSpec:GetBool() then
-			local oldTeam = ply:Team()
-			ply:SetTeam(1)
-			GAMEMODE:PlayerOnChangeTeam(ply, 1, oldTeam)
-			local ct = ChatText()
-			ct:Add(ply:Nick() .. " was moved to ")
-			ct:Add(team.GetName(1), team.GetColor(1))
-			ct:Add(" for being AFK", color_white)
-			ct:SendAll()
-		end
-		if ply:Alive() then
-			ply:Freeze(false)
-			ply.Frozen = false
-		end
 		ply:SetTKer(false)
 		ply:SetMurdererRevealed(false)
 		ply:UnMurdererDisguise()
 	end
-	self.RoundUnFreezePlayers = nil
 
 	if reason == 3 then
 		local ct = ChatText()
@@ -207,6 +192,24 @@ function GM:EndTheRound(reason, murderer)
 	net.WriteUInt(0, 8)
 
 	net.Broadcast()
+
+	for k, ply in pairs(players) do
+		if !ply.HasMoved && !ply.Frozen && self.AFKMoveToSpec:GetBool() then
+			local oldTeam = ply:Team()
+			ply:SetTeam(1)
+			GAMEMODE:PlayerOnChangeTeam(ply, 1, oldTeam)
+			local ct = ChatText()
+			ct:Add(ply:Nick() .. " was moved to ")
+			ct:Add(team.GetName(1), team.GetColor(1))
+			ct:Add(" for being AFK", color_white)
+			ct:SendAll()
+		end
+		if ply:Alive() then
+			ply:Freeze(false)
+			ply.Frozen = false
+		end
+	end
+	self.RoundUnFreezePlayers = nil
 
 	self.MurdererLastKill = nil
 
