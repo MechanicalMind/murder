@@ -390,6 +390,7 @@ local defaultMapList = {
 	"cs_office",
 	"de_chateau",
 	"de_tides",
+	"de_prodigy",
 	"dm_lockdown"
 }
 
