@@ -389,6 +389,7 @@ local defaultMapList = {
 	"ttt_clue",
 	"cs_office",
 	"de_chateau",
+	"de_tides",
 	"dm_lockdown"
 }
 
