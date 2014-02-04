@@ -160,3 +160,11 @@ function GM:ShowTeam(ply) // F2
 	net.Start("reopen_round_board")
 	net.Send(ply)
 end
+
+concommand.Add("mu_version", function (ply)
+	if IsValid(ply) then
+		ply:ChatPrint("Murder by Mechanical Mind version " .. tostring(GAMEMODE.Version or "error"))
+	else
+		print("Murder by Mechanical Mind version " .. tostring(GAMEMODE.Version or "error"))
+	end
+end)
