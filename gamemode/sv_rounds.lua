@@ -389,7 +389,7 @@ local defaultMapList = {
 	"ttt_clue",
 	"cs_office",
 	"de_chateau",
-	"de_dust",
+	"dm_lockdown"
 }
 
 function GM:SaveMapList()
