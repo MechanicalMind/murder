@@ -513,7 +513,15 @@ function GM:PlayerShouldTaunt( ply, actid )
 	return false
 end
 
-function GM:KeyPress( ply, key )
+function GM:GetTKPenaltyTime()
+	return math.max(0, self.TKPenaltyTime:GetFloat())
+end
+
+function GM:PlayerUse(ply, ent)
+	return true
+end
+
+function GM:KeyPress(ply, key)
 	if key == IN_USE then
 		local tr = ply:GetEyeTraceNoCursor()
 
@@ -528,20 +536,8 @@ function GM:KeyPress( ply, key )
 			dmg:SetDamagePosition(tr.HitPos)
 			tr.Entity:TakeDamageInfo(dmg)
 		end
-	end
-end
 
-function GM:GetTKPenaltyTime()
-	return math.max(0, self.TKPenaltyTime:GetFloat())
-end
-
-function GM:PlayerUse(ply, ent)
-	return true
-end
-
-function GM:KeyPress(ply, key)
-	if key == IN_USE then
-		local tr = ply:GetEyeTraceNoCursor()
+		// disguise as ragdolls
 		if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
 			if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
 				if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then 
