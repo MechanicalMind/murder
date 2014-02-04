@@ -141,7 +141,7 @@ function GM:DoPlayerDeath( ply, attacker, dmginfo )
 			ply:DropWeapon(weapon)
 		end
 	end
-	
+
 	ply:UnMurdererDisguise()
 
 	ply:Freeze(false) // why?, *sigh*
@@ -182,6 +182,16 @@ function plyMeta:CalculateSpeed()
 		walk = walk * 0.5
 		run = run * 0.5
 		jumppower = jumppower * 0.5
+	end
+
+	local wep = self:GetActiveWeapon()
+	if IsValid(wep) then
+		if wep.GetCarrying && wep:GetCarrying() then
+			print(wep:GetCarrying())
+			walk = walk * 0.3
+			run = run * 0.3
+			jumppower = jumppower * 0.3
+		end
 	end
 
 	// handcuffs

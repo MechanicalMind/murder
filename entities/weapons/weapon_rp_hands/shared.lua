@@ -89,13 +89,11 @@ end
 
 function SWEP:SecondaryAttack()
 	if SERVER then
-		self.CarryEnt = nil
+		self:SetCarrying()
 		local tr = self.Owner:GetEyeTraceNoCursor()
 
 		if IsValid(tr.Entity) && self:CanPickup(tr.Entity) then
-			self.CarryEnt = tr.Entity
-			self.CarryBone = tr.PhysicsBone
-
+			self:SetCarrying(tr.Entity, tr.PhysicsBone)
 			self:ApplyForce()
 		end
 	end
@@ -108,7 +106,7 @@ function SWEP:ApplyForce()
 		local vec = target - phys:GetPos()
 		local len = vec:Length()
 		if len > 40 then
-			self.CarryEnt = nil
+			self:SetCarrying()
 			return
 		end
 
@@ -121,6 +119,21 @@ function SWEP:ApplyForce()
 		phys:AddVelocity( avec)
 
 	end
+end
+
+function SWEP:GetCarrying()
+	return self.CarryEnt
+end
+
+function SWEP:SetCarrying(ent, bone)
+	if IsValid(ent) then
+		self.CarryEnt = ent
+		self.CarryBone = bone
+	else
+		self.CarryEnt = nil
+		self.CarryBone = nil
+	end
+	self.Owner:CalculateSpeed()
 end
 
 function SWEP:Think()
@@ -140,6 +153,8 @@ function SWEP:Think()
 		if IsValid(self.CarryEnt) then
 			self:ApplyForce()
 		end
+	elseif self.CarryEnt != nil then
+		self:SetCarrying()
 	end
 end
 
