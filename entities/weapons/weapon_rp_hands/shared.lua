@@ -117,7 +117,7 @@ function SWEP:ApplyForce()
 		local tvec = vec * len * 15
 		local avec = tvec - phys:GetVelocity()
 		avec = avec:GetNormal() * math.min(45, avec:Length())
-		avec.z = avec.z * 0.7
+		avec = avec / phys:GetMass() * 16
 		phys:AddVelocity( avec)
 
 	end
