@@ -30,18 +30,26 @@ SWEP.Secondary.DefaultClip	= -1
 SWEP.Secondary.Automatic   	= false
 SWEP.Secondary.Ammo         = "none"
 
-function SWEP:GetTrace(ang)
+function SWEP:GetTrace(left, up)
 	local trace = {}
 	trace.filter = self.Owner
 	trace.start = self.Owner:GetShootPos()
-	trace.mask = MASK_SHOT
-	local vec = self.Owner:GetAimVector()
-	if ang then vec:Rotate(ang) end
+	-- trace.mask = MASK_SHOT
+	trace.mask = MASK_SHOT_HULL
+	local ang = self.Owner:GetAimVector():Angle()
+	-- if ang then vec:Rotate(ang) end
+	if left then
+		ang:RotateAroundAxis(ang:Up(), left)
+	end
+	if up then
+		ang:RotateAroundAxis(ang:Right(), up)
+	end
+	local vec = ang:Forward()
 	trace.endpos = trace.start + vec * 60
 	//trace.mask = MASK_SHOT
 	local tr = util.TraceLine(trace)
 	tr.TraceAimVector = vec
-	tr.TraceAngle = ang
+	tr.LeftUp = Vector(left or 0, up or 0, 0)
 	return tr
 end
 
@@ -86,7 +94,7 @@ end
 
 function SWEP:GetCharge()
 	local start = CurTime() - (self.ChargeStart or 0)
-	return math.Clamp((math.sin(start - 1) + 1) / 2, 0, 1)
+	return math.Clamp((math.sin(start * 2 - 1) + 1) / 2, 0, 1)
 end
 
 function SWEP:ThrowKnife(force)
@@ -100,7 +108,7 @@ function SWEP:ThrowKnife(force)
 
 
 	local phys = ent:GetPhysicsObject()
-	phys:SetVelocity(self.Owner:GetAimVector() * (force * 1300 + 200))
+	phys:SetVelocity(self.Owner:GetAimVector() * (force * 1000 + 200))
 	phys:AddAngleVelocity(Vector(0, 1500, 0))
 
 	self:Remove()
@@ -113,43 +121,9 @@ function SWEP:Think()
 		self.IdleTime = CurTime() + 0.1
 	end	
 	if self.FistHit && self.FistHit < CurTime() then
-		self.Owner:LagCompensation(true)
 		self.FistHit = nil
-		local tr = self:GetTrace()
-
-		// aim around
-		if !tr.Hit then tr = self:GetTrace(Angle(0,20,0)) end
-		if !tr.Hit then tr = self:GetTrace(Angle(0,-20,0)) end
-		if !tr.Hit then tr = self:GetTrace(Angle(0,0,20)) end
-		if !tr.Hit then tr = self:GetTrace(Angle(0,0,-20)) end
-		if tr.Hit then
-			self.Owner:ViewPunch(Angle(0, 3, 0))
-			if IsValid(tr.Entity) then
-				// only play the sound for the murderer
-				if CLIENT && LocalPlayer() == self.Owner then
-					self:EmitSound("Weapon_Crowbar.Melee_Hit")
-				end
-			else
-				self:EmitSound("Weapon_Crowbar.Melee_Hit")
-			end
-			local bullet = {}	-- Set up the shot
-			bullet.Num = 1
-			bullet.Src = self.Owner:GetShootPos()
-			bullet.Dir = tr.TraceAimVector
-			bullet.Spread = Vector( 0, 0, 0 )
-			bullet.Tracer = 0
-			bullet.Force = self.Primary.Force
-			bullet.Damage = self.Primary.Damage
-			self.Owner:FireBullets( bullet )
-		else
-			// only play the sound for the murderer
-			if CLIENT && LocalPlayer() == self.Owner then
-				self:EmitSound("Weapon_Crowbar.Single")
-			end
-		end
-		self.Owner:LagCompensation(false)
+		self:AttackTrace()
 	end
-
 	if SERVER && self.ChargeStart then
 		if !IsValid(self.Owner) || !self.Owner:KeyDown(IN_ATTACK2) then
 			if IsValid(self.Owner) then
@@ -162,4 +136,59 @@ function SWEP:Think()
 			self.ChargeStart = nil
 		end
 	end
+end
+
+function SWEP:AttackTrace()
+	self.Owner:LagCompensation(true)
+	local trace = {}
+	trace.filter = self.Owner
+	trace.start = self.Owner:GetShootPos()
+	trace.mask = MASK_SHOT_HULL
+	trace.endpos = trace.start + self.Owner:GetAimVector() * 60
+	trace.mins = Vector(-10, -10, -10)
+	trace.maxs = Vector(10, 10, 10)
+	local tr = util.TraceHull(trace)
+	tr.TraceAimVector = self.Owner:GetAimVector()
+
+	// aim around
+	if !IsValid(tr.Entity) then tr = self:GetTrace() end
+	if !IsValid(tr.Entity) then tr = self:GetTrace(10,0) end
+	if !IsValid(tr.Entity) then tr = self:GetTrace(-10,0) end
+	if !IsValid(tr.Entity) then tr = self:GetTrace(0,10) end
+	if !IsValid(tr.Entity) then tr = self:GetTrace(0,-10) end
+	if tr.Hit then
+		self.Owner:ViewPunch(Angle(0, 3, 0))
+		if IsValid(tr.Entity) then
+			// only play the sound for the murderer
+			if CLIENT && LocalPlayer() == self.Owner then
+				self:EmitSound("Weapon_Crowbar.Melee_Hit")
+			end
+			local dmg = DamageInfo()
+			dmg:SetDamage(self.Primary.Damage)
+			dmg:SetAttacker(self.Owner)
+			dmg:SetInflictor(self.Weapon or self)
+			dmg:SetDamageForce(self.Owner:GetAimVector() * self.Primary.Force)
+			dmg:SetDamagePosition(tr.HitPos)
+			dmg:SetDamageType(DMG_SLASH)
+			tr.Entity:DispatchTraceAttack(dmg, self.Owner:GetShootPos(), self.Owner:GetShootPos() + tr.TraceAimVector * 60)
+
+			if tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll" then
+				local edata = EffectData()
+				edata:SetStart(self.Owner:GetShootPos())
+				edata:SetOrigin(tr.HitPos)
+				edata:SetNormal(tr.Normal)
+				edata:SetEntity(tr.Entity)
+				util.Effect("BloodImpact", edata)
+			end
+		else
+			self:EmitSound("Weapon_Crowbar.Melee_Hit")
+		end
+		util.Decal("ManhackCut", self.Owner:GetShootPos(), self.Owner:GetShootPos() + self.Owner:GetAimVector() * 60)
+	else
+		// only play the sound for the murderer
+		if CLIENT && LocalPlayer() == self.Owner then
+			self:EmitSound("Weapon_Crowbar.Single")
+		end
+	end
+	self.Owner:LagCompensation(false)
 end
