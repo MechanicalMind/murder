@@ -391,6 +391,7 @@ local defaultMapList = {
 	"de_chateau",
 	"de_tides",
 	"de_prodigy",
+	"mu_nightmare_church_b1",
 	"dm_lockdown"
 }
 
