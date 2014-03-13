@@ -82,12 +82,16 @@ function SWEP:SecondaryAttack()
 	-- self:SendWeaponAnim( ACT_VM_HITCENTER )
 
 	if SERVER then
-		self.ChargeStart = CurTime()
-		net.Start("mu_knife_charge")
-		net.WriteEntity(self)
-		net.WriteUInt(1, 8)
-		net.WriteDouble(self.ChargeStart)
-		net.Send(self.Owner)
+		if self.KnifeChargeConvar:GetBool() then
+			self.ChargeStart = CurTime()
+			net.Start("mu_knife_charge")
+			net.WriteEntity(self)
+			net.WriteUInt(1, 8)
+			net.WriteDouble(self.ChargeStart)
+			net.Send(self.Owner)
+		else
+			self:ThrowKnife(0.6)
+		end
 	end
 
 end
