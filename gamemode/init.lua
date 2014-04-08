@@ -1,4 +1,5 @@
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("sh_translate.lua")
 AddCSLuaFile("weightedrandom.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("cl_hud.lua")
@@ -17,6 +18,7 @@ AddCSLuaFile("cl_spectate.lua")
 AddCSLuaFile("cl_adminpanel.lua")
 
 include("shared.lua")
+include("sh_translate.lua")
 include("weightedrandom.lua")
 include("sv_player.lua")
 include("sv_spectate.lua")

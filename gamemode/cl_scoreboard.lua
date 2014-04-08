@@ -70,14 +70,14 @@ function GM:DoScoreboardActionPopup(ply)
 	local actions = DermaMenu()
 
 	if ply:IsAdmin() then
-		local admin = actions:AddOption("Is an Admin")
+		local admin = actions:AddOption(translate.scoreboardActionAdmin)
 		admin:SetIcon("icon16/shield.png")
 	end
 
 	if ply != LocalPlayer() then
-		local t = "Mute"
+		local t = translate.scoreboardActionMute
 		if ply:IsMuted() then
-			t = "Unmute"
+			t = translate.scoreboardActionUnmute
 		end
 		local mute = actions:AddOption( t )
 		mute:SetIcon("icon16/sound_mute.png")
@@ -92,20 +92,20 @@ function GM:DoScoreboardActionPopup(ply)
 		actions:AddSpacer()
 
 		if ply:Team() == 2 then
-			local spectate = actions:AddOption( "Move to " .. team.GetName(1) )
+			local spectate = actions:AddOption( Translator:QuickVar("adminMoveToSpectate", "spectate", team.GetName(1)) )
 			spectate:SetIcon( "icon16/status_busy.png" )
 			function spectate:DoClick()
 				RunConsoleCommand("mu_movetospectate", ply:EntIndex())
 			end
 
-			local force = actions:AddOption( "Force murderer next round" )
+			local force = actions:AddOption( translate.adminMurdererForce )
 			force:SetIcon( "icon16/delete.png" )
 			function force:DoClick()
 				RunConsoleCommand("mu_forcenextmurderer", ply:EntIndex())
 			end
 
 			if ply:Alive() then
-				local specateThem = actions:AddOption( "Spectate" )
+				local specateThem = actions:AddOption( translate.adminSpectate )
 				specateThem:SetIcon( "icon16/status_online.png" )
 				function specateThem:DoClick()
 					RunConsoleCommand("mu_spectate", ply:EntIndex())
@@ -179,7 +179,7 @@ local function makeTeamList(parent, pteam)
 
 	local but = vgui.Create("DButton", headp)
 	but:Dock(RIGHT)
-	but:SetText("Join")
+	but:SetText(translate.scoreboardJoinTeam)
 	but:SetTextColor(color_white)
 	but:SetFont("Trebuchet18")
 	function but:DoClick()
