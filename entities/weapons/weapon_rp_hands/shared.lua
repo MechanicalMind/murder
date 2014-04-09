@@ -7,7 +7,7 @@ if SERVER then
 	SWEP.AutoSwitchFrom		= false
 else
 
-	SWEP.PrintName			= "Hands"
+	SWEP.PrintName			= translate and translate.hands or "Hands"
 	SWEP.Slot				= 0
 	SWEP.SlotPos			= 1
 	SWEP.DrawAmmo			= false

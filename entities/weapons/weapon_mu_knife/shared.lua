@@ -2,7 +2,7 @@
 SWEP.ViewModel = "models/weapons/v_knife_t.mdl"
 SWEP.WorldModel = "models/weapons/w_knife_t.mdl"
 
-SWEP.PrintName = "Knife"
+SWEP.PrintName = translate and translate.knife or "Knife"
 
 SWEP.Weight	= 0
 

@@ -489,7 +489,7 @@ concommand.Add("mu_spectate", function (ply, com, args)
 	
 	if ply:Alive() && ply:Team() != 1 then
 		local ct = ChatText()
-		ct:Add("You can't spectate. You ain't dead.")
+		ct:Add(translate.spectateFailed)
 		ct:Send(ply)
 		return
 	end

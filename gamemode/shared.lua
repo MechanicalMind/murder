@@ -6,5 +6,8 @@ GM.Email 	= ""
 GM.Website 	= "www.codingconcoctions.com/murder/"
 GM.Version = "17"
 
-team.SetUp(1, "Spectators", Color(150, 150, 150))
-team.SetUp(2, "Players", Color(26, 120, 245))
+function GM:SetupTeams()
+	team.SetUp(1, translate.teamSpectators, Color(150, 150, 150))
+	team.SetUp(2, translate.teamPlayers, Color(26, 120, 245))
+end
+GM:SetupTeams()

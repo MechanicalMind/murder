@@ -35,13 +35,13 @@ function GM:DisplayEndRoundBoard(data)
 	winner:SetAutoStretchVertical(true)
 
 	if data.reason == 3 then
-		winner:SetText("Bystanders win! The murderer rage quit")
+		winner:SetText(translate.endroundMurdererQuit)
 		winner:SetTextColor(Color(255, 255, 255))
 	elseif data.reason == 2 then
-		winner:SetText("Bystanders win!")
+		winner:SetText(translate.endroundBystandersWin)
 		winner:SetTextColor(Color(20, 120, 255))
 	elseif data.reason == 1 then
-		winner:SetText("The murderer wins!")
+		winner:SetText(translate.endroundMurdererWins)
 		winner:SetTextColor(Color(190, 20, 20))
 	end
 
@@ -51,21 +51,21 @@ function GM:DisplayEndRoundBoard(data)
 	function murdererPnl:Paint()
 	end
 
-	local was = vgui.Create("DLabel", murdererPnl)
-	was:Dock(LEFT)
-	was:SetText("The murderer was ")
-	was:SetFont("MersRadialSmall")
-	was:SetTextColor(color_white)
-	was:SizeToContents()
-
 	if data.murdererName then
-		local murderer = vgui.Create("DLabel", murdererPnl)
-		murderer:Dock(FILL)
-		murderer:SetFont("MersRadialSmall")
-		murderer:SetAutoStretchVertical(true)
-		murderer:SetText(data.murdererName)
 		local col = data.murdererColor
-		murderer:SetTextColor(Color(col.x * 255, col.y * 255, col.z * 255))
+		local msgs = Translator:AdvVarTranslate(translate.endroundMurdererWas, {
+			murderer = {text = data.murdererName, color = Color(col.x * 255, col.y * 255, col.z * 255)}
+		})
+
+		for k, msg in pairs(msgs) do
+			local was = vgui.Create("DLabel", murdererPnl)
+			was:Dock(LEFT)
+			was:SetText(msg.text)
+			was:SetFont("MersRadialSmall")
+			was:SetTextColor(msg.color or color_white)
+			was:SetAutoStretchVertical(true)
+			was:SizeToContentsX()
+		end
 	end
 
 	local lootPnl = vgui.Create("DPanel", menu)
@@ -80,7 +80,7 @@ function GM:DisplayEndRoundBoard(data)
 	desc:Dock(TOP)
 	desc:SetFont("MersRadial")
 	desc:SetAutoStretchVertical(true)
-	desc:SetText("Loot Collected")
+	desc:SetText(translate.endroundLootCollected)
 	desc:SetTextColor(color_white)
 	
 	local lootList = vgui.Create("DPanelList", lootPnl)
@@ -166,7 +166,7 @@ function GM:DisplayEndRoundBoard(data)
 			surface.SetTextColor(255, 255, 255, 255)
 		end
 
-		local t = "Why not try "
+		local t = translate.adMelonbomberWhy
 		surface.SetFont("MersRadialSmall")
 		local tw, th = surface.GetTextSize(t)
 		surface.SetTextPos(4, h / 2 - th / 2)
@@ -174,7 +174,7 @@ function GM:DisplayEndRoundBoard(data)
 		surface.DrawTexturedRect(4 + tw + 4, 0, 324, 64)
 
 		surface.SetTextPos(4 + tw + 4 + 324 + 4, h / 2 - th / 2)
-		surface.DrawText(" a gamemode by the creator of Murder")
+		surface.DrawText(translate.adMelonbomberBy)
 	end
 
 	function add:DoClick()

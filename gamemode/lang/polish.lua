@@ -25,8 +25,10 @@ pt.spectateFailed = "Nie możesz zostać widzem. Nie jesteś martwy."
 pt.murdererDisconnect = "Morderca się zdenerwował i wyszedł z gry"
 pt.murdererDisconnectKnown = "Morderca się zdenerwował i wyszedł z gry, był nim {murderer}"
 
-pt.winBystanders = "Świadkowie wygrywają! Mordercą był {murderer}"
-pt.winMurderer = "Morderca wygrywa! Był nim {murderer}"
+pt.winBystanders = "Świadkowie wygrywają!"
+pt.winBystandersMurdererWas = " Mordercą był {murderer}"
+pt.winMurderer = "Morderca wygrywa!"
+pt.winMurdererMurdererWas = " Był nim {murderer}"
 
 pt.minimumPlayers = "Niewystarczająca liczba graczy, by rozpocząć rundę"
 pt.roundStarted = "Nowa runda rozpoczęła się"

@@ -1,5 +1,5 @@
-include("shared.lua")
 include("sh_translate.lua")
+include("shared.lua")
 include("cl_hud.lua")
 include("cl_scoreboard.lua")
 include("cl_footsteps.lua")

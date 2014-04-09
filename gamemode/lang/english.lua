@@ -10,6 +10,7 @@ pt.hands = "Hands"
 
 pt.teamSpectators = "Spectators"
 pt.teamPlayers = "Players"
+pt.teamAss = "Cake"
 
 pt.killedTeamKill = " killed an innocent bystander"
 pt.killedMurderer = " killed the murderer"
@@ -24,8 +25,10 @@ pt.spectateFailed = "You can't spectate. You ain't dead."
 pt.murdererDisconnect = "The murderer rage quit"
 pt.murdererDisconnectKnown = "The murderer rage quit, it was {murderer}"
 
-pt.winBystanders = "Bystanders win! The murderer was {murderer}"
-pt.winMurderer = "The murderer wins! He was {murderer}"
+pt.winBystanders = "Bystanders win!"
+pt.winBystandersMurdererWas = " The murderer was {murderer}"
+pt.winMurderer = "The murderer wins!"
+pt.winMurdererMurdererWas = " He was {murderer}"
 
 pt.minimumPlayers = "Not enough players to start round"
 pt.roundStarted = "A new round has started"

@@ -11,8 +11,14 @@ SWEP.SlotPos = 1
 killicon.AddFont( "weapon_pk_fists", "HL2MPTypeDeath", "5", Color( 0, 0, 255, 255 ) )
 
 function SWEP:DrawWeaponSelection( x, y, w, h, alpha )
-	draw.DrawText("nife","MersText1",x + w * 0.5,y + h * 0.51,Color(255,150,0,alpha),1)
-	draw.DrawText("K","MersHead1",x + w * 0.405,y + h * 0.49,Color(255,50,50,alpha),1)
+	local name = translate and translate.knife or "Knife"
+	surface.SetFont("MersText1")
+	local tw, th = surface.GetTextSize(name:sub(2))
+	surface.SetFont("MersHead1")
+	local twf, thf = surface.GetTextSize(name:sub(1, 1))
+	tw = tw + twf + 1
+	draw.DrawText(name:sub(2), "MersText1", x + w * 0.5 - tw / 2 + twf + 1, y + h * 0.51, Color(255, 150, 0, alpha), 0)
+	draw.DrawText(name:sub(1, 1), "MersHead1", x + w * 0.5 - tw / 2 , y + h * 0.49, Color(255, 50, 50, alpha), 0)
 end
 
 function SWEP:Initialize()

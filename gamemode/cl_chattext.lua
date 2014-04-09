@@ -11,3 +11,17 @@ net.Receive("chattext_msg", function (len)
 
 	chat.AddText(unpack(msgs))
 end)
+
+net.Receive("msg_clients", function (len)
+	local lines = {}
+	while net.ReadUInt(8) != 0 do
+		local r = net.ReadUInt(8)
+		local g = net.ReadUInt(8)
+		local b = net.ReadUInt(8)
+		local text = net.ReadString()
+		table.insert(lines, {color = Color(r, g, b), text = text})
+	end
+	for k, line in pairs(lines) do
+		MsgC(line.color, line.text)
+	end
+end)

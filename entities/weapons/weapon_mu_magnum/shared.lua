@@ -5,7 +5,7 @@ else
 end
 SWEP.Base = "weapon_base"
 
-SWEP.PrintName		= "Magnum"
+SWEP.PrintName		= translate and translate.magnum or "Magnum"
 SWEP.Slot			= 2
 SWEP.SlotPos		= 1
 SWEP.DrawAmmo		= true

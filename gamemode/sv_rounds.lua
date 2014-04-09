@@ -155,20 +155,35 @@ function GM:EndTheRound(reason, murderer)
 	end
 
 	if reason == 3 then
-		local ct = ChatText()
-		ct:Add("The murderer rage quit")
 		if murderer then
-			ct:Add(", it was ")
 			local col = murderer:GetPlayerColor()
-			ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
+			local msgs = Translator:AdvVarTranslate(translate.murdererDisconnectKnown, {
+				murderer = {text = murderer:Nick() .. ", " .. murderer:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
+			})
+			local ct = ChatText(msgs)
+			ct:SendAll()
+			-- ct:Add(", it was ")
+			-- ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
+		else
+			local ct = ChatText()
+			ct:Add(translate.murdererDisconnect)
+			ct:SendAll()
 		end
-		ct:SendAll()
 	elseif reason == 2 then
-		local ct = ChatText()
-		ct:Add("Bystanders win! ", Color(20, 120, 255))
-		ct:Add("The murderer was ")
+		-- local ct = ChatText()
+		-- ct:Add("Bystanders win! ", Color(20, 120, 255))
+		-- ct:Add("The murderer was ")
+		-- local col = murderer:GetPlayerColor()
+		-- ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
+		-- ct:SendAll()
+
 		local col = murderer:GetPlayerColor()
-		ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
+		local msgs = Translator:AdvVarTranslate(translate.winBystandersMurdererWas, {
+			murderer = {text = murderer:Nick() .. ", " .. murderer:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
+		})
+		local ct = ChatText()
+		ct:Add(translate.winBystanders, Color(20, 120, 255))
+		ct:AddParts(msgs)
 		ct:SendAll()
 	elseif reason == 1 then
 		local ct = ChatText()
@@ -181,9 +196,15 @@ function GM:EndTheRound(reason, murderer)
 
 	net.Start("DeclareWinner")
 	net.WriteUInt(reason, 8)
-	net.WriteEntity(murderer)
-	net.WriteVector(murderer:GetPlayerColor())
-	net.WriteString(murderer:GetBystanderName())
+	if murderer then
+		net.WriteEntity(murderer)
+		net.WriteVector(murderer:GetPlayerColor())
+		net.WriteString(murderer:GetBystanderName())
+	else
+		net.WriteEntity(Entity(0))
+		net.WriteVector(Vector(1, 1, 1))
+		net.WriteString("?")
+	end
 
 	for k, ply in pairs(team.GetPlayers(2)) do
 		net.WriteUInt(1, 8)
