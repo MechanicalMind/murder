@@ -52,21 +52,20 @@ function GM:RadialMousePressed(code, vec)
 end
 
 local elements
-local function addElement(name, code, subtitle)
+local function addElement(transCode, code)
 	local t = {}
-	t.Name = name
+	t.TransCode = transCode
 	t.Code = code
-	t.Subtitle = subtitle
 	table.insert(elements, t)
 end
 
 concommand.Add("+menu", function (client, com, args, full)
 	if client:Alive() && client:Team() == 2 then
 		elements = {}
-		addElement("Help", "help", "Yell for help")
-		addElement("Funny", "funny", "Bit of a joke")
-		addElement("Scream", "scream", "Like a little girl")
-		addElement("Morose", "morose", "Feel the sadness")
+		addElement("Help", "help")
+		addElement("Funny", "funny")
+		addElement("Scream", "scream")
+		addElement("Morose", "morose")
 		GAMEMODE:OpenRadialMenu(elements)
 	end
 end)
@@ -157,10 +156,8 @@ function GM:DrawRadialMenu()
 				textCol = color_white
 			end
 
-			drawShadow(ment.Name,"MersRadial",sx + w * 0.6 * x, sy + h * 0.6 * y - fontHeight / 3,textCol,1)
-			if ment.Subtitle then
-				drawShadow(ment.Subtitle,"MersRadialSmall",sx + w * 0.6 * x, sy + h * 0.6 * y + fontHeight / 2,textCol,1)
-			end
+			drawShadow(translate["voice" .. ment.TransCode], "MersRadial", sx + w * 0.6 * x, sy + h * 0.6 * y - fontHeight / 3,textCol, 1)
+			drawShadow(translate["voice" .. ment.TransCode .. "Description"], "MersRadialSmall", sx + w * 0.6 * x, sy + h * 0.6 * y + fontHeight / 2, textCol, 1)
 
 		end
 	end

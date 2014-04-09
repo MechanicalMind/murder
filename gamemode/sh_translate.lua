@@ -64,21 +64,34 @@ end
 
 // the actual translator
 local tmeta = {}
-local function trans(self, name)
+local function get(args)
 	local t = Translator:GetLanguageTable()
-	local a = rawget(t, name)
-	if a != nil then
-		if type(a) == "function" then
-			return a(name)
+	for k, name in pairs(args) do
+		local a = rawget(t, name)
+		if a != nil then
+			if type(a) == "function" then
+				return a(name)
+			end
+			return a
 		end
-		return tostring(a)
 	end
 	local a = rawget(t, "default")
 	if a != nil then
 		if type(a) == "function" then
 			return a(name)
 		end
+		return a
+	end
+end
+local function trans(self, ...)
+	local args = {...}
+	local a = get(args)
+	if a != nil then
 		return tostring(a)
+	end
+	local first = args[1]
+	if first then
+		return "<" .. tostring(first) .. ">"
 	end
 	return "<no-trans>"
 end
@@ -87,5 +100,22 @@ tmeta.__call = trans
 tmeta.__newindex = function (self, key, value)
 	
 end
+
+local tablemeta = {}
+local function transtable(self, ...)
+	local args = {...}
+	local a = get(args)
+	if type(a) == "table" then
+		return a
+	end
+end
+tablemeta.__index = transtable
+tablemeta.__call = transtable
+tablemeta.__newindex = function (self, key, value)
+	
+end
+
 translate = {}
+translate.table = {}
 setmetatable(translate, tmeta)
+setmetatable(translate.table, tablemeta)

@@ -61,7 +61,7 @@ function GM:HUDPaint()
 	local client = LocalPlayer()
 
 	if round == 0 then
-		drawTextShadow("Not enough players to start round", "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 	end
 
 	if client:Team() == 2 then
@@ -106,20 +106,14 @@ end
 
 function GM:DrawStartRoundInformation()
 	local client = LocalPlayer()
-	local t1 = "You are a bystander"
+	local t1 = translate.startHelpBystanderTitle
 	local t2 = nil
 	local c = Color(20,120,255)
-	local desc = {
-		"There is a murderer on the loose",
-		"Don't get killed"
-	}
+	local desc = translate.table.startHelpBystander
 
 	if self:GetAmMurderer() then
-		t1 = "You are the murderer"
-		desc = {
-			"Kill everyone",
-			"Don't get caught"
-		}
+		t1 = translate.startHelpMurdererTitle
+		desc = translate.table.startHelpMurderer
 		c = Color(190, 20, 20)
 	end
 
@@ -131,12 +125,9 @@ function GM:DrawStartRoundInformation()
 		end
 	end
 	if hasMagnum then
-		t1 = "You are a bystander"
-		t2 = "with a secret weapon"
-		desc = {
-			"There is a murderer on the loose",
-			"Find and kill him"
-		}
+		t1 = translate.startHelpGunTitle
+		t2 = translate.startHelpGunSubtitle
+		desc = translate.table.startHelpGun
 	end
 
 	drawTextShadow(t1, "MersRadial", ScrW() / 2, ScrH()  * 0.25, c, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -145,9 +136,11 @@ function GM:DrawStartRoundInformation()
 		drawTextShadow(t2, "MersRadialSmall", ScrW() / 2, ScrH() * 0.25 + h * 0.7, Color(120, 70, 245), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 
-	local fontHeight = draw.GetFontHeight("MersRadialSmall")
-	for k,v in pairs(desc) do
-		drawTextShadow(v, "MersRadialSmall", ScrW() / 2, ScrH() * 0.75 + (k - 1) * fontHeight, c, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	if desc then
+		local fontHeight = draw.GetFontHeight("MersRadialSmall")
+		for k,v in pairs(desc) do
+			drawTextShadow(v, "MersRadialSmall", ScrW() / 2, ScrH() * 0.75 + (k - 1) * fontHeight, c, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		end
 	end
 end
 
@@ -172,8 +165,8 @@ function GM:DrawGameHUD(ply)
 		surface.SetDrawColor(10,10,10,50)
 		surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
 	
-		drawTextShadow("Your evil presence is showing", "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
-		drawTextShadow("Kill someone to hide", "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
+		drawTextShadow(translate.murdererFog, "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
+		drawTextShadow(translate.murdererFogSub, "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
 	end
 
 	-- surface.SetFont("MersRadial")
@@ -182,11 +175,11 @@ function GM:DrawGameHUD(ply)
 	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
 	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
 
-	local name = "Bystander"
+	local name = translate.bystander
 	local color = Color(20,120,255)
 
 	if LocalPlayer() == ply && self:GetAmMurderer() then
-		name = "Murderer"
+		name = translate.murderer
 		color = Color(190, 20, 20)
 	end
 

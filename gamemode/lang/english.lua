@@ -1,5 +1,3 @@
-local pt = {}
-
 pt.bystander = "Bystander"
 pt.murderer = "Murderer"
 pt.spectator = "Spectator"
