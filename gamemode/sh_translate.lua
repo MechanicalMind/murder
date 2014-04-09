@@ -9,6 +9,9 @@ local rootFolder = (GM or GAMEMODE).Folder:sub(11) .. "/gamemode/"
 function Translator:LoadLanguage(name, overridePath)
 	local tempG = {}
 	tempG.pt = {}
+	local meta = {}
+	meta.__index = _G
+	setmetatable(tempG, meta)
 
 	local f = CompileFile(overridePath or (rootFolder .. "lang/" .. name .. ".lua"))
 	if !f then
@@ -99,6 +102,31 @@ else
 	end)
 end
 
+function Translator:Translate(languageTable, names)
+	for k, name in pairs(names) do
+		local a = rawget(languageTable, name)
+		if a != nil then
+			if type(a) == "function" then
+				local ret = a(name)
+				if ret != nil then
+					return ret
+				end
+			end
+			return a
+		end
+	end
+	local a = rawget(languageTable, "default")
+	if a != nil then
+		if type(a) == "function" then
+			local ret = a(names[1])
+			if ret != nil then
+				return ret
+			end
+		end
+		return a
+	end
+end
+
 
 // translation convience funcitons
 
@@ -152,40 +180,14 @@ end
 // the actual translator
 local tmeta = {}
 local function get(args)
-	local t = Translator:GetLanguageTable()
-	for k, name in pairs(args) do
-		local a = rawget(t, name)
-		if a != nil then
-			if type(a) == "function" then
-				return a(name)
-			end
-			return a
-		end
-	end
-	local a = rawget(t, "default")
+	local a = Translator:Translate(Translator:GetLanguageTable(), args)
 	if a != nil then
-		if type(a) == "function" then
-			return a(name)
-		end
 		return a
 	end
 
 	// default to english if we don't have the translation
-	local eng = Translator:GetEnglishTable()
-	for k, name in pairs(args) do
-		local a = rawget(eng, name)
-		if a != nil then
-			if type(a) == "function" then
-				return a(name)
-			end
-			return a
-		end
-	end
-	local a = rawget(eng, "default")
+	local a = Translator:Translate(Translator:GetEnglishTable(), args)
 	if a != nil then
-		if type(a) == "function" then
-			return a(name)
-		end
 		return a
 	end
 end
