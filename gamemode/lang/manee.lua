@@ -4,9 +4,10 @@ pt.default = function (n)
 		return tostring(n)
 	end
 
+	local sleft, mid, sright = a:match("^([%s]*)(.*)([%s]*)$")
 	local first = true
 	local words = ""
-	for word in a:gmatch("[^%s]+") do
+	for word in mid:gmatch("[^%s]+") do
 		if word:find("[{}]") then
 
 		else
@@ -19,5 +20,5 @@ pt.default = function (n)
 			words = words .. " " .. word
 		end
 	end
-	return words
+	return sleft .. words .. sright
 end
