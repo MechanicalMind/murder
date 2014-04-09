@@ -2,6 +2,7 @@
 
 Translator = {}
 Translator.languages = {}
+Translator.language = "english"
 
 local rootFolder = (GM or GAMEMODE).Folder:sub(11) .. "/gamemode/"
 
@@ -24,7 +25,7 @@ function Translator:LoadLanguage(name, overridePath)
 end
 
 function Translator:GetLanguage()
-	return "polish"
+	return self.language or "english"
 end
 
 local def = {}
@@ -46,9 +47,16 @@ function Translator:GetEnglishTable()
 	return def
 end
 
-function Translator:OnLanguageChanged()
+function Translator:ChangeLanguage(lang)
+	self.language = lang
+	print("Changed language to " .. self:GetLanguage())
 	hook.Run("TranslatorOnLanguageChanged", self:GetLanguage())
 	GAMEMODE:SetupTeams()
+
+
+	if SERVER then
+		self:NetworkLanguage()
+	end
 end
 
 local files, dirs = file.Find(rootFolder .. "lang/*", "LUA")
@@ -56,6 +64,39 @@ for k, v in pairs(files) do
 	AddCSLuaFile(rootFolder .. "lang/" .. v)
 	local name = v:sub(1, -5)
 	Translator:LoadLanguage(name)
+end
+
+if SERVER then
+	util.AddNetworkString("translator_language")
+
+	hook.Add("Think", "Translator", function ()
+		local lang = GAMEMODE.Language:GetString()
+
+		if lang == "" then lang = "english" end
+
+		if lang != Translator.language then
+			Translator:ChangeLanguage(lang)
+		end
+	end)
+
+	function Translator:NetworkLanguage(ply)
+		net.Start("translator_language")
+		net.WriteString(self:GetLanguage())
+		if ply != nil then
+			net.Send(ply)
+		else
+			net.Broadcast()
+		end
+	end
+
+	hook.Add("PlayerInitialSpawn", "Translator", function (ply)
+		Translator:NetworkLanguage(ply)
+	end)
+else
+	net.Receive("translator_language", function (len)
+		local lang = net.ReadString()
+		Translator:ChangeLanguage(lang)
+	end)
 end
 
 
