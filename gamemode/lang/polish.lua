@@ -12,11 +12,13 @@ pt.hands = "Dłonie"
 pt.teamSpectators = "Widzowie"
 pt.teamPlayers = "Gracze"
 
-pt.killedTeamKill = " zabił(a) niewinnego świadka"
-pt.killedMurderer = " zabił(a) mordercę"
+pt.killedTeamKill = "{player} zabił(a) niewinnego świadka"
+pt.killedMurderer = "{player} zabił(a) mordercę"
 
 pt.murdererDeathUnknown = "Morderca zmarł w niewyjaśnionych okolicznościach"
 
+
+pt.changeTeam = "{player} zmienił drużynę na: {team}"
 pt.teamMoved = "{player} został przeniesiony(a) do drużyny: {team}"
 pt.teamMovedAFK = "{player} był AFK i został przeniesiony do drużyny: {team}"
 

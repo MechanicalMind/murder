@@ -34,7 +34,7 @@ end
 
 function GM:RenderSpectate()
 	if self:IsCSpectating() then
-		drawTextShadow("Spectating", "MersRadial", ScrW() / 2, ScrH() - 100, Color(20,120,255), 1)
+		drawTextShadow(translate.spectating, "MersRadial", ScrW() / 2, ScrH() - 100, Color(20,120,255), 1)
 
 		if IsValid(self:GetCSpectatee()) && self:GetCSpectatee():IsPlayer() then
 			local h = draw.GetFontHeight("MersRadial")

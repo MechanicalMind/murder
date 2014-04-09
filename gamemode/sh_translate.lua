@@ -62,16 +62,14 @@ end
 // translation convience funcitons
 
 // replaces a phrases {variables} with replacements in reptable
-function Translator:VarTranslate(name, reptable)
-	local s = translate[name]
+function Translator:VarTranslate(s, reptable)
 	for k, v in pairs(reptable) do
 		s = s:gsub("{" .. k .. "}", v)
 	end
 	return s
 end
 
-function Translator:QuickVar(name, k, v)
-	local s = translate[name]
+function Translator:QuickVar(s, k, v)
 	s = s:gsub("{" .. k .. "}", v)
 	return s
 end

@@ -92,7 +92,7 @@ function GM:DoScoreboardActionPopup(ply)
 		actions:AddSpacer()
 
 		if ply:Team() == 2 then
-			local spectate = actions:AddOption( Translator:QuickVar("adminMoveToSpectate", "spectate", team.GetName(1)) )
+			local spectate = actions:AddOption( Translator:QuickVar(translate.adminMoveToSpectate, "spectate", team.GetName(1)) )
 			spectate:SetIcon( "icon16/status_busy.png" )
 			function spectate:DoClick()
 				RunConsoleCommand("mu_movetospectate", ply:EntIndex())

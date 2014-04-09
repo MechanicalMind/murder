@@ -170,13 +170,6 @@ function GM:EndTheRound(reason, murderer)
 			ct:SendAll()
 		end
 	elseif reason == 2 then
-		-- local ct = ChatText()
-		-- ct:Add("Bystanders win! ", Color(20, 120, 255))
-		-- ct:Add("The murderer was ")
-		-- local col = murderer:GetPlayerColor()
-		-- ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
-		-- ct:SendAll()
-
 		local col = murderer:GetPlayerColor()
 		local msgs = Translator:AdvVarTranslate(translate.winBystandersMurdererWas, {
 			murderer = {text = murderer:Nick() .. ", " .. murderer:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
@@ -186,11 +179,13 @@ function GM:EndTheRound(reason, murderer)
 		ct:AddParts(msgs)
 		ct:SendAll()
 	elseif reason == 1 then
-		local ct = ChatText()
-		ct:Add("The murderer wins! ", Color(190, 20, 20))
-		ct:Add("He was ")
 		local col = murderer:GetPlayerColor()
-		ct:Add(murderer:Nick() .. ", " .. murderer:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
+		local msgs = Translator:AdvVarTranslate(translate.winMurdererMurdererWas, {
+			murderer = {text = murderer:Nick() .. ", " .. murderer:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
+		})
+		local ct = ChatText()
+		ct:Add(translate.winMurderer, Color(190, 20, 20))
+		ct:AddParts(msgs)
 		ct:SendAll()
 	end
 
@@ -222,10 +217,14 @@ function GM:EndTheRound(reason, murderer)
 			local oldTeam = ply:Team()
 			ply:SetTeam(1)
 			GAMEMODE:PlayerOnChangeTeam(ply, 1, oldTeam)
+
+			local col = ply:GetPlayerColor()
+			local msgs = Translator:AdvVarTranslate(translate.teamMovedAFK, {
+				player = {text = ply:Nick(), color = Color(col.x * 255, col.y * 255, col.z * 255)},
+				team = {text = team.GetName(1), color = team.GetColor(2)}
+			})
 			local ct = ChatText()
-			ct:Add(ply:Nick() .. " was moved to ")
-			ct:Add(team.GetName(1), team.GetColor(1))
-			ct:Add(" for being AFK", color_white)
+			ct:AddParts(msgs)
 			ct:SendAll()
 		end
 		if ply:Alive() then
@@ -254,14 +253,14 @@ function GM:StartNewRound()
 	local players = team.GetPlayers(2)
 	if #players <= 1 then 
 		local ct = ChatText()
-		ct:Add("Not enough players to start round", Color(255, 150, 50))
+		ct:Add(translate.minimumPlayers, Color(255, 150, 50))
 		ct:SendAll()
 		self:SetRound(0)
 		return
 	end
 
 	local ct = ChatText()
-	ct:Add("A new round has started")
+	ct:Add(translate.roundStarted)
 	ct:SendAll()
 
 	self:SetRound(1)
@@ -357,9 +356,11 @@ concommand.Add("mu_forcenextmurderer", function (ply, com, args)
 	end
 
 	GAMEMODE.ForceNextMurderer = ent
+	local msgs = Translator:AdvVarTranslate(translate.adminMurdererSelect, {
+		player = {text = ent:Nick(), color = team.GetColor(2)}
+	})
 	local ct = ChatText()
-	ct:Add(ent:Nick(), team.GetColor(2))
-	ct:Add(" will be Murderer next round")
+	ct:AddParts(msgs)
 	ct:Send(ply)
 end)
 
@@ -394,7 +395,7 @@ function GM:RotateMap()
 	local nextMap = self.MapList[index]
 	print("[Murder] Rotate changing map to " .. nextMap)
 	local ct = ChatText()
-	ct:Add("Changing map to " .. nextMap)
+	ct:Add(Translator:QuickVar(translate.mapChange, "map", nextMap))
 	ct:SendAll()
 	hook.Call("OnChangeMap", GAMEMODE)
 	timer.Simple(5, function ()

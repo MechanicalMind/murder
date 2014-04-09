@@ -61,13 +61,13 @@ local function addPlayerItem(self, mlist, ply, pteam)
 			draw.DrawText(ply:GetBystanderName(), "ScoreboardPlayer", w * 0.4 + 1, 9, color_black, 0)
 			draw.DrawText(ply:GetBystanderName(), "ScoreboardPlayer", w * 0.4, 8, color_white, 0)
 
-			local status = "Bystander"
+			local status = translate.bystander
 			local statusColor = team.GetColor(2)
 			if !ply:Alive() then
-				status = "Dead"
+				status = translate.playerStatusDead
 				statusColor = Color(120,120,120)
 			elseif playerData && playerData.players[ply:EntIndex()] && playerData.players[ply:EntIndex()].murderer then
-				status = "Murderer"
+				status = translate.murderer
 				statusColor = Color(190, 20, 20)
 			end
 
@@ -149,20 +149,20 @@ local function makeTeamList(parent, pteam)
 	-- headp:DockPadding(4,0,4,0)
 	headp:Dock(TOP)
 	function headp:Paint(w, h)
-		draw.DrawText("Ping", "ScoreboardPlayer", w - 9, 2, color_black, 2)
-		draw.DrawText("Ping", "ScoreboardPlayer", w - 10, 2, color_white, 2)
+		draw.DrawText(translate.scoreboardPing, "ScoreboardPlayer", w - 9, 2, color_black, 2)
+		draw.DrawText(translate.scoreboardPing, "ScoreboardPlayer", w - 10, 2, color_white, 2)
 
-		draw.DrawText("Bystander Name", "ScoreboardPlayer", w * 0.4 + 1, 2, color_black, 0)
-		draw.DrawText("Bystander Name", "ScoreboardPlayer", w * 0.4, 2, color_white, 0)
+		draw.DrawText(translate.scoreboardBystanderName, "ScoreboardPlayer", w * 0.4 + 1, 2, color_black, 0)
+		draw.DrawText(translate.scoreboardBystanderName, "ScoreboardPlayer", w * 0.4, 2, color_white, 0)
 
-		draw.DrawText("Status", "ScoreboardPlayer", w * 0.64 + 1, 2, color_black, 0)
-		draw.DrawText("Status", "ScoreboardPlayer", w * 0.64, 2, color_white, 0)
+		draw.DrawText(translate.scoreboardStatus, "ScoreboardPlayer", w * 0.64 + 1, 2, color_black, 0)
+		draw.DrawText(translate.scoreboardStatus, "ScoreboardPlayer", w * 0.64, 2, color_white, 0)
 
-		draw.DrawText("Chance", "ScoreboardPlayer", w * 0.86 + 1, 2, color_black, 0)
-		draw.DrawText("Chance", "ScoreboardPlayer", w * 0.86, 2, color_white, 0)
+		draw.DrawText(translate.scoreboardChance, "ScoreboardPlayer", w * 0.86 + 1, 2, color_black, 0)
+		draw.DrawText(translate.scoreboardChance, "ScoreboardPlayer", w * 0.86, 2, color_white, 0)
 
-		draw.DrawText("Name", "ScoreboardPlayer", 11, 2, color_black, 0)
-		draw.DrawText("Name", "ScoreboardPlayer", 10, 2, color_white, 0)
+		draw.DrawText(translate.scoreboardName, "ScoreboardPlayer", 11, 2, color_black, 0)
+		draw.DrawText(translate.scoreboardName, "ScoreboardPlayer", 10, 2, color_white, 0)
 	end
 
 	function headp:PerformLayout()
@@ -216,7 +216,7 @@ concommand.Add("mu_adminpanel", function (client)
 		menu:SetDeleteOnClose(false)
 		menu:SetDraggable(true)
 		menu:ShowCloseButton(true)
-		menu:SetTitle("Admin Panel")
+		menu:SetTitle(translate.adminPanel)
 		function menu:PerformLayout()
 			if menu.Players then
 				menu.Players:SetWidth(self:GetWide() * 0.5)
@@ -225,7 +225,7 @@ concommand.Add("mu_adminpanel", function (client)
 
 		local refresh = vgui.Create("DButton", menu)
 		refresh:Dock(TOP)
-		refresh:SetText("Refresh")
+		refresh:SetText(translate.scoreboardRefresh)
 		refresh:SetTextColor(color_white)
 		refresh:SetFont("Trebuchet18")
 		function refresh:DoClick()

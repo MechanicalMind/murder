@@ -293,10 +293,12 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 				end
 			elseif attacker != ply then
 				if self.ShowBystanderTKs:GetBool() then
-					local ct = ChatText()
 					local col = attacker:GetPlayerColor()
-					ct:Add(attacker:Nick() .. ", " .. attacker:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
-					ct:Add(" killed an innocent bystander")
+					local msgs = Translator:AdvVarTranslate(translate.killedTeamKill, {
+						player = {text = attacker:Nick() .. ", " .. attacker:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
+					})
+					local ct = ChatText()
+					ct:AddParts(msgs)
 					ct:SendAll()
 				end
 				attacker:SetTKer(true)
@@ -306,14 +308,16 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		end
 	else
 		if attacker != ply && IsValid(attacker) && attacker:IsPlayer() then
-			local ct = ChatText()
 			local col = attacker:GetPlayerColor()
-			ct:Add(attacker:Nick() .. ", " .. attacker:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
-			ct:Add(" killed the murderer")
+			local msgs = Translator:AdvVarTranslate(translate.killedMurderer, {
+				player = {text = attacker:Nick() .. ", " .. attacker:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
+			})
+			local ct = ChatText()
+			ct:AddParts(msgs)
 			ct:SendAll()
 		else
 			local ct = ChatText()
-			ct:Add("The murderer died in mysterious circumstances")
+			ct:Add(translate.murdererDeathUnknown)
 			ct:SendAll()
 		end
 	end
@@ -455,9 +459,13 @@ concommand.Add("mu_jointeam", function (ply, com, args)
 	if newTeam >= 1 && newTeam <= 2 && newTeam != curTeam then
 		ply:SetTeam(newTeam)
 		GAMEMODE:PlayerOnChangeTeam(ply, newTeam, curTeam)
+
+		local msgs = Translator:AdvVarTranslate(translate.changeTeam, {
+			player = {text = ply:Nick(), color = team.GetColor(curTeam)},
+			team = {text = team.GetName(newTeam), color = team.GetColor(newTeam)}
+		})
 		local ct = ChatText()
-		ct:Add(ply:Nick() .. " changed team to ")
-		ct:Add(team.GetName(newTeam), team.GetColor(newTeam))
+		ct:AddParts(msgs)
 		ct:SendAll()
 	end
 end)
@@ -473,9 +481,13 @@ concommand.Add("mu_movetospectate", function (ply, com, args)
 	if 1 != curTeam then
 		ent:SetTeam(1)
 		GAMEMODE:PlayerOnChangeTeam(ent, 1, curTeam)
+
+		local msgs = Translator:AdvVarTranslate(translate.teamMoved, {
+			player = {text = ent:Nick(), color = team.GetColor(curTeam)},
+			team = {text = team.GetName(1), color = team.GetColor(1)}
+		})
 		local ct = ChatText()
-		ct:Add(ent:Nick() .. " was moved to ")
-		ct:Add(team.GetName(1), team.GetColor(1))
+		ct:AddParts(msgs)
 		ct:SendAll()
 	end
 end)
