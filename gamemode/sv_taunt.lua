@@ -59,7 +59,7 @@ addTaunt("funny", "vo/npc/female01/question06.wav", "female")
 addTaunt("funny", "vo/npc/female01/question09.wav", "female")
 
 concommand.Add("mu_taunt", function (ply, com, args, full)
-	if ply.LastTaunt && ply.LastTaunt + 1 > CurTime() then return end
+	if ply.LastTaunt && ply.LastTaunt > CurTime() then return end
 	if !ply:Alive() then return end
 	if ply:Team() != 2 then return end
 
@@ -73,5 +73,5 @@ concommand.Add("mu_taunt", function (ply, com, args, full)
 	local taunt = table.Random(taunts[cat][sex])
 	ply:EmitSound(taunt.sound)
 
-	ply.LastTaunt = CurTime()
+	ply.LastTaunt = CurTime() + SoundDuration(taunt.sound) + 0.3
 end)
