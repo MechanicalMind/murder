@@ -414,7 +414,8 @@ local defaultMapList = {
 	"de_tides",
 	"de_prodigy",
 	"mu_nightmare_church_b1",
-	"dm_lockdown"
+	"dm_lockdown",
+	"housewithgardenv2"
 }
 
 function GM:SaveMapList()
