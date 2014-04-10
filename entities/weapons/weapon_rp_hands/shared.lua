@@ -159,6 +159,13 @@ function SWEP:Think()
 end
 
 function SWEP:PrimaryAttack()
+	if SERVER then
+		if IsValid(self.Owner) then
+			if self.Owner:HasWeapon("weapon_mu_knife") then
+				self.Owner:SelectWeapon("weapon_mu_knife")
+			end
+		end
+	end
 end
 
 function SWEP:DrawWorldModel()

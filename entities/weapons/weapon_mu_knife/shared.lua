@@ -54,7 +54,7 @@ function SWEP:GetTrace(left, up)
 end
 
 
-function SWEP:PrimaryAttack()	
+function SWEP:PrimaryAttack()
 	if self.ChargeStart then
 		self.ChargeStart = nil
 		if SERVER then
@@ -195,4 +195,18 @@ function SWEP:AttackTrace()
 		end
 	end
 	self.Owner:LagCompensation(false)
+end
+
+function SWEP:Reload()
+	if self.ChargeStart then
+		self.ChargeStart = nil
+		if SERVER then
+			net.Start("mu_knife_charge")
+			net.WriteEntity(self)
+			net.WriteUInt(0, 8)
+			net.Send(self.Owner)
+		end
+		self.FistCanAttack = CurTime() + self.Primary.Delay
+		return
+	end
 end

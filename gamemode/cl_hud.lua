@@ -191,11 +191,12 @@ function GM:DrawGameHUD(ply)
 
 		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
 	end
+	
+	local tr = ply:GetEyeTraceNoCursor()
 
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerNames")
 	if shouldDraw != false then
 		// draw names
-		local tr = ply:GetEyeTraceNoCursor()
 		if IsValid(tr.Entity) && (tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll") && tr.HitPos:Distance(tr.StartPos) < 500 then
 			self.LastLooked = tr.Entity
 			self.LookedFade = CurTime()
