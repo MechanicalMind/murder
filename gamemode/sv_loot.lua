@@ -29,6 +29,17 @@ LootModels["sawblade"] = "models/props_junk/sawblade001a.mdl"
 LootModels["wrench"] = "models/props_c17/tools_wrench01a.mdl"
 LootModels["consolebox"] = "models/props_c17/consolebox01a.mdl"
 LootModels["cashregister"] = "models/props_c17/cashregister01a.mdl"
+LootModels["bananabunch"] = "models/props/cs_italy/bananna_bunch.mdl"
+LootModels["banana"] = "models/props/cs_italy/bananna.mdl"
+LootModels["orange"] = "models/props/cs_italy/orange.mdl"
+LootModels["familyphoto"] = "models/props_lab/frame002a.mdl"
+
+local FruitModels = {
+	"models/props/cs_italy/bananna_bunch.mdl",
+	"models/props/cs_italy/orange.mdl",
+	"models/props/cs_italy/bananna.mdl",
+	"models/props_junk/watermelon01.mdl"
+}
 
 util.AddNetworkString("GrabLoot")
 util.AddNetworkString("SetLoot")
@@ -181,6 +192,8 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 	local name = args[1]:lower()
 	if name == "rand" || name == "random" then
 		mdl = table.Random(LootModels)
+	elseif name == "fruit" then
+		mdl = table.Random(FruitModels)
 	elseif !name:find("%.mdl$") then
 		if !LootModels[name] then
 			ply:ChatPrint("Invalid model alias " .. name)
