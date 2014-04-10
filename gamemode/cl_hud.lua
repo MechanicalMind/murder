@@ -161,12 +161,15 @@ function GM:DrawGameHUD(ply)
 	local health = ply:Health()
 	if !IsValid(ply) then return end
 
-	if LocalPlayer() == ply && ply:GetNWBool("MurdererFog") && self:GetAmMurderer() then
-		surface.SetDrawColor(10,10,10,50)
-		surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
-	
-		drawTextShadow(translate.murdererFog, "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
-		drawTextShadow(translate.murdererFogSub, "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderMurdererFog")
+	if shouldDraw != false then
+		if LocalPlayer() == ply && ply:GetNWBool("MurdererFog") && self:GetAmMurderer() then
+			surface.SetDrawColor(10,10,10,50)
+			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
+		
+			drawTextShadow(translate.murdererFog, "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
+			drawTextShadow(translate.murdererFogSub, "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
+		end
 	end
 
 	-- surface.SetFont("MersRadial")
@@ -175,71 +178,75 @@ function GM:DrawGameHUD(ply)
 	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
 	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
 
-	local name = translate.bystander
-	local color = Color(20,120,255)
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerType")
+	if shouldDraw != false then
+		local name = translate.bystander
+		local color = Color(20,120,255)
 
-	if LocalPlayer() == ply && self:GetAmMurderer() then
-		name = translate.murderer
-		color = Color(190, 20, 20)
+		if LocalPlayer() == ply && self:GetAmMurderer() then
+			name = translate.murderer
+			color = Color(190, 20, 20)
+		end
+
+		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
 	end
 
-	drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerNames")
+	if shouldDraw != false then
+		// draw names
+		local tr = ply:GetEyeTraceNoCursor()
+		if IsValid(tr.Entity) && (tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll") && tr.HitPos:Distance(tr.StartPos) < 500 then
+			self.LastLooked = tr.Entity
+			self.LookedFade = CurTime()
+		end
+		if IsValid(self.LastLooked) && self.LookedFade + 2 > CurTime() then
+			local name = self.LastLooked:GetBystanderName() or "error"
+			local col = self.LastLooked:GetPlayerColor() or Vector()
+			col = Color(col.x * 255, col.y * 255, col.z * 255)
+			col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
+			drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		end
+	end
 
-	// draw names
-	local tr = ply:GetEyeTraceNoCursor()
-	if IsValid(tr.Entity) && (tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll") && tr.HitPos:Distance(tr.StartPos) < 500 then
-		self.LastLooked = tr.Entity
-		self.LookedFade = CurTime()
-	end
-	if IsValid(self.LastLooked) && self.LookedFade + 2 > CurTime() then
-		local name = self.LastLooked:GetBystanderName() or "error"
-		local col = self.LastLooked:GetPlayerColor() or Vector()
-		col = Color(col.x * 255, col.y * 255, col.z * 255)
-		col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
-		drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-	end
-	if self:GetAmMurderer() && self.LootCollected && self.LootCollected >= 1 then
-		if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
-			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || colorDif(tr.Entity:GetPlayerColor(), ply:GetPlayerColor()) > 0.1 then 
-				local h = draw.GetFontHeight("MersRadial")
-				drawTextShadow("[E] Disguise as for 1 loot", "MersRadialSmall", ScrW() / 2, ScrH() / 2 + 80 + h * 0.7, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderDisguise")
+	if shouldDraw != false then
+		if self:GetAmMurderer() && self.LootCollected && self.LootCollected >= 1 then
+			if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
+				if tr.Entity:GetBystanderName() != ply:GetBystanderName() || colorDif(tr.Entity:GetPlayerColor(), ply:GetPlayerColor()) > 0.1 then 
+					local h = draw.GetFontHeight("MersRadial")
+					drawTextShadow("[E] Disguise as for 1 loot", "MersRadialSmall", ScrW() / 2, ScrH() / 2 + 80 + h * 0.7, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				end
 			end
 		end
 	end
 
-	// setup size
-	local size = ScrW() * 0.08
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderHealthBall")
+	if shouldDraw != false then
+		// setup size
+		local size = ScrW() * 0.08
 
-	// draw black circle
-	surface.SetTexture(tex)
-	surface.SetDrawColor(color_black)
-	surface.DrawTexturedRect( size * 0.1, ScrH() - size * 1.1, size, size)
+		// draw black circle
+		surface.SetTexture(tex)
+		surface.SetDrawColor(color_black)
+		surface.DrawTexturedRect( size * 0.1, ScrH() - size * 1.1, size, size)
 
-	// draw health circle
-	surface.SetTexture(tex)
-	local col = ply:GetPlayerColor()
-	col = Color(col.x * 255, col.y * 255, col.z * 255)
-	surface.SetDrawColor(col)
-	local hsize = math.Clamp(health, 0, 100) / 100 * size
-	surface.DrawTexturedRect( size * 0.1 + (size - hsize) / 2, ScrH() - size * 1.1 + (size - hsize) / 2, hsize, hsize)
+		// draw health circle
+		surface.SetTexture(tex)
+		local col = ply:GetPlayerColor()
+		col = Color(col.x * 255, col.y * 255, col.z * 255)
+		surface.SetDrawColor(col)
+		local hsize = math.Clamp(health, 0, 100) / 100 * size
+		surface.DrawTexturedRect( size * 0.1 + (size - hsize) / 2, ScrH() - size * 1.1 + (size - hsize) / 2, hsize, hsize)
 
-	if LocalPlayer() == ply then
-		drawTextShadow(self.LootCollected or "error", "MersRadialBig", size * 0.6, ScrH() - size * 0.6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		if LocalPlayer() == ply then
+			drawTextShadow(self.LootCollected or "error", "MersRadialBig", size * 0.6, ScrH() - size * 0.6, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		end
+
+		surface.SetFont("MersRadialSmall")
+		local w,h = surface.GetTextSize(ply:GetBystanderName())
+		local x = math.max(size * 0.6 + w / -2, size * 0.1)
+		drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_TOP)
 	end
-
-	surface.SetFont("MersRadialSmall")
-	local w,h = surface.GetTextSize(ply:GetBystanderName())
-	local x = math.max(size * 0.6 + w / -2, size * 0.1)
-	drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_TOP)
-
-	-- if self:GetRound() == 1 then
-
-	-- 	if self.ScreenDarkness > 0 then
-	-- 		local sw, sh = ScrW(), ScrH()
-	-- 		surface.SetDrawColor(0,0,0, self.ScreenDarkness)
-	-- 		surface.DrawRect(-1, -1, sw + 2, sh + 2)
-	-- 	end
-	-- end
 end
 
 function GM:GUIMousePressed(code, vector)
@@ -284,6 +291,16 @@ function GM:HUDShouldDraw( name )
 	if name == "CHudHealth" || name == "CHudBattery" then
 		return false
 	end
+
+	// allow weapon hiding
+	local ply = LocalPlayer()
+	if IsValid(ply) then
+		local wep = ply:GetActiveWeapon()
+		if IsValid(wep) && wep.HUDShouldDraw then
+			return wep.HUDShouldDraw(wep, name)
+		end
+	end
+
 	return true
 end
 
