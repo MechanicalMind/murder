@@ -145,6 +145,7 @@ function GM:DrawStartRoundInformation()
 end
 
 local tex = surface.GetTextureID("SGM/playercircle")
+local gradR = surface.GetTextureID("gui/gradient")
 
 local function colorDif(col1, col2)
 	local x = col1.x - col2.x
@@ -246,6 +247,35 @@ function GM:DrawGameHUD(ply)
 		local w,h = surface.GetTextSize(ply:GetBystanderName())
 		local x = math.max(size * 0.6 + w / -2, size * 0.1)
 		drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_TOP)
+	end
+
+	if LocalPlayer() == ply && (ply:FlashlightIsOn() || self:GetFlashlightCharge() < 1) then
+		local size = ScrW() * 0.08
+		local x = size * 1.2
+
+		local w = ScrW() * 0.08
+		local h = ScrH() * 0.03
+
+		local bord = math.Round(ScrW() * 0.08 * 0.03)
+		if ply:FlashlightIsOn() then
+			surface.SetDrawColor(0, 0, 0, 240)
+		else
+			surface.SetDrawColor(5, 5, 5, 180)
+		end
+		surface.DrawRect(x, ScrH() - h - size * 0.2, w, h)
+
+		local charge = self:GetFlashlightCharge()
+
+		if ply:FlashlightIsOn() then
+			surface.SetDrawColor(50, 180, 220, 240)
+		else
+			surface.SetDrawColor(50, 180, 220, 180)
+		end
+		surface.DrawRect(x + bord, ScrH() - h - size * 0.2 + bord, (w - bord * 2) * charge, h - bord * 2)
+
+		surface.SetTexture(gradR)
+		surface.SetDrawColor(255, 255, 255, 50)
+		surface.DrawTexturedRect(x + bord, ScrH() - h - size * 0.2 + bord, (w - bord * 2) * charge, h - bord * 2)
 	end
 end
 

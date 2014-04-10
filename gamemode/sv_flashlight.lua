@@ -1,0 +1,43 @@
+
+util.AddNetworkString("flashlight_charge")
+
+
+function GM:FlashlightThink()
+	for k, ply in pairs(player.GetAll()) do
+		if ply:Alive() then
+			if ply:FlashlightIsOn() then
+				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() - FrameTime() * 0.2, 0, 1))
+			else
+				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() + FrameTime() * 0.1, 0, 1))
+			end
+		end
+	end
+end
+
+function GM:PlayerSwitchFlashlight(ply, turningOn)
+	if turningOn then
+		print(ply, ply.FlashlightPenalty, CurTime())
+		if ply.FlashlightPenalty && ply.FlashlightPenalty > CurTime() then
+			return false
+		end
+	end
+	return true
+end
+
+local PlayerMeta = FindMetaTable("Player")
+function PlayerMeta:GetFlashlightCharge()
+	return self.FlashlightCharge or 1
+end
+
+function PlayerMeta:SetFlashlightCharge(charge)
+	self.FlashlightCharge = charge
+	if charge <= 0 then
+		self.FlashlightPenalty = CurTime() + 1.5
+		if self:FlashlightIsOn() then
+			self:Flashlight(false)
+		end
+	end
+	net.Start("flashlight_charge")
+	net.WriteFloat(self.FlashlightCharge)
+	net.Send(self)
+end

@@ -34,6 +34,8 @@ function GM:PlayerSpawn( ply )
 	ply:UnCSpectate()
 	ply:SetMurdererRevealed(false)
 
+	ply:SetFlashlightCharge(1)
+
 	player_manager.OnPlayerSpawn( ply )
 	player_manager.RunClass( ply, "Spawn" )
 

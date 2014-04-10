@@ -16,6 +16,7 @@ AddCSLuaFile("cl_endroundboard.lua")
 AddCSLuaFile("cl_qmenu.lua")
 AddCSLuaFile("cl_spectate.lua")
 AddCSLuaFile("cl_adminpanel.lua")
+AddCSLuaFile("cl_flashlight.lua")
 
 include("sh_translate.lua")
 include("shared.lua")
@@ -34,6 +35,7 @@ include("sv_taunt.lua")
 include("sv_bystandername.lua")
 include("sv_adminpanel.lua")
 include("sv_tker.lua")
+include("sv_flashlight.lua")
 
 resource.AddFile("materials/thieves/footprint.vmt")
 resource.AddFile("materials/murder/melon_logo_scoreboard.png")
@@ -98,6 +100,7 @@ function GM:Think()
 	self:RoundThink()
 	self:MurdererThink()
 	self:LootThink()
+	self:FlashlightThink()
 
 	for k, ply in pairs(player.GetAll()) do
 		if ply:IsCSpectating() && IsValid(ply:GetCSpectatee()) && (!ply.LastSpectatePosSet || ply.LastSpectatePosSet < CurTime()) then
@@ -122,10 +125,6 @@ end
 
 function GM:PlayerNoClip( ply )
 	return ply:IsSuperAdmin() || ply:GetMoveType() == MOVETYPE_NOCLIP
-end
-
-function GM:PlayerSwitchFlashlight(ply, turningOn)
-	return true
 end
 
 function GM:OnEndRound()
