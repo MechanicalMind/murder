@@ -16,7 +16,6 @@ end
 
 function GM:PlayerSwitchFlashlight(ply, turningOn)
 	if turningOn then
-		print(ply, ply.FlashlightPenalty, CurTime())
 		if ply.FlashlightPenalty && ply.FlashlightPenalty > CurTime() then
 			return false
 		end
