@@ -18,8 +18,8 @@ pt.killedMurderer = "{player} hat den Mörder getötet"
 pt.murdererDeathUnknown = "Der Mörder starb unter mysteriösen Umständen"
 
 pt.changeTeam = "{player} hat das Team gewechselt zu {team}"
-pt.teamMoved = "{player} wurde in das {team} verschoben"
-pt.teamMovedAFK = "{player} wurde verschoben {team} weil er AFK war"
+pt.teamMoved = "{player} wurde in das Team {team} verschoben"
+pt.teamMovedAFK = "{player} wurde verschoben in das Team {team} ,weil er AFK war"
 
 pt.spectateFailed = "Du kannst Ihm nicht zuschauen, du bist nicht tot."
 
