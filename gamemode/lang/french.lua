@@ -83,7 +83,7 @@ pt.voiceMoroseDescription = "Sentir la tristesse"
 pt.startHelpBystanderTitle = "Vous êtes un innocent"
 pt.startHelpBystander = {
 	"Il y a un meurtrier en cavale",
-	"Ne pas se faire tuer"
+	"Trouvez-le et tuez-le"
 }
 
 
@@ -91,13 +91,13 @@ pt.startHelpGunTitle = "Vous êtes un innocent"
 pt.startHelpGunSubtitle = "avec une arme secrète"
 pt.startHelpGun = {
 	"Il y a un meurtrier en cavale",
-	"Ne pas se faire tuer"
+	"Trouvez-le et tuez-le"
 }
 
 pt.startHelpMurdererTitle = "Vous êtes le meurtrier"
 pt.startHelpMurderer = {
 	"Tuez tout le monde",
-	"Ne pas se faire remarquer"
+	"Ne vous faites pas remarquer"
 }
 
 pt.murdererFog = "Votre présence maléfique se montre"
