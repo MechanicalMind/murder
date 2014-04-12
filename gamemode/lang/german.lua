@@ -97,7 +97,7 @@ pt.startHelpGun = {
 pt.startHelpMurdererTitle = "Du bist der Mörder"
 pt.startHelpMurderer = {
 	"Töte jeden",
-	"aber werde nicht erwischen!"
+	"aber lass dich nicht erwischen!"
 }
 
 pt.murdererFog = "Deine dunkle Seite kommt zum Vorschein!"
