@@ -83,7 +83,7 @@ pt.voiceMoroseDescription = "Fühle die Trauer"
 pt.startHelpBystanderTitle = "Du bist eine unschuldige Person"
 pt.startHelpBystander = {
 	"Es ist ein Mörder auf freiem Fuß",
-	"Lass dich nicht töten!"
+	"Lass dich nicht umbringen!"
 }
 
 
@@ -97,7 +97,7 @@ pt.startHelpGun = {
 pt.startHelpMurdererTitle = "Du bist der Mörder"
 pt.startHelpMurderer = {
 	"Töte jeden",
-	"aber werde nicht verraten!"
+	"aber werde nicht erwischen!"
 }
 
 pt.murdererFog = "Deine dunkle Seite kommt zum Vorschein!"
