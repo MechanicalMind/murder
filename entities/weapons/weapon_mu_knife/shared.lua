@@ -15,7 +15,7 @@ SWEP.Primary.Damage			= 120
 SWEP.Primary.NumShots		= 1	
 SWEP.Primary.Cone			= 0.04
 SWEP.Primary.ClipSize		= -1
-SWEP.Primary.Force			= 10
+SWEP.Primary.Force			= 900
 SWEP.Primary.DefaultClip	= -1
 SWEP.Primary.Automatic   	= true
 SWEP.Primary.Ammo         	= "none"
@@ -174,7 +174,7 @@ function SWEP:AttackTrace()
 			dmg:SetDamageForce(self.Owner:GetAimVector() * self.Primary.Force)
 			dmg:SetDamagePosition(tr.HitPos)
 			dmg:SetDamageType(DMG_SLASH)
-			tr.Entity:DispatchTraceAttack(dmg, self.Owner:GetShootPos(), self.Owner:GetShootPos() + tr.TraceAimVector * 60)
+			tr.Entity:DispatchTraceAttack(dmg, tr)
 
 			if tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll" then
 				local edata = EffectData()
@@ -187,7 +187,6 @@ function SWEP:AttackTrace()
 		else
 			self:EmitSound("Weapon_Crowbar.Melee_Hit")
 		end
-		util.Decal("ManhackCut", self.Owner:GetShootPos(), self.Owner:GetShootPos() + self.Owner:GetAimVector() * 60)
 	else
 		// only play the sound for the murderer
 		if CLIENT && LocalPlayer() == self.Owner then
