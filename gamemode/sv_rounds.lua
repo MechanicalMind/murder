@@ -413,7 +413,7 @@ local defaultMapList = {
 	"de_chateau",
 	"de_tides",
 	"de_prodigy",
-	"mu_nightmare_church_b1",
+	"mu_nightmare_church",
 	"dm_lockdown",
 	"housewithgardenv2",
 	"de_forest"

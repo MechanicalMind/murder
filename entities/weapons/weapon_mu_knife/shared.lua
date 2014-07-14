@@ -176,7 +176,7 @@ function SWEP:AttackTrace()
 			dmg:SetDamageType(DMG_SLASH)
 			tr.Entity:DispatchTraceAttack(dmg, tr)
 
-			if tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll" then
+			if tr.Entity != self && tr.Entity != self.Owner && (tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll") then
 				local edata = EffectData()
 				edata:SetStart(self.Owner:GetShootPos())
 				edata:SetOrigin(tr.HitPos)
