@@ -50,6 +50,8 @@ GM.RemoveDisguiseOnKill = CreateConVar("mu_disguise_removeonkill", 1, bit.bor(FC
 GM.AFKMoveToSpec = CreateConVar("mu_moveafktospectator", 1, bit.bor(FCVAR_NOTIFY), "Should we move AFK players to spectator on round end" )
 GM.RoundLimit = CreateConVar("mu_roundlimit", 0, bit.bor(FCVAR_NOTIFY), "Number of rounds we should play before map change" )
 GM.Language = CreateConVar("mu_language", "", bit.bor(FCVAR_NOTIFY), "The language Murder should use" )
+GM.FlashlightDrain = CreateConVar("mu_flashlight_drain", 5, bit.bor(FCVAR_NOTIFY), "Number of seconds the flashlight should take to drain from full")
+GM.FlashlightRecharge = CreateConVar("mu_flashlight_recharge", 10, bit.bor(FCVAR_NOTIFY), "Number of seconds the flashlight should take to charge from empty")
 
 // replicated
 GM.ShowAdminsOnScoreboard = CreateConVar("mu_scoreboard_show_admins", 1, bit.bor(0), "Should show admins on scoreboard" )

@@ -6,9 +6,11 @@ function GM:FlashlightThink()
 	for k, ply in pairs(player.GetAll()) do
 		if ply:Alive() then
 			if ply:FlashlightIsOn() then
-				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() - FrameTime() * 0.2, 0, 1))
+				local speed = 1 / self.FlashlightDrain:GetFloat()
+				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() - FrameTime() * speed, 0, 1))
 			else
-				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() + FrameTime() * 0.1, 0, 1))
+				local speed = 1 / self.FlashlightRecharge:GetFloat()
+				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() + FrameTime() * speed , 0, 1))
 			end
 		end
 	end
