@@ -35,6 +35,8 @@ Convars
 	mu_disguise_removeonkill <0/1> - Remove the murderer's disguise when he kills someone
 	mu_moveafktospectator <0/1> - Should we move AFK players to spectator on round end
 	mu_roundlimit <number> - Number of rounds we should play before map change
+	mu_flashlight_drain <number> - Number of seconds the flashlight should take to drain from full
+	mu_flashlight_recharge <number> - Number of seconds the flashlight should take to charge from empty
 	
 
 
