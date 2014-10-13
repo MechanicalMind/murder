@@ -15,7 +15,6 @@ SWEP.ViewModelFOV	= 50
 SWEP.ViewModel		= "models/weapons/v_357.mdl"
 SWEP.WorldModel		= "models/weapons/w_357.mdl"
 SWEP.HoldType		= "pistol"
-SWEP.PKOneOnly = true
 
 SWEP.Weight			= 5
 SWEP.AutoSwitchTo	= false
@@ -59,21 +58,22 @@ SWEP.Secondary.TakeAmmoPerBullet	= false
 SWEP.Secondary.Automatic			= false
 SWEP.Secondary.Ammo					= "none"
 
-if SERVER then
-	util.AddNetworkString("pkshotguncanattack")
-end
-
 function SWEP:Initialize()
 	self:SetHoldType(self.HoldType)
-	self.CanAttack = true
+	self:SetCanAttack(true)
+end
+
+function SWEP:SetupDataTables()
+	self:NetworkVar("Bool", 0, "CanAttack")
 end
 
 function SWEP:BulletCallback(att, tr, dmg)
-	return {effects = true,damage = true}
+	return {effects = true, damage = true}
 end
 
 function SWEP:PrimaryAttack()
-	if !self.CanAttack then return false end
+	if not self:GetCanAttack() then return false end
+	
 	local bullet = {}	-- Set up the shot
 	bullet.Num = self.Primary.NumShots
 	bullet.Src = self.Owner:GetShootPos()
@@ -94,10 +94,7 @@ function SWEP:PrimaryAttack()
 	self.Owner:ViewPunch(Angle(-self.Primary.Recoil, 0, 0))
 
 	self.NextLower = CurTime() + 0.4
-	self.CanAttack = false
-
-	// hacky fix for client, don't send immediately
-	timer.Simple(0, function() if IsValid(self) then self:NetCanAttack() end end)
+	self:SetCanAttack(false)
 end
 
 function SWEP:SecondaryAttack()
@@ -106,8 +103,7 @@ end
 function SWEP:Think()
 	if self.NextAttack && self.NextAttack < CurTime() then
 		self.NextAttack = nil
-		self.CanAttack = true
-		self:NetCanAttack()
+		self:SetCanAttack(true)
 		//self:SendWeaponAnim( ACT_VM_IDLE)
 		//self.Owner:ChatPrint("Cake")
 	end
@@ -134,29 +130,8 @@ end
 function SWEP:Reload()
 end
 
-if CLIENT then
-	net.Receive("pkshotguncanattack", function (len)
-		local ent = net.ReadEntity()
-		local canattack = net.ReadUInt(8)
-		if IsValid(ent) then
-			ent.CanAttack = canattack != 0
-		end
-	end)
-end
-
-function SWEP:NetCanAttack()
-	if SERVER then
-		if IsValid(self.Owner) && self.Owner:IsPlayer() then
-			net.Start("pkshotguncanattack")
-			net.WriteEntity(self)
-			net.WriteUInt(self.CanAttack and 1 or 0,8)
-			net.Send(self.Owner)
-		end
-	end
-end
-
 function SWEP:Deploy()
-	if !self.CanAttack then
+	if not self:GetCanAttack() then
 		self.NextAttack = nil
 		self.NextLower = nil
 		self.NextUpper = CurTime() + self.Primary.ReloadTime
