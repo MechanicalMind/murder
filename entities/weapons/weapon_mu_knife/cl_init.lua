@@ -22,7 +22,6 @@ function SWEP:DrawWeaponSelection( x, y, w, h, alpha )
 end
 
 function SWEP:Initialize()
-	self:SetWeaponHoldType("melee")
 end
 
 function SWEP:Deploy()
@@ -39,7 +38,6 @@ end
 
 function SWEP:DrawWorldModel()	
 	self:DrawModel()
-	return false
 end
 
 

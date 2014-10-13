@@ -64,7 +64,7 @@ if SERVER then
 end
 
 function SWEP:Initialize()
-	self:SetWeaponHoldType( self.HoldType )
+	self:SetHoldType(self.HoldType)
 	self.CanAttack = true
 end
 
@@ -95,8 +95,7 @@ function SWEP:PrimaryAttack()
 	self.CanAttack = false
 
 	// hacky fix for client, don't send immediately
-	timer.Simple(0, function () if IsValid(self) then self:NetCanAttack() end end)
-
+	timer.Simple(0, function() if IsValid(self) then self:NetCanAttack() end end)
 end
 
 function SWEP:SecondaryAttack()
@@ -129,7 +128,6 @@ function SWEP:Think()
 end
 
 function SWEP:Reload()
-
 end
 
 if CLIENT then

@@ -49,8 +49,7 @@ SWEP.Secondary.Ammo			= "none"
 
 
 function SWEP:Initialize()
-	self:SetWeaponHoldType(self.HoldType)
-	self.CurHoldType = self.HoldType
+	self:SetHoldType(self.HoldType)
 	self:DrawShadow(false)
 end
 
@@ -58,7 +57,7 @@ function SWEP:Deploy()
 	if SERVER then
 		self:SetColor(255,255,255,0)
 		if IsValid(self.Owner) then
-			timer.Simple(0,function ()
+			timer.Simple(0, function()
 				if IsValid(self) && IsValid(self.Owner) then
 					self.Owner:DrawViewModel(false)
 				end
@@ -137,18 +136,6 @@ function SWEP:SetCarrying(ent, bone)
 end
 
 function SWEP:Think()
-	local nht = self.HoldType
-	if self.CurHoldType != nht then
-		self.CurHoldType = nht
-		self:SetWeaponHoldType(nht)
-		if SERVER then
-			umsg.Start("rp_holdtype")
-			umsg.Entity(self)
-			umsg.String(nht)
-			umsg.End()
-		end
-	end
-
 	if IsValid(self.Owner) && self.Owner:KeyDown(IN_ATTACK2) then
 		if IsValid(self.CarryEnt) then
 			self:ApplyForce()
@@ -169,5 +156,4 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:DrawWorldModel()
-
 end
