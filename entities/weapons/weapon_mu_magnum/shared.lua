@@ -75,21 +75,23 @@ end
 function SWEP:PrimaryAttack()
 	if !self.CanAttack then return false end
 	local bullet = {}	-- Set up the shot
-		bullet.Num = self.Primary.NumShots
-		bullet.Src = self.Owner:GetShootPos()
-		bullet.Dir = self.Owner:GetAimVector()
-		bullet.Spread = Vector( self.Primary.Cone / 90, self.Primary.Cone / 90, 0 )
-		bullet.Tracer = self.Primary.Tracer
-		bullet.Force = self.Primary.Force
-		bullet.Damage = self.Primary.Damage
-		-- function bullet.Callback(att,tr,dmg)
-		-- 	self:BulletCallback(att, tr, dmg)
-		-- end
-	self.Owner:FireBullets( bullet )
-	self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	bullet.Num = self.Primary.NumShots
+	bullet.Src = self.Owner:GetShootPos()
+	bullet.Dir = self.Owner:GetAimVector()
+	bullet.Spread = Vector(self.Primary.Cone / 90, self.Primary.Cone / 90, 0)
+	bullet.Tracer = self.Primary.Tracer
+	bullet.Force = self.Primary.Force
+	bullet.Damage = self.Primary.Damage
+	/* 
+	function bullet.Callback(att,tr,dmg)
+		self:BulletCallback(att, tr, dmg)
+	end
+	*/		
+	self.Owner:FireBullets(bullet)
+	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self:EmitSound(Sound(self.Primary.Sound))
-	self.Owner:ViewPunch(Angle( -self.Primary.Recoil, 0, 0 ))
+	self.Owner:ViewPunch(Angle(-self.Primary.Recoil, 0, 0))
 
 	self.NextLower = CurTime() + 0.4
 	self.CanAttack = false
@@ -114,8 +116,10 @@ function SWEP:Think()
 		self.NextUpper = CurTime() + self.Primary.ReloadTime
 		self:SendWeaponAnim(ACT_VM_RELOAD)
 		-- self:EmitSound(self.ReloadSound)
+		
 		local i = math.random(1,3)
 		if i == 2 then i = 4 end
+		
 		self:EmitSound("weapons/357/357_reload" .. i .. ".wav")
 		self.Owner:SetAnimation( PLAYER_RELOAD )
 	end
@@ -160,6 +164,7 @@ function SWEP:Deploy()
 		self:SendWeaponAnim(ACT_VM_RELOAD)
 		self:NetCanAttack()
 	end
+	
 	return true
 end
 

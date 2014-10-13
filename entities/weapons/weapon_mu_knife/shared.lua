@@ -1,4 +1,3 @@
-
 SWEP.ViewModel = "models/weapons/v_knife_t.mdl"
 SWEP.WorldModel = "models/weapons/w_knife_t.mdl"
 
