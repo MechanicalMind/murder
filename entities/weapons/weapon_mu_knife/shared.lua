@@ -6,7 +6,7 @@ SWEP.PrintName = translate and translate.knife or "Knife"
 SWEP.Weight	= 0
 
 SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.AdminOnly			= true
 
 SWEP.Primary.Delay			= 0.5
 SWEP.Primary.Recoil			= 3

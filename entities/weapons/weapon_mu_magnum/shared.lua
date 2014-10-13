@@ -21,7 +21,7 @@ SWEP.Weight			= 5
 SWEP.AutoSwitchTo	= false
 SWEP.AutoSwitchFrom	= false
 SWEP.Spawnable		= true
-SWEP.AdminSpawnable	= true
+SWEP.AdminOnly		= true
 
 SWEP.Author			= "Mechanical Mind"
 SWEP.Contact		= ""

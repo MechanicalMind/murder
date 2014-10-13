@@ -28,7 +28,7 @@ SWEP.Purpose		= ""
 SWEP.Instructions	= ""
 
 SWEP.Spawnable			= false
-SWEP.AdminSpawnable		= true
+SWEP.AdminOnly		= true
 
 SWEP.HoldType = "normal"
 
