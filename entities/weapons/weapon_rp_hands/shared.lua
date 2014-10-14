@@ -143,9 +143,9 @@ end
 
 function SWEP:Think()
 	if IsValid(self.Owner) && self.Owner:KeyDown(IN_ATTACK2) then
-		if not IsValid(self.CarryEnt) then return end
-		
-		self:ApplyForce()		
+		if IsValid(self.CarryEnt) then
+			self:ApplyForce()
+		end
 	elseif self.CarryEnt then
 		self:SetCarrying()
 	end

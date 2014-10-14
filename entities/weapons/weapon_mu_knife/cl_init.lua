@@ -8,7 +8,7 @@ SWEP.ViewModelFOV = 65
 SWEP.Slot = 1
 SWEP.SlotPos = 1
 
-killicon.AddFont("weapon_pk_fists", "HL2MPTypeDeath", "5", Color(0, 0, 255, 255))
+killicon.AddFont("weapon_mu_knife", "HL2MPTypeDeath", "5", Color(0, 0, 255, 255))
 
 function SWEP:DrawWeaponSelection( x, y, w, h, alpha )
 	local name = translate and translate.knife or "Knife"
@@ -62,6 +62,10 @@ net.Receive("mu_knife_charge", function(len)
 	local ent = net.ReadEntity()
 	if not IsValid(ent) then return end
 	
-	local charging = tobool(net.ReadBit())
-	ent.ChargeStart = charging and net.ReadDouble() or nil
+	local charging = net.ReadUInt() != 0
+	if charging then
+		ent.ChargeStart = net.ReadDouble()
+	else
+		ent.ChargeStart = nil
+	end
 end)

@@ -19,7 +19,7 @@ function SWEP:Holster()
 	if IsValid(self.Owner) then
 		net.Start("mu_knife_charge")
 		net.WriteEntity(self)
-		net.WriteBit(false)
+		net.WriteUInt(0, 8)
 		net.Send(self.Owner)
 	end
 	

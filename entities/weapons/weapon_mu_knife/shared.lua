@@ -33,10 +33,8 @@ function SWEP:GetTrace(left, up)
 	local trace = {}
 	trace.filter = self.Owner
 	trace.start = self.Owner:GetShootPos()
-	-- trace.mask = MASK_SHOT
 	trace.mask = MASK_SHOT_HULL
 	local ang = self.Owner:GetAimVector():Angle()
-	-- if ang then vec:Rotate(ang) end
 	if left then
 		ang:RotateAroundAxis(ang:Up(), left)
 	end
@@ -45,7 +43,6 @@ function SWEP:GetTrace(left, up)
 	end
 	local vec = ang:Forward()
 	trace.endpos = trace.start + vec * 60
-	//trace.mask = MASK_SHOT
 	local tr = util.TraceLine(trace)
 	tr.TraceAimVector = vec
 	tr.LeftUp = Vector(left or 0, up or 0, 0)
@@ -77,8 +74,6 @@ function SWEP:SecondaryAttack()
 	if self.FistCanAttack then return end
 	if self.IdleTime && self.IdleTime > CurTime() then return end
 	self.FistCanAttack = CurTime() + self.Primary.Delay
-	-- self.Owner:SetAnimation( PLAYER_ATTACK1 )
-	-- self:SendWeaponAnim( ACT_VM_HITCENTER )
 
 	if SERVER then
 		if self.KnifeChargeConvar:GetBool() then

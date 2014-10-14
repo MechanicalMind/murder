@@ -72,9 +72,9 @@ function SWEP:BulletCallback(att, tr, dmg)
 end
 
 function SWEP:PrimaryAttack()
-	if not self:GetCanAttack() then return false end
+	if !self:GetCanAttack() then return false end
 	
-	local bullet = {}	-- Set up the shot
+	local bullet = {}
 	bullet.Num = self.Primary.NumShots
 	bullet.Src = self.Owner:GetShootPos()
 	bullet.Dir = self.Owner:GetAimVector()
@@ -82,11 +82,7 @@ function SWEP:PrimaryAttack()
 	bullet.Tracer = self.Primary.Tracer
 	bullet.Force = self.Primary.Force
 	bullet.Damage = self.Primary.Damage
-	/* 
-	function bullet.Callback(att,tr,dmg)
-		self:BulletCallback(att, tr, dmg)
-	end
-	*/		
+
 	self.Owner:FireBullets(bullet)
 	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
@@ -104,16 +100,13 @@ function SWEP:Think()
 	if self.NextAttack && self.NextAttack < CurTime() then
 		self.NextAttack = nil
 		self:SetCanAttack(true)
-		//self:SendWeaponAnim( ACT_VM_IDLE)
-		//self.Owner:ChatPrint("Cake")
 	end
 	if self.NextLower && self.NextLower < CurTime() then
 		self.NextLower = nil
 		self.NextUpper = CurTime() + self.Primary.ReloadTime
 		self:SendWeaponAnim(ACT_VM_RELOAD)
-		-- self:EmitSound(self.ReloadSound)
 		
-		local i = math.random(1,3)
+		local i = math.random(1, 3)
 		if i == 2 then i = 4 end
 		
 		self:EmitSound("weapons/357/357_reload" .. i .. ".wav")
@@ -122,8 +115,6 @@ function SWEP:Think()
 	if self.NextUpper && self.NextUpper < CurTime() then
 		self.NextUpper = nil
 		self.NextAttack = CurTime() + 0.1
-		-- self:SendWeaponAnim(ACT_VM_IDLE)
-		-- self:EmitSound(self.ReloadFinishedSound)
 	end
 end
 
@@ -131,13 +122,12 @@ function SWEP:Reload()
 end
 
 function SWEP:Deploy()
-	if not self:GetCanAttack() then
+	if !self:GetCanAttack() then
 		self.NextAttack = nil
 		self.NextLower = nil
 		self.NextUpper = CurTime() + self.Primary.ReloadTime
 		self:EmitSound(self.ReloadSound)
 		self:SendWeaponAnim(ACT_VM_RELOAD)
-		self:NetCanAttack()
 	end
 	
 	return true
