@@ -1,12 +1,11 @@
 if SERVER then
-
-	AddCSLuaFile( "shared.lua" )
+	AddCSLuaFile("shared.lua")
 
 	SWEP.Weight				= 5
 	SWEP.AutoSwitchTo		= false
 	SWEP.AutoSwitchFrom		= false
+	
 else
-
 	SWEP.PrintName			= translate and translate.hands or "Hands"
 	SWEP.Slot				= 0
 	SWEP.SlotPos			= 1
@@ -21,7 +20,6 @@ else
 
 	function SWEP:DrawHUD()
 	end
-
 end
 
 SWEP.Author			= ""
@@ -30,7 +28,7 @@ SWEP.Purpose		= ""
 SWEP.Instructions	= ""
 
 SWEP.Spawnable			= false
-SWEP.AdminSpawnable		= true
+SWEP.AdminOnly		= true
 
 SWEP.HoldType = "normal"
 
@@ -49,8 +47,7 @@ SWEP.Secondary.Ammo			= "none"
 
 
 function SWEP:Initialize()
-	self:SetWeaponHoldType(self.HoldType)
-	self.CurHoldType = self.HoldType
+	self:SetHoldType(self.HoldType)
 	self:DrawShadow(false)
 end
 
@@ -58,7 +55,7 @@ function SWEP:Deploy()
 	if SERVER then
 		self:SetColor(255,255,255,0)
 		if IsValid(self.Owner) then
-			timer.Simple(0,function ()
+			timer.Simple(0, function()
 				if IsValid(self) && IsValid(self.Owner) then
 					self.Owner:DrawViewModel(false)
 				end
@@ -76,15 +73,21 @@ function SWEP:CanPrimaryAttack()
 	return true
 end
 
-function SWEP:CanPickup(ent)
-	if ent:IsWeapon() || ent:IsPlayer() || ent:IsNPC() then
+local pickupWhiteList = {
+	["prop_ragdoll"] = true,
+	["prop_physics"] = true,
+	["prop_physics_multiplayer"] = true
+}
+
+if SERVER then
+	function SWEP:CanPickup(ent)
+		if ent:IsWeapon() || ent:IsPlayer() || ent:IsNPC() then return false end
+		
+		local class = ent:GetClass()
+		if pickupWhiteList[class] then return true end
+
 		return false
 	end
-	local class = ent:GetClass()
-	if class == "prop_ragdoll" then return true end
-	if class == "prop_physics" then return true end
-	if class == "prop_physics_multiplayer" then return true end
-	return false
 end
 
 function SWEP:SecondaryAttack()
@@ -101,7 +104,8 @@ end
 
 function SWEP:ApplyForce()
 	local target = self.Owner:GetAimVector() * 30 + self.Owner:GetShootPos()
-	local phys = self.CarryEnt:GetPhysicsObjectNum( self.CarryBone )
+	local phys = self.CarryEnt:GetPhysicsObjectNum(self.CarryBone)
+	
 	if IsValid(phys) then
 		local vec = target - phys:GetPos()
 		local len = vec:Length()
@@ -116,8 +120,8 @@ function SWEP:ApplyForce()
 		local avec = tvec - phys:GetVelocity()
 		avec = avec:GetNormal() * math.min(45, avec:Length())
 		avec = avec / phys:GetMass() * 16
-		phys:AddVelocity( avec)
-
+		
+		phys:AddVelocity(avec)
 	end
 end
 
@@ -133,27 +137,16 @@ function SWEP:SetCarrying(ent, bone)
 		self.CarryEnt = nil
 		self.CarryBone = nil
 	end
+	
 	self.Owner:CalculateSpeed()
 end
 
 function SWEP:Think()
-	local nht = self.HoldType
-	if self.CurHoldType != nht then
-		self.CurHoldType = nht
-		self:SetWeaponHoldType(nht)
-		if SERVER then
-			umsg.Start("rp_holdtype")
-			umsg.Entity(self)
-			umsg.String(nht)
-			umsg.End()
-		end
-	end
-
 	if IsValid(self.Owner) && self.Owner:KeyDown(IN_ATTACK2) then
-		if IsValid(self.CarryEnt) then
-			self:ApplyForce()
-		end
-	elseif self.CarryEnt != nil then
+		if not IsValid(self.CarryEnt) then return end
+		
+		self:ApplyForce()		
+	elseif self.CarryEnt then
 		self:SetCarrying()
 	end
 end
@@ -169,5 +162,4 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:DrawWorldModel()
-
 end
