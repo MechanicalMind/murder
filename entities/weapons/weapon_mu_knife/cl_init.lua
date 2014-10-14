@@ -62,7 +62,7 @@ net.Receive("mu_knife_charge", function(len)
 	local ent = net.ReadEntity()
 	if not IsValid(ent) then return end
 	
-	local charging = net.ReadUInt() != 0
+	local charging = net.ReadUInt(8) != 0
 	if charging then
 		ent.ChargeStart = net.ReadDouble()
 	else

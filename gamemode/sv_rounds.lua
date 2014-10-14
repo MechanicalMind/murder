@@ -313,6 +313,11 @@ function GM:StartNewRound()
 		ply:KillSilent()
 		ply:Spawn()
 		ply:Freeze(true)
+		local vec = Vector(0, 0, 0)
+		vec.x = math.Rand(0, 1)
+		vec.y = math.Rand(0, 1)
+		vec.z = math.Rand(0, 1)
+		ply:SetPlayerColor(vec)
 
 		ply.LootCollected = 0
 		ply.HasMoved = false

@@ -17,6 +17,9 @@ function GM:PlayerInitialSpawn( ply )
 	self:NetworkRound(ply)
 
 	self.LastPlayerSpawn = CurTime()
+
+	local vec = Vector(0.5, 0.5, 0.5)
+	ply:SetPlayerColor(vec)
 end
 
 function GM:PlayerSpawn( ply )
@@ -75,12 +78,6 @@ function GM:PlayerSpawn( ply )
 	if IsValid(spawnPoint) then
 		ply:SetPos(spawnPoint:GetPos())
 	end
-
-	local vec = Vector(0,0,0)
-	vec.x = math.Rand(0, 1)
-	vec.y = math.Rand(0, 1)
-	vec.z = math.Rand(0, 1)
-	ply:SetPlayerColor(vec)
 end
 
 function GM:PlayerLoadout(ply)
