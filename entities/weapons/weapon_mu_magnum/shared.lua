@@ -15,13 +15,12 @@ SWEP.ViewModelFOV	= 50
 SWEP.ViewModel		= "models/weapons/v_357.mdl"
 SWEP.WorldModel		= "models/weapons/w_357.mdl"
 SWEP.HoldType		= "pistol"
-SWEP.PKOneOnly = true
 
 SWEP.Weight			= 5
 SWEP.AutoSwitchTo	= false
 SWEP.AutoSwitchFrom	= false
 SWEP.Spawnable		= true
-SWEP.AdminSpawnable	= true
+SWEP.AdminOnly		= true
 
 SWEP.Author			= "Mechanical Mind"
 SWEP.Contact		= ""
@@ -59,44 +58,43 @@ SWEP.Secondary.TakeAmmoPerBullet	= false
 SWEP.Secondary.Automatic			= false
 SWEP.Secondary.Ammo					= "none"
 
-if SERVER then
-	util.AddNetworkString("pkshotguncanattack")
+function SWEP:Initialize()
+	self:SetHoldType(self.HoldType)
+	self:SetCanAttack(true)
 end
 
-function SWEP:Initialize()
-	self:SetWeaponHoldType( self.HoldType )
-	self.CanAttack = true
+function SWEP:SetupDataTables()
+	self:NetworkVar("Bool", 0, "CanAttack")
 end
 
 function SWEP:BulletCallback(att, tr, dmg)
-	return {effects = true,damage = true}
+	return {effects = true, damage = true}
 end
 
 function SWEP:PrimaryAttack()
-	if !self.CanAttack then return false end
+	if not self:GetCanAttack() then return false end
+	
 	local bullet = {}	-- Set up the shot
-		bullet.Num = self.Primary.NumShots
-		bullet.Src = self.Owner:GetShootPos()
-		bullet.Dir = self.Owner:GetAimVector()
-		bullet.Spread = Vector( self.Primary.Cone / 90, self.Primary.Cone / 90, 0 )
-		bullet.Tracer = self.Primary.Tracer
-		bullet.Force = self.Primary.Force
-		bullet.Damage = self.Primary.Damage
-		-- function bullet.Callback(att,tr,dmg)
-		-- 	self:BulletCallback(att, tr, dmg)
-		-- end
-	self.Owner:FireBullets( bullet )
-	self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	bullet.Num = self.Primary.NumShots
+	bullet.Src = self.Owner:GetShootPos()
+	bullet.Dir = self.Owner:GetAimVector()
+	bullet.Spread = Vector(self.Primary.Cone / 90, self.Primary.Cone / 90, 0)
+	bullet.Tracer = self.Primary.Tracer
+	bullet.Force = self.Primary.Force
+	bullet.Damage = self.Primary.Damage
+	/* 
+	function bullet.Callback(att,tr,dmg)
+		self:BulletCallback(att, tr, dmg)
+	end
+	*/		
+	self.Owner:FireBullets(bullet)
+	self:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+	self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self:EmitSound(Sound(self.Primary.Sound))
-	self.Owner:ViewPunch(Angle( -self.Primary.Recoil, 0, 0 ))
+	self.Owner:ViewPunch(Angle(-self.Primary.Recoil, 0, 0))
 
 	self.NextLower = CurTime() + 0.4
-	self.CanAttack = false
-
-	// hacky fix for client, don't send immediately
-	timer.Simple(0, function () if IsValid(self) then self:NetCanAttack() end end)
-
+	self:SetCanAttack(false)
 end
 
 function SWEP:SecondaryAttack()
@@ -105,8 +103,7 @@ end
 function SWEP:Think()
 	if self.NextAttack && self.NextAttack < CurTime() then
 		self.NextAttack = nil
-		self.CanAttack = true
-		self:NetCanAttack()
+		self:SetCanAttack(true)
 		//self:SendWeaponAnim( ACT_VM_IDLE)
 		//self.Owner:ChatPrint("Cake")
 	end
@@ -115,8 +112,10 @@ function SWEP:Think()
 		self.NextUpper = CurTime() + self.Primary.ReloadTime
 		self:SendWeaponAnim(ACT_VM_RELOAD)
 		-- self:EmitSound(self.ReloadSound)
+		
 		local i = math.random(1,3)
 		if i == 2 then i = 4 end
+		
 		self:EmitSound("weapons/357/357_reload" .. i .. ".wav")
 		self.Owner:SetAnimation( PLAYER_RELOAD )
 	end
@@ -129,32 +128,10 @@ function SWEP:Think()
 end
 
 function SWEP:Reload()
-
-end
-
-if CLIENT then
-	net.Receive("pkshotguncanattack", function (len)
-		local ent = net.ReadEntity()
-		local canattack = net.ReadUInt(8)
-		if IsValid(ent) then
-			ent.CanAttack = canattack != 0
-		end
-	end)
-end
-
-function SWEP:NetCanAttack()
-	if SERVER then
-		if IsValid(self.Owner) && self.Owner:IsPlayer() then
-			net.Start("pkshotguncanattack")
-			net.WriteEntity(self)
-			net.WriteUInt(self.CanAttack and 1 or 0,8)
-			net.Send(self.Owner)
-		end
-	end
 end
 
 function SWEP:Deploy()
-	if !self.CanAttack then
+	if not self:GetCanAttack() then
 		self.NextAttack = nil
 		self.NextLower = nil
 		self.NextUpper = CurTime() + self.Primary.ReloadTime
@@ -162,6 +139,7 @@ function SWEP:Deploy()
 		self:SendWeaponAnim(ACT_VM_RELOAD)
 		self:NetCanAttack()
 	end
+	
 	return true
 end
 

@@ -8,21 +8,22 @@ SWEP.ViewModelFOV = 65
 SWEP.Slot = 1
 SWEP.SlotPos = 1
 
-killicon.AddFont( "weapon_pk_fists", "HL2MPTypeDeath", "5", Color( 0, 0, 255, 255 ) )
+killicon.AddFont("weapon_pk_fists", "HL2MPTypeDeath", "5", Color(0, 0, 255, 255))
 
 function SWEP:DrawWeaponSelection( x, y, w, h, alpha )
 	local name = translate and translate.knife or "Knife"
 	surface.SetFont("MersText1")
 	local tw, th = surface.GetTextSize(name:sub(2))
+	
 	surface.SetFont("MersHead1")
 	local twf, thf = surface.GetTextSize(name:sub(1, 1))
 	tw = tw + twf + 1
+	
 	draw.DrawText(name:sub(2), "MersText1", x + w * 0.5 - tw / 2 + twf + 1, y + h * 0.51, Color(255, 150, 0, alpha), 0)
 	draw.DrawText(name:sub(1, 1), "MersHead1", x + w * 0.5 - tw / 2 , y + h * 0.49, Color(255, 50, 50, alpha), 0)
 end
 
 function SWEP:Initialize()
-	self:SetWeaponHoldType("melee")
 end
 
 function SWEP:Deploy()
@@ -39,9 +40,7 @@ end
 
 function SWEP:DrawWorldModel()	
 	self:DrawModel()
-	return false
 end
-
 
 function SWEP:DrawHUD()
 	if self.ChargeStart then
@@ -59,14 +58,10 @@ function SWEP:DrawHUD()
 	end
 end  
 
-net.Receive("mu_knife_charge", function (len)
+net.Receive("mu_knife_charge", function(len)
 	local ent = net.ReadEntity()
-	local charging = net.ReadUInt(8) != 0
-	if IsValid(ent) then
-		if charging then
-			ent.ChargeStart = net.ReadDouble()
-		else
-			ent.ChargeStart = nil
-		end
-	end
+	if not IsValid(ent) then return end
+	
+	local charging = tobool(net.ReadBit())
+	ent.ChargeStart = charging and net.ReadDouble() or nil
 end)
