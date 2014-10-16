@@ -74,9 +74,9 @@ function SWEP:CanPrimaryAttack()
 end
 
 local pickupWhiteList = {
-	["prop_ragdoll"] = true,
-	["prop_physics"] = true,
-	["prop_physics_multiplayer"] = true
+	prop_ragdoll = true,
+	prop_physics = true,
+	prop_physics_multiplayer = true
 }
 
 if SERVER then
@@ -156,6 +156,8 @@ function SWEP:PrimaryAttack()
 		if IsValid(self.Owner) then
 			if self.Owner:HasWeapon("weapon_mu_knife") then
 				self.Owner:SelectWeapon("weapon_mu_knife")
+			elseif self.Owner:HasWeapon("weapon_mu_magnum") then
+				self.Owner:SelectWeapon("weapon_mu_magnum")
 			end
 		end
 	end
