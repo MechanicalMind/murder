@@ -78,10 +78,6 @@ end
 
 function GM:InitPostEntityAndMapCleanup() 
 	for k, ent in pairs(ents.GetAll()) do
-		if ent:GetClass():find("door") then
-			ent:Fire("unlock","",0)
-		end
-
 		if ent:IsWeapon() || ent:GetClass():match("^weapon_") then
 			ent:Remove()
 		end

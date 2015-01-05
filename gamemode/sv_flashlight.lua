@@ -3,13 +3,15 @@ util.AddNetworkString("flashlight_charge")
 
 
 function GM:FlashlightThink()
-	local decay = FrameTime() / self.FlashlightBattery:GetFloat()
-	for k, ply in pairs(player.GetAll()) do
-		if ply:Alive() then
-			if ply:FlashlightIsOn() then
-				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() - decay, 0, 1))
-			else
-				ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() + decay / 2, 0, 1))
+	if self.FlashlightBattery:GetFloat() > 0 then
+		local decay = FrameTime() / self.FlashlightBattery:GetFloat()
+		for k, ply in pairs(player.GetAll()) do
+			if ply:Alive() then
+				if ply:FlashlightIsOn() then
+					ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() - decay, 0, 1))
+				else
+					ply:SetFlashlightCharge(math.Clamp(ply:GetFlashlightCharge() + decay / 2, 0, 1))
+				end
 			end
 		end
 	end
