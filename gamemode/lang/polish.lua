@@ -1,109 +1,109 @@
 
-pt.bystander = "Świadek"
+pt.bystander = "Åšwiadek"
 pt.murderer = "Morderca"
 pt.spectator = "Widz"
 
-pt.knife = "Nóż"
+pt.knife = "NÃ³Å¼"
 pt.magnum = "Rewolwer"
 pt.gun = "Pistolet"
-pt.hands = "Dłonie"
+pt.hands = "DÅ‚onie"
 
 
 pt.teamSpectators = "Widzowie"
 pt.teamPlayers = "Gracze"
 
-pt.killedTeamKill = "{player} zabił(a) niewinnego świadka"
-pt.killedMurderer = "{player} zabił(a) mordercę"
+pt.killedTeamKill = "{player} zabiÅ‚(a) niewinnego Å›wiadka"
+pt.killedMurderer = "{player} zabiÅ‚(a) mordercÄ™"
 
-pt.murdererDeathUnknown = "Morderca zmarł w niewyjaśnionych okolicznościach"
+pt.murdererDeathUnknown = "Morderca zmarÅ‚ w niewyjaÅ›nionych okolicznoÅ›ciach"
 
 
-pt.changeTeam = "{player} zmienił drużynę na: {team}"
-pt.teamMoved = "{player} został przeniesiony(a) do drużyny: {team}"
-pt.teamMovedAFK = "{player} był AFK i został przeniesiony do drużyny: {team}"
+pt.changeTeam = "{player} zmieniÅ‚ druÅ¼ynÄ™ na: {team}"
+pt.teamMoved = "{player} zostaÅ‚ przeniesiony(a) do druÅ¼yny: {team}"
+pt.teamMovedAFK = "{player} byÅ‚ AFK i zostaÅ‚ przeniesiony do druÅ¼yny: {team}"
 
-pt.spectateFailed = "Nie możesz zostać widzem. Nie jesteś martwy."
+pt.spectateFailed = "Nie moÅ¼esz zostaÄ‡ widzem. Nie jesteÅ› martwy."
 
-pt.murdererDisconnect = "Morderca się zdenerwował i wyszedł z gry"
-pt.murdererDisconnectKnown = "Morderca się zdenerwował i wyszedł z gry, był nim {murderer}"
+pt.murdererDisconnect = "Morderca siÄ™ zdenerwowaÅ‚ i wyszedÅ‚ z gry"
+pt.murdererDisconnectKnown = "Morderca siÄ™ zdenerwowaÅ‚ i wyszedÅ‚ z gry, byÅ‚ nim {murderer}"
 
-pt.winBystanders = "Świadkowie wygrywają!"
-pt.winBystandersMurdererWas = " Mordercą był {murderer}"
+pt.winBystanders = "Åšwiadkowie wygrywajÄ…!"
+pt.winBystandersMurdererWas = " MordercÄ… byÅ‚ {murderer}"
 pt.winMurderer = "Morderca wygrywa!"
-pt.winMurdererMurdererWas = " Był nim {murderer}"
+pt.winMurdererMurdererWas = " ByÅ‚ nim {murderer}"
 
-pt.minimumPlayers = "Niewystarczająca liczba graczy, by rozpocząć rundę"
-pt.roundStarted = "Nowa runda rozpoczęła się"
+pt.minimumPlayers = "NiewystarczajÄ…ca liczba graczy, by rozpoczÄ…Ä‡ rundÄ™"
+pt.roundStarted = "Nowa runda rozpoczÄ™Å‚a siÄ™"
 
 
-pt.adminMurdererSelect = "{player} będzie mordercą w następnej rundzie"
-pt.adminMurdererForce = "Wymuś mordercę w następnej rundzie"
-pt.adminSpectate = "Oglądaj"
-pt.adminMoveToSpectate = "Przenieś do drużyny: {spectate}"
+pt.adminMurdererSelect = "{player} bÄ™dzie mordercÄ… w nastÄ™pnej rundzie"
+pt.adminMurdererForce = "WymuÅ› mordercÄ™ w nastÄ™pnej rundzie"
+pt.adminSpectate = "OglÄ…daj"
+pt.adminMoveToSpectate = "PrzenieÅ› do druÅ¼yny: {spectate}"
 
-pt.mapChange = "Zmieniam mapę na: {map}"
+pt.mapChange = "Zmieniam mapÄ™ na: {map}"
 
-pt.scoreboard = "Tabela wyników"
-pt.scoreboardName = "Imię"
+pt.scoreboard = "Tabela wynikÃ³w"
+pt.scoreboardName = "ImiÄ™"
 pt.scoreboardPing = "Ping"
-pt.scoreboardBystanderName = "Imię w grze"
+pt.scoreboardBystanderName = "ImiÄ™ w grze"
 pt.scoreboardStatus = "Status"
 pt.scoreboardChance = "Szansa"
-pt.scoreboardRefresh = "Odśwież"
+pt.scoreboardRefresh = "OdÅ›wieÅ¼"
 
-pt.scoreboardJoinTeam = "Dołącz"
+pt.scoreboardJoinTeam = "DoÅ‚Ä…cz"
 
 pt.scoreboardActionAdmin = "Jest administratorem"
 pt.scoreboardActionMute = "Wycisz"
-pt.scoreboardActionUnmute = "Przywróć głos"
+pt.scoreboardActionUnmute = "PrzywrÃ³Ä‡ gÅ‚os"
 
-pt.endroundMurdererQuit = "Świadkowie wygrywają! Morderca zdenerwował się i wyszedł z gry"
-pt.endroundBystandersWin = "Świadkowie wygrywają!"
+pt.endroundMurdererQuit = "Åšwiadkowie wygrywajÄ…! Morderca zdenerwowaÅ‚ siÄ™ i wyszedÅ‚ z gry"
+pt.endroundBystandersWin = "Åšwiadkowie wygrywajÄ…!"
 pt.endroundMurdererWins = "Morderca wygrywa!"
-pt.endroundMurdererWas = "Mordercą był {murderer}"
+pt.endroundMurdererWas = "MordercÄ… byÅ‚ {murderer}"
 
 pt.endroundLootCollected = "Zebrane przedmioty"
 
 pt.adminPanel = "Panel administratora"
 
-pt.spectating = "Oglądanie"
+pt.spectating = "OglÄ…danie"
 
-pt.adMelonbomberWhy = "Czemu by nie spróbować: "
-pt.adMelonbomberBy = " - moda stworzonego przez twórcę Murder?"
+pt.adMelonbomberWhy = "SprÃ³buj: "
+pt.adMelonbomberBy = " - mod od twÃ³rcy Murder?"
 
-pt.voiceHelp = "Pomoc"
-pt.voiceHelpDescription = "Krzycz o pomoc"
+pt.voiceHelp = "PÅ‚acz"
+pt.voiceHelpDescription = "BÅ‚agaj o pomoc"
 pt.voiceFunny = "Zabawa"
-pt.voiceFunnyDescription = "Taki tam kawał"
+pt.voiceFunnyDescription = "ZaÅ¼artuj"
 pt.voiceScream = "Krzyk"
-pt.voiceScreamDescription = "Jak mała dziewczynka"
-pt.voiceMorose = "Ponuro"
-pt.voiceMoroseDescription = "Poczuj smutek"
+pt.voiceScreamDescription = "Niczym maÅ‚a dziewczynka"
+pt.voiceMorose = "Smutek"
+pt.voiceMoroseDescription = "Poczuj go"
 
 
-pt.startHelpBystanderTitle = "Jesteś świadkiem"
+pt.startHelpBystanderTitle = "JesteÅ› Å›wiadkiem"
 pt.startHelpBystander = {
-	"Morderca jest na wolności",
-	"Nie daj się zabić"
+	"Morderca jest na wolnoÅ›ci",
+	"Nie daj siÄ™ zabiÄ‡"
 }
 
 
-pt.startHelpGunTitle = "Jesteś świadkiem"
-pt.startHelpGunSubtitle = "z sekretną bronią"
+pt.startHelpGunTitle = "JesteÅ› Å›wiadkiem"
+pt.startHelpGunSubtitle = "z sekretnÄ… broniÄ…"
 pt.startHelpGun = {
-	"Morderca jest na wolności",
-	"Znajdź go i zabij"
+	"Morderca jest na wolnoÅ›ci",
+	"ZnajdÅº go i zabij"
 }
 
-pt.startHelpMurdererTitle = "Jesteś mordercą"
+pt.startHelpMurdererTitle = "JesteÅ› mordercÄ…"
 pt.startHelpMurderer = {
 	"Zabij wszystkich",
-	"Nie daj się złapać"
+	"Nie daj siÄ™ zÅ‚apaÄ‡"
 }
 
-pt.murdererFog = "Twoje zło wewnętrzne jest widoczne"
-pt.murdererFogSub = "Zabij kogokolwiek, aby je ukryć"
+pt.murdererFog = "Twoje zÅ‚o wewnÄ™trzne jest widoczne"
+pt.murdererFogSub = "Zabij kogokolwiek, aby je ukryÄ‡"
 
-pt.pressEToDisguiseFor1Loot = "[E] - przebierz się w zamian za 1 przedmiot"
+pt.pressEToDisguiseFor1Loot = "[E] - przebierz siÄ™ w zamian za 1 przedmiot"
 
 pt.playerStatusDead = "Martwy"
