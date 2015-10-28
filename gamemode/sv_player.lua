@@ -544,31 +544,58 @@ function GM:PlayerUse(ply, ent)
 	return true
 end
 
-function GM:KeyPress(ply, key)
-	if key == IN_USE then
-		local tr = ply:GetEyeTraceNoCursor()
+local function pressedUse(self, ply)
+	local tr = ply:GetEyeTraceNoCursor()
 
-		// press e on windows to break them
-		if IsValid(tr.Entity) && (tr.Entity:GetClass() == "func_breakable" || tr.Entity:GetClass() == "func_breakable_surf") && tr.HitPos:Distance(tr.StartPos) < 50 then
-			local dmg = DamageInfo()
-			dmg:SetAttacker(game.GetWorld())
-			dmg:SetInflictor(game.GetWorld())
-			dmg:SetDamage(10)
-			dmg:SetDamageType(DMG_BULLET)
-			dmg:SetDamageForce(ply:GetAimVector() * 500)
-			dmg:SetDamagePosition(tr.HitPos)
-			tr.Entity:TakeDamageInfo(dmg)
+	// press e on windows to break them
+	if IsValid(tr.Entity) && (tr.Entity:GetClass() == "func_breakable" || tr.Entity:GetClass() == "func_breakable_surf") && tr.HitPos:Distance(tr.StartPos) < 50 then
+		local dmg = DamageInfo()
+		dmg:SetAttacker(game.GetWorld())
+		dmg:SetInflictor(game.GetWorld())
+		dmg:SetDamage(10)
+		dmg:SetDamageType(DMG_BULLET)
+		dmg:SetDamageForce(ply:GetAimVector() * 500)
+		dmg:SetDamagePosition(tr.HitPos)
+		tr.Entity:TakeDamageInfo(dmg)
+		return
+	end
+
+	// disguise as ragdolls
+	if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
+		if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
+			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then 
+				ply:MurdererDisguise(tr.Entity)
+				ply:SetLootCollected(ply:GetLootCollected() - 1)
+				return
+			end
 		end
-
-		// disguise as ragdolls
-		if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
-			if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
-				if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then 
-					ply:MurdererDisguise(tr.Entity)
-					ply:SetLootCollected(ply:GetLootCollected() - 1)
+	end
+	
+	if ply:GetMurderer() then
+		// find closest button to cursor with usable range
+		local dis, dot, but
+		for k, lbut in pairs(ents.FindByClass("ttt_traitor_button")) do
+			if lbut.TraitorButton then
+				local vec = lbut:GetPos() - ply:GetShootPos()
+				local ldis, ldot = vec:Length(), vec:GetNormal():Dot(ply:GetAimVector())
+				if (ldis < lbut:GetUsableRange() && ldot > 0.95) && (!but || ldot > dot) then
+					dis = ldis
+					dot = ldot
+					but = lbut
 				end
 			end
 		end
+		if but then
+			but:TraitorButtonPressed(ply)
+			return
+		end
+	end
+end
+
+function GM:KeyPress(ply, key)
+	if key == IN_USE then
+		pressedUse(self, ply)
+		
 	end
 end
 

@@ -179,20 +179,53 @@ function GM:DrawGameHUD(ply)
 	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
 	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
 
-	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerType")
-	if shouldDraw != false then
-		local name = translate.bystander
-		local color = Color(20,120,255)
-
-		if LocalPlayer() == ply && self:GetAmMurderer() then
-			name = translate.murderer
-			color = Color(190, 20, 20)
-		end
-
-		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
-	end
-	
 	local tr = ply:GetEyeTraceNoCursor()
+	
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderTraitorButton")
+	if shouldDraw != false then
+		if self:GetAmMurderer() then
+			// find closest button to cursor with usable range
+			local dis, dot, but
+			for k, lbut in pairs(ents.FindByClass("ttt_traitor_button")) do
+				local vec = lbut:GetPos() - ply:GetShootPos()
+				local ldis, ldot = vec:Length(), vec:GetNormal():Dot(ply:GetAimVector())
+				if (ldis < lbut:GetUsableRange() && ldot > 0.95) && (!but || ldot > dot) then
+					dis = ldis
+					dot = ldot
+					but = lbut
+				end
+			end
+			
+			// draw the friggen button with excessive text
+			if but then
+				local sp = but:GetPos():ToScreen()
+				if sp.visible then
+					local sz = 16
+					local col = Color(190, 20, 20)
+					if LocalPlayer():KeyDown(IN_USE) then col = Color(230, 30, 30) end
+					local ft, fh = draw.GetFontHeight("MersText1"), draw.GetFontHeight("MersHead1")
+
+					drawTextShadow(but:GetDescription(), "MersHead1", sp.x, sp.y, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+					local text
+					if but:GetDelay() < 0 then
+						text = translate.ttt_tbut_single
+					elseif but:GetDelay() == 0 then
+						text = translate.ttt_tbut_reuse
+					else
+						text = Translator:VarTranslate(translate.ttt_tbut_retime, {num = but:GetDelay()})
+					end
+					drawTextShadow(text, "MersText1", sp.x, sp.y + fh, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+					
+					local key = input.LookupBinding("use")
+					if key then
+						text = Translator:VarTranslate(translate.ttt_tbut_help, {key = key:upper()})
+						drawTextShadow(text, "MersText1", sp.x, sp.y + ft + fh, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+					end
+				end
+			end
+		end
+	end
 
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerNames")
 	if shouldDraw != false then
@@ -221,7 +254,7 @@ function GM:DrawGameHUD(ply)
 			end
 		end
 	end
-
+	
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderHealthBall")
 	if shouldDraw != false then
 		// setup size
@@ -280,6 +313,19 @@ function GM:DrawGameHUD(ply)
 			surface.SetDrawColor(255, 255, 255, 50)
 			surface.DrawTexturedRect(x + bord, ScrH() - h - size * 0.2 + bord, (w - bord * 2) * charge, h - bord * 2)
 		end
+	end
+	
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerType")
+	if shouldDraw != false then
+		local name = translate.bystander
+		local color = Color(20,120,255)
+
+		if LocalPlayer() == ply && self:GetAmMurderer() then
+			name = translate.murderer
+			color = Color(190, 20, 20)
+		end
+
+		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
 	end
 end
 
