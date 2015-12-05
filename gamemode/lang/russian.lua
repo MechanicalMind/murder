@@ -7,7 +7,7 @@ pt.bystander = "Свидетель"
 pt.murderer = "Убийца"
 pt.spectator = "Наблюдатель"
 
-pt.knife = "Нож"
+pt.knife = "Hож"
 pt.magnum = "Магнум"
 pt.gun = "Оружие"
 pt.hands = "Руки"
