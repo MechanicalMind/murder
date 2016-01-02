@@ -149,6 +149,19 @@ function GM:EntityTakeDamage( ent, dmginfo )
 
 end
 
+function GM:RemoveRagdolls(player_only)
+	for k, ent in pairs(ents.FindByClass("prop_ragdoll")) do
+		if IsValid(ent) then
+			if not player_only and string.find(ent:GetModel(), "zm_", 6, true) then
+				ent:Remove()
+			elseif ent.player_ragdoll then
+				-- cleanup ought to catch these but you know
+				ent:Remove()
+			end
+		end
+	end
+end
+
 function file.ReadDataAndContent(path)
 	local f = file.Read(path, "DATA")
 	if f then return f end
