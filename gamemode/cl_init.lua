@@ -16,6 +16,7 @@ include("cl_qmenu.lua")
 include("cl_spectate.lua")
 include("cl_adminpanel.lua")
 include("cl_flashlight.lua")
+include("cl_halos.lua")
 
 GM.Debug = CreateClientConVar( "mu_debug", 0, true, true )
 GM.HaloRender = CreateClientConVar( "mu_halo_render", 1, true, true ) // should we render halos
@@ -102,30 +103,34 @@ function GM:PostDrawTranslucentRenderables()
 	self:DrawFootprints()
 end
 
-function GM:PreDrawHalos()
+function GM:PreDrawMurderHalos(Add)
 	local client = LocalPlayer()
 
 	if IsValid(client) && client:Alive() && self.HaloRender:GetBool() then
+		local halos = {}
 		if self.HaloRenderLoot:GetBool() then
-			local tab = {}
-			for k,v in pairs(ents.FindByClass( "weapon_mu_magnum" )) do
+			for k, v in pairs(ents.FindByClass("weapon_mu_magnum")) do
 				if !IsValid(v.Owner) then
-					table.insert(tab, v)
+					table.insert(halos, {ent = v, color = 3})
 				end
 			end
-			table.Add(tab, ents.FindByClass( "mu_loot" ))
-			halo.Add(tab, Color(0, 220, 0), 4, 4, 2, true, false)
+			for k, v in pairs(ents.FindByClass("mu_loot")) do
+				table.insert(halos, {ent = v, color = 1})
+			end
 		end
 
 		if self:GetAmMurderer() && self.HaloRenderKnife:GetBool() then
-			local tab = {}
-			for k,v in pairs(ents.FindByClass( "weapon_mu_knife" )) do
+			for k, v in pairs(ents.FindByClass("weapon_mu_knife")) do
 				if !IsValid(v.Owner) then
-					table.insert(tab, v)
+					table.insert(halos, {ent = v, color = 2})
 				end
 			end
-			table.Add(tab, ents.FindByClass( "mu_knife" ))
-			halo.Add(tab, Color(220, 0, 0), 5, 5, 5, true, false)
+			for k, v in pairs(ents.FindByClass("mu_knife")) do
+				table.insert(halos, {ent = v, color = 2})
+			end
+		end
+		if #halos > 0 then
+			Add(halos, {Color(0, 220, 0), Color(220, 0, 0), Color(0, 0, 255)}, 5, 5, 5, true, false)
 		end
 	end
 end
