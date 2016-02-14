@@ -1,10 +1,12 @@
-SWEP.ViewModel = "models/weapons/v_knife_t.mdl"
-SWEP.WorldModel = "models/weapons/w_knife_t.mdl"
+SWEP.ViewModel 				= "models/weapons/v_knife_t.mdl"
+SWEP.WorldModel 			= "models/weapons/w_knife_t.mdl"
 
-SWEP.Weight	= 0
+SWEP.PrintName 				= translate and translate.knife or "Knife"
 
-SWEP.Spawnable			= true
-SWEP.AdminOnly			= true
+SWEP.Weight					= 0
+
+SWEP.Spawnable				= true
+SWEP.AdminOnly				= true
 
 SWEP.Primary.Delay			= 0.5
 SWEP.Primary.Recoil			= 3
