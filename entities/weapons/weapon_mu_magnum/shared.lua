@@ -5,7 +5,6 @@ else
 end
 SWEP.Base = "weapon_base"
 
-SWEP.PrintName		= translate and translate.magnum or "Magnum"
 SWEP.Slot			= 2
 SWEP.SlotPos		= 1
 SWEP.DrawAmmo		= true
@@ -59,6 +58,7 @@ SWEP.Secondary.Automatic			= false
 SWEP.Secondary.Ammo					= "none"
 
 function SWEP:Initialize()
+	self.PrintName = translate and translate.magnum or "Magnum"
 	self:SetHoldType(self.HoldType)
 	self:SetCanAttack(true)
 end

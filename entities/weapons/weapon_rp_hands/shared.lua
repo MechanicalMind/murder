@@ -6,7 +6,6 @@ if SERVER then
 	SWEP.AutoSwitchFrom		= false
 	
 else
-	SWEP.PrintName			= translate and translate.hands or "Hands"
 	SWEP.Slot				= 0
 	SWEP.SlotPos			= 1
 	SWEP.DrawAmmo			= false
@@ -47,6 +46,7 @@ SWEP.Secondary.Ammo			= "none"
 
 
 function SWEP:Initialize()
+	self.PrintName = translate and translate.hands or "Hands"
 	self:SetHoldType(self.HoldType)
 	self:DrawShadow(false)
 end
