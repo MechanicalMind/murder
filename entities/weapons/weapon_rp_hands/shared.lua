@@ -47,6 +47,7 @@ SWEP.Secondary.Ammo			= "none"
 
 
 function SWEP:Initialize()
+	self.PrintName = translate and translate.hands or "Hands"
 	self:SetHoldType(self.HoldType)
 	self:DrawShadow(false)
 end

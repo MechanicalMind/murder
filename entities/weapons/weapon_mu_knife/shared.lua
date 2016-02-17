@@ -1,12 +1,12 @@
-SWEP.ViewModel = "models/weapons/v_knife_t.mdl"
-SWEP.WorldModel = "models/weapons/w_knife_t.mdl"
+SWEP.ViewModel 				= "models/weapons/v_knife_t.mdl"
+SWEP.WorldModel 			= "models/weapons/w_knife_t.mdl"
 
-SWEP.PrintName = translate and translate.knife or "Knife"
+SWEP.PrintName 				= translate and translate.knife or "Knife"
 
-SWEP.Weight	= 0
+SWEP.Weight					= 0
 
-SWEP.Spawnable			= true
-SWEP.AdminOnly			= true
+SWEP.Spawnable				= true
+SWEP.AdminOnly				= true
 
 SWEP.Primary.Delay			= 0.5
 SWEP.Primary.Recoil			= 3
@@ -28,6 +28,10 @@ SWEP.Secondary.ClipSize		= -1
 SWEP.Secondary.DefaultClip	= -1
 SWEP.Secondary.Automatic   	= false
 SWEP.Secondary.Ammo         = "none"
+
+function SWEP:Initialize()
+	self.PrintName = translate and translate.knife or "Knife"
+end
 
 function SWEP:GetTrace(left, up)
 	local trace = {}

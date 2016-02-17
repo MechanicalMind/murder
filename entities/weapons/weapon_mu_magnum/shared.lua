@@ -3,7 +3,7 @@ if ( SERVER ) then
 else
 	killicon.AddFont( "weapon_mu_magnum", "HL2MPTypeDeath", "1", Color( 255, 0, 0 ) )
 end
-SWEP.Base = "weapon_base"
+SWEP.Base 			= "weapon_base"
 
 SWEP.PrintName		= translate and translate.magnum or "Magnum"
 SWEP.Slot			= 2
@@ -59,6 +59,7 @@ SWEP.Secondary.Automatic			= false
 SWEP.Secondary.Ammo					= "none"
 
 function SWEP:Initialize()
+	self.PrintName = translate and translate.magnum or "Magnum"
 	self:SetHoldType(self.HoldType)
 	self:SetCanAttack(true)
 end
