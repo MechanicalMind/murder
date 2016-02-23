@@ -28,7 +28,7 @@ function Translator:LoadLanguage(name, overridePath)
 end
 
 function Translator:GetLanguage()
-	return self.language or "english"
+	return self.language or "russian"
 end
 
 local def = {}
@@ -37,15 +37,15 @@ function Translator:GetLanguageTable()
 	if self.languages[lang] then
 		return self.languages[lang]
 	end
-	if self.languages["english"] then
-		return self.languages["english"]
+	if self.languages["russian"] then
+		return self.languages["russian"]
 	end
 	return def
 end
 
 function Translator:GetEnglishTable()
-	if self.languages["english"] then
-		return self.languages["english"]
+	if self.languages["russian"] then
+		return self.languages["russian"]
 	end
 	return def
 end
@@ -75,7 +75,7 @@ if SERVER then
 	hook.Add("Think", "Translator", function ()
 		local lang = GAMEMODE.Language:GetString()
 
-		if lang == "" then lang = "english" end
+		if lang == "" then lang = "russian" end
 
 		if lang != Translator.language then
 			Translator:ChangeLanguage(lang)
