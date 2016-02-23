@@ -2,7 +2,7 @@
 
 Translator = {}
 Translator.languages = {}
-Translator.language = "english"
+Translator.language = "russian"
 
 local rootFolder = (GM or GAMEMODE).Folder:sub(11) .. "/gamemode/"
 
