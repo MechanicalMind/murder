@@ -5,5 +5,5 @@
 	"maps"		"^md_|^mu_|^murder_"
 	"menusystem"	"1"
 	"workshopid" "187073946"
-	"version"	"21"
+	"version"	"23"
 }

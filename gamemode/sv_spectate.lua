@@ -2,7 +2,7 @@ util.AddNetworkString("spectating_status")
 
 local PlayerMeta = FindMetaTable("Player")
 
-function PlayerMeta:CSpectate(mode, spectatee) 
+function PlayerMeta:CSpectate(mode, spectatee)
 	mode = mode || OBS_MODE_IN_EYE
 	self:Spectate(mode)
 	if IsValid(spectatee) then

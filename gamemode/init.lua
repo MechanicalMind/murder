@@ -17,6 +17,7 @@ AddCSLuaFile("cl_qmenu.lua")
 AddCSLuaFile("cl_spectate.lua")
 AddCSLuaFile("cl_adminpanel.lua")
 AddCSLuaFile("cl_flashlight.lua")
+AddCSLuaFile("cl_halos.lua")
 
 include("sh_translate.lua")
 include("shared.lua")

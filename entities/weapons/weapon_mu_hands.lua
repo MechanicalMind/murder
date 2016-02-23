@@ -1,77 +1,49 @@
 if SERVER then
-	AddCSLuaFile("shared.lua")
-
-	SWEP.Weight				= 5
-	SWEP.AutoSwitchTo		= false
-	SWEP.AutoSwitchFrom		= false
-	
+	AddCSLuaFile()
 else
-	SWEP.PrintName			= translate and translate.hands or "Hands"
-	SWEP.Slot				= 0
-	SWEP.SlotPos			= 1
-	SWEP.DrawAmmo			= false
-	SWEP.DrawCrosshair		= true
-
-	SWEP.ViewModelFOV		= 60
-
 	function SWEP:DrawWeaponSelection( x, y, w, h, alpha )
 		-- draw.DrawText("Hands","Default",x + w * 0.44,y + h * 0.20,Color(0,50,200,alpha),1)
 	end
-
-	function SWEP:DrawHUD()
-	end
 end
 
-SWEP.Author			= ""
-SWEP.Contact		= ""
-SWEP.Purpose		= ""
-SWEP.Instructions	= ""
+SWEP.Base = "weapon_mers_base"
+SWEP.Slot = 0
+SWEP.SlotPos = 1
+SWEP.DrawAmmo = true
+SWEP.DrawCrosshair = true
 
-SWEP.Spawnable			= false
-SWEP.AdminOnly		= true
+SWEP.ViewModel	= "models/weapons/c_arms.mdl"
+SWEP.WorldModel	= ""
+SWEP.ViewModelFlip = false
 
 SWEP.HoldType = "normal"
+SWEP.SequenceDraw = "fists_draw"
+SWEP.SequenceIdle = "fists_idle_01"
 
-SWEP.ViewModel	= "models/weapons/v_crowbar.mdl"
-SWEP.WorldModel	= "models/weapons/w_crowbar.mdl"
-
-SWEP.Primary.ClipSize		= -1
-SWEP.Primary.DefaultClip	= -1
-SWEP.Primary.Automatic		= false
-SWEP.Primary.Ammo			= "none"
-
-SWEP.Secondary.ClipSize		= -1
-SWEP.Secondary.DefaultClip	= -1
-SWEP.Secondary.Automatic	= false
-SWEP.Secondary.Ammo			= "none"
-
-
+SWEP.PrintName = translate and translate.hands or "Hands"
 function SWEP:Initialize()
-	self:SetHoldType(self.HoldType)
-	self:DrawShadow(false)
+	self.PrintName = translate and translate.hands or "Hands"
+	self.BaseClass.Initialize(self)
 end
 
-function SWEP:Deploy()
-	if SERVER then
-		self:SetColor(255,255,255,0)
-		if IsValid(self.Owner) then
-			timer.Simple(0, function()
-				if IsValid(self) && IsValid(self.Owner) then
-					self.Owner:DrawViewModel(false)
-				end
-			end)
-		end
-	end
-	return true
+function SWEP:DoPrimaryAttackEffect()
 end
 
-function SWEP:Holster()
-	return true
+local function addangle(ang,ang2)
+	ang:RotateAroundAxis(ang:Up(),ang2.y) -- yaw
+	ang:RotateAroundAxis(ang:Forward(),ang2.r) -- roll
+	ang:RotateAroundAxis(ang:Right(),ang2.p) -- pitch
 end
 
-function SWEP:CanPrimaryAttack()
-	return true
+function SWEP:CalcViewModelView(vm, opos, oang, pos, ang)
+	
+	// iron sights
+	local pos2 = Vector(-35, 0, 0)
+	addangle(ang, Angle(-90, 0, 0))
+	pos2:Rotate(ang)
+	return pos + pos2, ang
 end
+
 
 local pickupWhiteList = {
 	prop_ragdoll = true,
@@ -142,6 +114,7 @@ function SWEP:SetCarrying(ent, bone)
 end
 
 function SWEP:Think()
+	self.BaseClass.Think(self)
 	if IsValid(self.Owner) && self.Owner:KeyDown(IN_ATTACK2) then
 		if IsValid(self.CarryEnt) then
 			self:ApplyForce()
@@ -161,7 +134,4 @@ function SWEP:PrimaryAttack()
 			end
 		end
 	end
-end
-
-function SWEP:DrawWorldModel()
 end
