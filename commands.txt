@@ -17,7 +17,7 @@ Misc
 	mu_taunt <category> - Plays a random taunt sound
 	mu_jointeam <team> - Trys to join the specified team
 	mu_print_players - Prints all the players, there bystander names and steam ids
-	mu_admin_panel - Brings up an admin panel where you can view information
+	mu_adminpanel - Brings up an admin panel where you can view information
 
 Convars
 	mu_debug <0/1> - Shows debug information
