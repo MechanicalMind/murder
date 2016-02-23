@@ -148,40 +148,6 @@ function GM:DisplayEndRoundBoard(data)
 		lootList:AddItem(pnl)
 	end
 
-	local add = vgui.Create("DButton", menu)
-	add:Dock(BOTTOM)
-	add:SetTall(64)
-	add:SetText("")
-	local mat = Material("murder/melon_logo_scoreboard.png", "noclamp")
-	function add:Paint(w, h)
-		surface.SetMaterial(mat)
-		if self:IsDown() then
-			surface.SetDrawColor(180, 180, 180, 255)
-			surface.SetTextColor(180, 180, 180, 255)
-		elseif self.Hovered then
-			surface.SetDrawColor(220, 220, 220, 255)
-			surface.SetTextColor(220, 220, 220, 255)
-		else
-			surface.SetDrawColor(255, 255, 255, 255)
-			surface.SetTextColor(255, 255, 255, 255)
-		end
-
-		local t = translate.adMelonbomberWhy
-		surface.SetFont("MersRadialSmall")
-		local tw, th = surface.GetTextSize(t)
-		surface.SetTextPos(4, h / 2 - th / 2)
-		surface.DrawText(t)
-		surface.DrawTexturedRect(4 + tw + 4, 0, 324, 64)
-
-		surface.SetTextPos(4 + tw + 4 + 324 + 4, h / 2 - th / 2)
-		surface.DrawText(translate.adMelonbomberBy)
-	end
-
-	function add:DoClick()
-		gui.OpenURL("http://steamcommunity.com/sharedfiles/filedetails/?id=237537750")
-		surface.PlaySound("UI/buttonclick.wav")
-	end
-
 end
 
 net.Receive("reopen_round_board", function ()

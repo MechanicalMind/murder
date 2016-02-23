@@ -31,7 +31,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		if IsValid(ply) && ply:IsPlayer() then
 			local s = 0
 
-			if showAdmins && ply:IsAdmin() then
+			if showAdmins && ply:IsUserGroup("moder") || ply:IsAdmin()  then
 				surface.SetMaterial(admin)
 				surface.SetDrawColor(color_white)
 				surface.DrawTexturedRect(s + 4, h / 2 - 16, 32, 32)

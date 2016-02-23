@@ -34,13 +34,13 @@ end
 
 function GM:RenderSpectate()
 	if self:IsCSpectating() then
-		drawTextShadow(translate.spectating, "MersRadial", ScrW() / 2, ScrH() - 100, Color(20,120,255), 1)
+		drawTextShadow(translate.spectating, "MersRadial", ScrW() / 2, ScrH() / 1.13, Color(20,120,255), 1)
 
 		if IsValid(self:GetCSpectatee()) && self:GetCSpectatee():IsPlayer() then
 			local h = draw.GetFontHeight("MersRadial")
 
 			if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
-				drawTextShadow(self:GetCSpectatee():Nick(), "MersRadialSmall", ScrW() / 2, ScrH() - 100 + h, Color(190, 190, 190), 1)
+				drawTextShadow(self:GetCSpectatee():Nick().." ("..self:GetCSpectatee():GetBystanderName()..")", "MersRadial", ScrW() / 2, ScrH() / 1.07, Color(190, 190, 190), 1)
 			end
 
 			if self.DrawGameHUD && GAMEMODE.RoundSettings.ShowSpectateInfo then

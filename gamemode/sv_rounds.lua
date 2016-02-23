@@ -1,3 +1,6 @@
+util.AddNetworkString("RoundRoundTime")
+GM.RoundRoundTime = 300
+GM.RoundStartTime = 0
 
 util.AddNetworkString("SetRound")
 util.AddNetworkString("DeclareWinner")
@@ -40,6 +43,10 @@ function GM:NetworkRound(ply)
 		net.WriteUInt(0, 8)
 	end
 
+	-- if client just connected, send him current round start time and round time
+	net.WriteDouble(self.RoundStartTime)
+	net.WriteUInt(self.RoundRoundTime, 32)
+	
 	if ply == nil then
 		net.Broadcast()
 	else
@@ -130,6 +137,12 @@ function GM:RoundCheckForWin()
 		return
 	end
 
+	// round time ended
+	if self.RoundStartTime + self.RoundRoundTime < CurTime() then
+		self:EndTheRound(2, murderer)
+		return
+	end
+	
 	// keep playing.
 end
 
@@ -334,6 +347,12 @@ function GM:StartNewRound()
 	end
 
 	self.MurdererLastKill = CurTime()
+	
+	self.RoundStartTime = CurTime()
+	
+	net.Start("RoundRoundTime")
+	net.WriteUInt(self.RoundRoundTime, 32)
+	net.Broadcast()
 
 	hook.Call("OnStartRound")
 end
