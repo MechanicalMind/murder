@@ -106,3 +106,10 @@ pt.murdererFogSub = "Mate alguem para se esconder"
 pt.pressEToDisguiseFor1Loot = "[E] Disfarce ( custa 1 loot )"
 
 pt.playerStatusDead = "Morto"
+
+// ttt_traitor_button compatibility for TTT maps
+pt.ttt_tbut_single  = "Uso único"
+pt.ttt_tbut_reuse   = "Reutilizável"
+pt.ttt_tbut_retime  = "Reutilizável após {num} segundos"
+pt.ttt_tbut_waittime  = "Reutilizável em {timesec}"
+pt.ttt_tbut_help    = "Pressione {key} para ativar"
