@@ -202,13 +202,16 @@ function GM:DrawGameHUD(ply)
 				if sp.visible then
 					local sz = 16
 					local col = Color(190, 20, 20)
-					if LocalPlayer():KeyDown(IN_USE) then col = Color(230, 30, 30) end
+					if but:GetNextUseTime() > CurTime() then
+						col = Color(150, 150, 150)
+					end
 					local ft, fh = draw.GetFontHeight("MersText1"), draw.GetFontHeight("MersHead1")
-
 					drawTextShadow(but:GetDescription(), "MersHead1", sp.x, sp.y, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 					local text
-					if but:GetDelay() < 0 then
+					if but:GetNextUseTime() > CurTime() then
+						text = Translator:VarTranslate(translate.ttt_tbut_waittime, {timesec = math.ceil(but:GetNextUseTime() - CurTime()) .. "s"})
+					elseif but:GetDelay() < 0 then
 						text = translate.ttt_tbut_single
 					elseif but:GetDelay() == 0 then
 						text = translate.ttt_tbut_reuse
@@ -218,7 +221,7 @@ function GM:DrawGameHUD(ply)
 					drawTextShadow(text, "MersText1", sp.x, sp.y + fh, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 					
 					local key = input.LookupBinding("use")
-					if key then
+					if key && but:GetNextUseTime() <= CurTime() then
 						text = Translator:VarTranslate(translate.ttt_tbut_help, {key = key:upper()})
 						drawTextShadow(text, "MersText1", sp.x, sp.y + ft + fh, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 					end
@@ -280,7 +283,7 @@ function GM:DrawGameHUD(ply)
 		surface.SetFont("MersRadialSmall")
 		local w,h = surface.GetTextSize(ply:GetBystanderName())
 		local x = math.max(size * 0.6 + w / -2, size * 0.1)
-		drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_TOP)
+		drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_BOTTOM)
 	end
 
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderFlashlightCharge")

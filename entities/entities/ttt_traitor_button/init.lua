@@ -46,7 +46,7 @@ function ENT:KeyValue(key, value)
 	elseif key == "RemoveOnPress" then
 		self.RemoveOnPress = tobool(value)
 	else
-		// this is a terrible idea, but don't know if it does something important in TTT
+		// this is a terrible idea, but I don't know if it does something important in TTT
 		self:SetNetworkKeyValue(key, value)
 	end
 end
@@ -68,6 +68,9 @@ end
 util.AddNetworkString("TTT_ConfirmUseTButton")
 
 function ENT:TraitorButtonPressed(ply)
+	if self:GetNextUseTime() > CurTime() then
+		return
+	end
 	self:TriggerOutput("OnPressed", ply)
 
 	if self.RemoveOnPress then

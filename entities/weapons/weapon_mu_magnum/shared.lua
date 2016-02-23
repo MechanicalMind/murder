@@ -12,9 +12,10 @@ SWEP.DrawAmmo		= true
 SWEP.DrawCrosshair	= true
 SWEP.ViewModelFlip	= false
 SWEP.ViewModelFOV	= 50
-SWEP.ViewModel		= "models/weapons/v_357.mdl"
+SWEP.ViewModel		= "models/weapons/c_357.mdl"
 SWEP.WorldModel		= "models/weapons/w_357.mdl"
 SWEP.HoldType		= "pistol"
+SWEP.UseHands		= true
 
 SWEP.Weight			= 5
 SWEP.AutoSwitchTo	= false
