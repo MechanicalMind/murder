@@ -109,7 +109,7 @@ pt.playerStatusDead = "Morto"
 
 // ttt_traitor_button compatibility for TTT maps
 pt.ttt_tbut_single  = "Uso único"
-pt.ttt_tbut_reuse   = "Reusavel"
-pt.ttt_tbut_retime  = "Reutilizavel depois de {num} segundos"
-pt.ttt_tbut_waittime  = "Reutilizavel em {timesec}"
+pt.ttt_tbut_reuse   = "Reutilizável"
+pt.ttt_tbut_retime  = "Reutilizável após {num} segundos"
+pt.ttt_tbut_waittime  = "Reutilizável em {timesec}"
 pt.ttt_tbut_help    = "Pressione {key} para ativar"
