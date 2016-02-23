@@ -188,7 +188,7 @@ function GM:DrawGameHUD(ply)
 			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
 		
 			drawTextShadow(translate.murdererFog, "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
-			drawTextShadow(translate.murdererFogSub, "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
+			drawTextShadow(translate.murdererFogSub, "MersRadial", ScrW() * 0.5, ScrH() / 1.03, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
 		end
 	end
 

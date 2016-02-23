@@ -1,12 +1,8 @@
-SWEP.ViewModel = "models/weapons/v_knife_t.mdl"
-SWEP.WorldModel = "models/weapons/w_knife_t.mdl"
+SWEP.ViewModel 				= "models/weapons/v_knife_t.mdl"
+SWEP.WorldModel 			= "models/weapons/w_knife_t.mdl"
 
-SWEP.PrintName = translate and translate.knife or "Knife"
-
-SWEP.Weight	= 0
-
-SWEP.Spawnable			= true
-SWEP.AdminOnly			= true
+SWEP.Spawnable				= true
+SWEP.AdminOnly				= true
 
 SWEP.Primary.Delay			= 0.5
 SWEP.Primary.Recoil			= 3
@@ -49,6 +45,14 @@ function SWEP:GetTrace(left, up)
 	return tr
 end
 
+
+function SWEP:CanPrimaryAttack()
+	return true
+end
+
+function SWEP:CanSecondaryAttack()
+	return true
+end
 
 function SWEP:PrimaryAttack()
 	if self.ChargeStart then

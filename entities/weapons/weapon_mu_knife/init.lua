@@ -7,6 +7,8 @@ util.AddNetworkString("mu_knife_charge")
 
 SWEP.KnifeChargeConvar = CreateConVar("mu_knife_charge", 1, bit.bor(FCVAR_NOTIFY), "Should we use a charge bar on alt attack?" )
 
+SWEP.Weight			= 5
+
 function SWEP:Initialize()
 	self:SetHoldType("melee")
 end
