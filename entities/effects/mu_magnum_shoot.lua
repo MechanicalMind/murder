@@ -89,7 +89,6 @@ end
 -----------------------------------------------------------]]
 function EFFECT:Render()
 	local per = (self.LifeTime - RealTime()) / self.Time
-	DebugInfo(0, tostring(per))
 	
 	render.SetMaterial( self.Mat )
 	local texcoord = math.Rand( 0, 1 )
