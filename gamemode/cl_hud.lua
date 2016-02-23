@@ -61,7 +61,7 @@ function GM:HUDPaint()
 	local client = LocalPlayer()
 
 	if round == 0 then
-		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 	end
 
 	if client:Team() == 2 then
@@ -176,8 +176,8 @@ function GM:DrawGameHUD(ply)
 	-- surface.SetFont("MersRadial")
 	-- local w,h = surface.GetTextSize("Health")
 
-	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
-	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
+	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_BOTTOM)
+	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_BOTTOM)
 
 	local tr = ply:GetEyeTraceNoCursor()
 	
@@ -328,7 +328,7 @@ function GM:DrawGameHUD(ply)
 			color = Color(190, 20, 20)
 		end
 
-		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
+		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_BOTTOM)
 	end
 end
 

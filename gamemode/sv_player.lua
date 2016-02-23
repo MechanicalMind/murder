@@ -82,7 +82,7 @@ end
 
 function GM:PlayerLoadout(ply)
 
-	ply:Give("weapon_rp_hands")
+	ply:Give("weapon_mu_hands")
 	-- ply:Give("weapon_fists")
 
 	if ply:GetMurderer() then
