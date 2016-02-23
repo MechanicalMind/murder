@@ -1,9 +1,11 @@
 if SERVER then
 	AddCSLuaFile()
+else
+	function SWEP:DrawWeaponSelection( x, y, w, h, alpha )
+	end
 end
 
 SWEP.Base = "weapon_mers_base"
-SWEP.PrintName = ".357 Revolver"
 SWEP.Slot = 1
 SWEP.SlotPos = 1
 SWEP.DrawAmmo = true
@@ -36,8 +38,10 @@ SWEP.Primary.AutoReload = true
 SWEP.ReloadSequence = "reload"
 SWEP.ReloadSound = Sound("Weapon_357.Reload")
 
+SWEP.PrintName = translate and translate.magnum or "Magnum"
 function SWEP:Initialize()
 	self.BaseClass.Initialize(self)
+	self.PrintName = translate and translate.magnum or "Magnum"
 	self:SetClip1(self:GetMaxClip1())
 end
 

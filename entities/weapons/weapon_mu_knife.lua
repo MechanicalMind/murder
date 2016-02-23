@@ -51,7 +51,6 @@ else
 end
 
 SWEP.Base = "weapon_mers_base"
-SWEP.PrintName = translate and translate.knife or "Knife"
 SWEP.Slot = 1
 SWEP.SlotPos = 1
 SWEP.DrawAmmo = false
@@ -78,6 +77,12 @@ SWEP.Primary.Force = 900
 SWEP.Primary.DefaultClip = -1
 SWEP.Primary.Automatic = true
 SWEP.Primary.Ammo = "none"
+
+SWEP.PrintName = translate and translate.knife or "Knife"
+function SWEP:Initialize()
+	self.PrintName = translate and translate.knife or "Knife"
+	self.BaseClass.Initialize(self)
+end
 
 function SWEP:Holster()
 	if SERVER then

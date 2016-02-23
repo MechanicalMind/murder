@@ -7,7 +7,6 @@ else
 end
 
 SWEP.Base = "weapon_mers_base"
-SWEP.PrintName = "Hands"
 SWEP.Slot = 0
 SWEP.SlotPos = 1
 SWEP.DrawAmmo = true
@@ -20,6 +19,12 @@ SWEP.ViewModelFlip = false
 SWEP.HoldType = "normal"
 SWEP.SequenceDraw = "fists_draw"
 SWEP.SequenceIdle = "fists_idle_01"
+
+SWEP.PrintName = translate and translate.hands or "Hands"
+function SWEP:Initialize()
+	self.PrintName = translate and translate.hands or "Hands"
+	self.BaseClass.Initialize(self)
+end
 
 function SWEP:DoPrimaryAttackEffect()
 end
