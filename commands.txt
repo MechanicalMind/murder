@@ -35,8 +35,6 @@ Convars
 	mu_disguise_removeonkill <0/1> - Remove the murderer's disguise when he kills someone
 	mu_moveafktospectator <0/1> - Should we move AFK players to spectator on round end
 	mu_roundlimit <number> - Number of rounds we should play before map change
-	mu_admin_noclip <0/1> - Should admins be allowed to noclip
-	
-
-
-
+	mu_flashlight_battery <number> - How long the flashlight should last in seconds (0 for infinite), default is 10 seconds
+	mu_language <language> - The language Murder should use (available languages in gamemode/lang/, use the filename as language)
+	mu_admin_noclip <0/1> - Should admins be allowed to noclip, disabled by default
