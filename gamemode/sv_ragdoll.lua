@@ -35,106 +35,80 @@ local DeathRagdollsPerServer = 22
 if !PlayerMeta.CreateRagdollOld then
 	PlayerMeta.CreateRagdollOld = PlayerMeta.CreateRagdoll
 end
+
+local function clearupRagdolls(ragdolls, max)
+	local count = 1
+	for k, rag in pairs(ragdolls) do
+		if IsValid(rag) then
+			count = count + 1
+		else
+			rag[k] = nil
+		end
+	end
+
+	if max >= 0 && count > max then
+		while true do
+			if count > max then
+				if IsValid(ragdolls[1]) then
+					ragdolls[1]:Remove()
+				end
+				table.remove(ragdolls, 1)
+				count = count - 1
+			else
+				break
+			end
+		end
+	end
+end
+
 function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	local ent = self:GetNWEntity("DeathRagdoll")
 
 	// remove old player ragdolls
 	if !self.DeathRagdolls then self.DeathRagdolls = {} end
-	local countPlayerRagdolls = 1
-	for k,rag in pairs(self.DeathRagdolls) do
-		if IsValid(rag) then
-			countPlayerRagdolls = countPlayerRagdolls + 1
-		else
-			self.DeathRagdolls[k] = nil
-		end
-	end
-	if DeathRagdollsPerPlayer >= 0 && countPlayerRagdolls > DeathRagdollsPerPlayer then
-		for i = 0,countPlayerRagdolls do
-			if countPlayerRagdolls > DeathRagdollsPerPlayer then
-				self.DeathRagdolls[1]:Remove()
-				table.remove(self.DeathRagdolls,1)
-				countPlayerRagdolls = countPlayerRagdolls - 1
-			else
-				break
-			end
-		end
-	end
+	local max = hook.Run("MaxDeathRagdollsPerPlayer", self)
+	clearupRagdolls(self.DeathRagdolls, max or 1)
 
 	// remove old server ragdolls
-	local c2 = 1
-	for k,rag in pairs(GAMEMODE.DeathRagdolls) do
-		if IsValid(rag) then
-			c2 = c2 + 1
-		else
-			GAMEMODE.DeathRagdolls[k] = nil
-		end
-	end
-	if DeathRagdollsPerServer >= 0 && c2 > DeathRagdollsPerServer then
-		for i = 0,c2 do
-			if c2 > DeathRagdollsPerServer then
-				GAMEMODE.DeathRagdolls[1]:Remove()
-				table.remove(GAMEMODE.DeathRagdolls,1)
-				c2 = c2 - 1
-			else
-				break
-			end
-		end
-	end
+	if !GAMEMODE.DeathRagdolls then GAMEMODE.DeathRagdolls = {} end
+	local max = hook.Run("MaxDeathRagdolls")
+	clearupRagdolls(GAMEMODE.DeathRagdolls, max or 1)
 
-	local Data = duplicator.CopyEntTable( self )
+	local data = duplicator.CopyEntTable(self)
+	if !util.IsValidRagdoll(data.Model) then
+		return
+	end
 
 	local ent = ents.Create( "prop_ragdoll" )
-		duplicator.DoGeneric( ent, Data )
-	ent:Spawn()
-	ent:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-	ent:Fire("kill","",60 * 8)
+	data.ModelScale = 1 // doesn't work on ragdolls
+	duplicator.DoGeneric(ent, data)
+	
+	self:SetNWEntity("DeathRagdoll", ent )
+	ent:SetNWEntity("RagdollOwner", self)
+	table.insert(self.DeathRagdolls,ent)
+	table.insert(GAMEMODE.DeathRagdolls,ent)
+	
 	if ent.SetPlayerColor then
 		ent:SetPlayerColor(self:GetPlayerColor())
 	end
-	ent:SetNWEntity("RagdollOwner", self)
+	ent.PlayerRagdoll = true
+	hook.Run("PreDeathRagdollSpawn", self, ent)
+	ent:Spawn()
+	ent:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 	
-	ent.Corpse = {}
-	ent.Corpse.Name = self:Nick()
-	ent.Corpse.CauseDeath = ""
-	if dmginfo then
-		local t = dmginfo:GetDamageType()
-		// do bitmasks
-	end
-	ent.Corpse.Attacker = ""
-	if IsValid(attacker) && attacker:IsPlayer() then
-		if attacker == self then
-			if ent.Corpse.CauseDeath == "" then
-				ent.Corpse.CauseDeath = "Suicide"
-			end
-		else
-			ent.Corpse.Attacker = attacker:Nick()
+	hook.Run("OnDeathRagdollCreated", self, ent)
+	ent:Fire("kill", "", 60 * 8)
+
+	local vel = self:GetVelocity()
+	for bone = 0, ent:GetPhysicsObjectCount() - 1 do
+		local phys = ent:GetPhysicsObjectNum( bone )
+		if IsValid(phys) then
+			local pos, ang = self:GetBonePosition( ent:TranslatePhysBoneToBone( bone ) )
+			phys:SetPos(pos)
+			phys:SetAngles(ang)
+			phys:AddVelocity(vel)
 		end
-		local wep = dmginfo:GetInflictor()
-		-- inflicter doesn't work, do on GM:PlayerDeath
 	end
-
-	// set velocities
-	local Vel = self:GetVelocity()
-
-	local iNumPhysObjects = ent:GetPhysicsObjectCount()
-	for Bone = 0, iNumPhysObjects-1 do
-
-		local PhysObj = ent:GetPhysicsObjectNum( Bone )
-		if IsValid(PhysObj) then
-
-			local Pos, Ang = self:GetBonePosition( ent:TranslatePhysBoneToBone( Bone ) )
-			PhysObj:SetPos( Pos )
-			PhysObj:SetAngles( Ang )
-			PhysObj:AddVelocity( Vel )
-
-		end
-
-	end
-
-	// finish up
-	self:SetNWEntity("DeathRagdoll", ent )
-	table.insert(self.DeathRagdolls,ent)
-	table.insert(GAMEMODE.DeathRagdolls,ent)
 end
 
 if !PlayerMeta.GetRagdollEntityOld then
