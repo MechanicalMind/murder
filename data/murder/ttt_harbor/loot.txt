@@ -1,0 +1,1 @@
+[{"pos":"[149.9307 576.283 81.2344]","angle":"{0 -77.46 0}","model":"models/props/cs_militia/axe.mdl"}]
