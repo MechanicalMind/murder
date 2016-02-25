@@ -1,15 +1,24 @@
 local menu
 
 surface.CreateFont( "ScoreboardPlayer" , {
-	font = "coolvetica",
+	font = "Default",
 	size = 32,
 	weight = 500,
-	antialias = true,
-	italic = false
+})
+
+surface.CreateFont( "ScoreboardJoinString" , {
+	font = "Default",
+	size = 12,
+	weight = 600,
+})
+
+surface.CreateFont( "ScoreboardHostName" , {
+	font = "Default",
+	size = 40,
+	weight = 400,
 })
 
 local muted = Material("icon32/muted.png")
-local admin = Material("icon32/wand.png")
 
 local function addPlayerItem(self, mlist, ply, pteam)
 	local but = vgui.Create("DButton")
@@ -25,6 +34,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		else
 			surface.SetDrawColor(team.GetColor(pteam))
 		end
+		
 		surface.DrawRect(0, 0, w, h)
 
 		surface.SetDrawColor(255,255,255,10)
@@ -36,13 +46,6 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		if IsValid(ply) && ply:IsPlayer() then
 			local s = 0
 
-			if showAdmins && ply:IsAdmin() then
-				surface.SetMaterial(admin)
-				surface.SetDrawColor(color_white)
-				surface.DrawTexturedRect(s + 4, h / 2 - 16, 32, 32)
-				s = s + 32
-			end
-
 			if ply:IsMuted() then
 				surface.SetMaterial(muted)
 				surface.SetDrawColor(color_white)
@@ -50,13 +53,19 @@ local function addPlayerItem(self, mlist, ply, pteam)
 				s = s + 32
 			end
 
-			draw.DrawText(ply:Ping(), "ScoreboardPlayer", w - 9, 9, color_black, 2)
-			draw.DrawText(ply:Ping(), "ScoreboardPlayer", w - 10, 8, color_white, 2)
-
-			draw.DrawText(ply:Nick(), "ScoreboardPlayer", s + 11, 9, color_black, 0)
-			draw.DrawText(ply:Nick(), "ScoreboardPlayer", s + 10, 8, color_white, 0)
-
+			draw.DrawText(ply:Ping(), "ScoreboardPlayer", w - 9, 4, color_black, 2)
+			draw.DrawText(ply:Ping(), "ScoreboardPlayer", w - 10, 3, color_white, 2)
 			
+			if ply:Alive() then
+			draw.DrawText(ply:Nick().." ("..ply:GetBystanderName()..")", "ScoreboardPlayer", s + 11, 3, color_black, 0)
+			draw.DrawText(ply:Nick().." ("..ply:GetBystanderName()..")", "ScoreboardPlayer", s + 10, 2, color_white, 0)
+			else
+			draw.DrawText(ply:Nick(), "ScoreboardPlayer", s + 11, 3, color_black, 0)
+			draw.DrawText(ply:Nick(), "ScoreboardPlayer", s + 10, 2, color_white, 0)
+			end
+			
+			ply:GetPlayerColor()
+
 		end
 	end
 	function but:DoClick()
@@ -68,11 +77,6 @@ end
 
 function GM:DoScoreboardActionPopup(ply)
 	local actions = DermaMenu()
-
-	if ply:IsAdmin() then
-		local admin = actions:AddOption(translate.scoreboardActionAdmin)
-		admin:SetIcon("icon16/shield.png")
-	end
 
 	if ply != LocalPlayer() then
 		local t = translate.scoreboardActionMute
@@ -86,6 +90,20 @@ function GM:DoScoreboardActionPopup(ply)
 				ply:SetMuted(!ply:IsMuted())
 			end
 		end
+		
+	end
+	
+	local profile = actions:AddOption( translate.showProfile )
+	profile:SetIcon( "icon16/group.png" )
+	function profile:DoClick()
+		ply:ShowProfile()
+	end
+	
+	local profile = actions:AddOption( translate.copySteamID )
+	profile:SetIcon( "icon16/user.png" )
+	function profile:DoClick()
+	    chat.AddText(Color( 90, 90, 90 ), "[", Color( 0, 100, 200 ), "Scoreboard", Color( 90, 90, 90 ), "] ", Color( 255, 255, 255 ),"SteamID copied!")
+		SetClipboardText(ply:SteamID())
 	end
 	
 	if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
@@ -103,17 +121,10 @@ function GM:DoScoreboardActionPopup(ply)
 			function force:DoClick()
 				RunConsoleCommand("mu_forcenextmurderer", ply:EntIndex())
 			end
-
-			if ply:Alive() then
-				local specateThem = actions:AddOption( translate.adminSpectate )
-				specateThem:SetIcon( "icon16/status_online.png" )
-				function specateThem:DoClick()
-					RunConsoleCommand("mu_spectate", ply:EntIndex())
-				end
-			end
+			
 		end
+		
 	end
-
 	actions:Open()
 end
 
@@ -181,7 +192,7 @@ local function makeTeamList(parent, pteam)
 	but:Dock(RIGHT)
 	but:SetText(translate.scoreboardJoinTeam)
 	but:SetTextColor(color_white)
-	but:SetFont("Trebuchet18")
+	but:SetFont("ScoreboardJoinString")
 	function but:DoClick()
 		RunConsoleCommand("mu_jointeam", pteam)
 	end
@@ -203,24 +214,6 @@ local function makeTeamList(parent, pteam)
 			surface.DrawRect(1, 1, w - 2, h - 2)
 		end
 	end
-
-	-- chaos = vgui.Create("DLabel", headp)
-	-- chaos:Dock(RIGHT)
-	-- chaos:DockMargin(0,0,10,0)
-	-- if pteam == 2 then
-	-- 	-- chaos:SetText("Control: " .. GAMEMODE:GetControl())
-	-- else
-	-- 	-- chaos:SetText("Chaos: " .. GAMEMODE:GetChaos())
-	-- end
-	-- function chaos:PerformLayout()
-	-- 	self:ApplySchemeSettings()
-	-- 	self:SizeToContentsX()
-	-- 	if ( self.m_bAutoStretchVertical ) then
-	-- 		self:SizeToContentsY()
-	-- 	end
-	-- end
-	-- chaos:SetFont("Trebuchet24")
-	-- chaos:SetTextColor(team.GetColor(pteam))
 
 	local head = vgui.Create("DLabel", headp)
 	head:SetText(team.GetName(pteam))
@@ -262,30 +255,30 @@ function GM:ScoreboardShow()
 		end
 
 		function menu:Paint()
-			surface.SetDrawColor(Color(40,40,40,255))
+			surface.SetDrawColor(Color(0,50,100,200))
 			surface.DrawRect(0, 0, menu:GetWide(), menu:GetTall())
 		end
 
 		menu.Credits = vgui.Create("DPanel", menu)
 		menu.Credits:Dock(TOP)
-		menu.Credits:DockPadding(8,6,8,0)
+		menu.Credits:DockPadding(8,-1,8,0)
 		function menu.Credits:Paint() end
 
-		local name = Label(GAMEMODE.Name or "derp errors", menu.Credits)
+		local name = Label(GetHostName(), menu.Credits)
 		name:Dock(LEFT)
-		name:SetFont("MersRadial")
-		name:SetTextColor(team.GetColor(2))
+		name:SetFont("ScoreboardHostName")
+		name:SetTextColor(Color(0,0,0))
 		function name:PerformLayout()
 			surface.SetFont(self:GetFont())
 			local w,h = surface.GetTextSize(self:GetText())
 			self:SetSize(w,h)
 		end
 
-		local lab = Label("by Mechanical Mind version " .. tostring(GAMEMODE.Version or "error"), menu.Credits)
+		local lab = Label("", menu.Credits)
 		lab:Dock(RIGHT)
 		lab:SetFont("MersText1")
 		lab.PerformLayout = name.PerformLayout
-		lab:SetTextColor(team.GetColor(1))
+		lab:SetTextColor(Color(0,0,0))
 
 		function menu.Credits:PerformLayout()
 			surface.SetFont(name:GetFont())

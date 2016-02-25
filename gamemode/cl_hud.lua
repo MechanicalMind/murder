@@ -1,6 +1,6 @@
 
 surface.CreateFont( "MersText1" , {
-	font = "Tahoma",
+	font = "Default",
 	size = 16,
 	weight = 1000,
 	antialias = true,
@@ -8,7 +8,7 @@ surface.CreateFont( "MersText1" , {
 })
 
 surface.CreateFont( "MersHead1" , {
-	font = "coolvetica",
+	font = "Default",
 	size = 24,
 	weight = 500,
 	antialias = true,
@@ -16,7 +16,7 @@ surface.CreateFont( "MersHead1" , {
 })
 
 surface.CreateFont( "MersRadial" , {
-	font = "coolvetica",
+	font = "Default",
 	size = math.ceil(ScrW() / 34),
 	weight = 500,
 	antialias = true,
@@ -24,7 +24,7 @@ surface.CreateFont( "MersRadial" , {
 })
 
 surface.CreateFont( "MersRadialBig" , {
-	font = "coolvetica",
+	font = "Default",
 	size = math.ceil(ScrW() / 24),
 	weight = 500,
 	antialias = true,
@@ -32,7 +32,7 @@ surface.CreateFont( "MersRadialBig" , {
 })
 
 surface.CreateFont( "MersRadialSmall" , {
-	font = "coolvetica",
+	font = "Default",
 	size = math.ceil(ScrW() / 60),
 	weight = 100,
 	antialias = true,
@@ -40,11 +40,17 @@ surface.CreateFont( "MersRadialSmall" , {
 })
 
 surface.CreateFont( "MersDeathBig" , {
-	font = "coolvetica",
+	font = "Default",
 	size = math.ceil(ScrW() / 18),
 	weight = 500,
 	antialias = true,
 	italic = false
+})
+
+surface.CreateFont( "RoundTimerFont" , {
+	font = "Default",
+	size = 50,
+	weight = 700,
 })
 
 local function drawTextShadow(t,f,x,y,c,px,py)
@@ -61,7 +67,7 @@ function GM:HUDPaint()
 	local client = LocalPlayer()
 
 	if round == 0 then
-		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, 0, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 	end
 
 	if client:Team() == 2 then
@@ -82,12 +88,6 @@ function GM:HUDPaint()
 
 			end
 
-			-- local tr = LocalPlayer():GetEyeTrace()
-
-			-- local lc = render.GetLightColor(LocalPlayer():GetPos() + Vector(0,0,30))
-			-- local lt = (lc.r + lc.g + lc.b) / 3
-			-- draw.DrawText("Light:" .. tostring(lc), "MersRadial", ScrW() - 20, 80, color_white, 2)
-			-- draw.DrawText("Average:" .. tostring(math.Round(lt * 100) / 100), "MersRadial", ScrW() - 20, 120, color_white, 2)
 		end
 	else
 		self:RenderSpectate()
@@ -97,11 +97,30 @@ function GM:HUDPaint()
 		local h = draw.GetFontHeight("MersRadial")
 		local y = 0
 
-		draw.DrawText("Footsteps: " .. table.Count(FootStepsG), "MersRadial", ScrW() - 20, 20 + y, color_white, 2)
+		draw.DrawText("Footsteps: " .. table.Count(FootStepsG), "MersRadial", ScrW() - 20, 0 + y, color_white, 2)
 		y = y + h
 	end
 
 	self:DrawRadialMenu()
+	
+		local TimeLeft = math.Round((self.RoundStartTime + self.RoundTime) - CurTime())
+	local time2
+	if(TimeLeft % 60 < 10)then
+		time2 = "0"..TimeLeft % 60
+	else
+		time2 = TimeLeft % 60
+	end
+	
+		local time = math.floor(math.max(TimeLeft / 60, 0))..":"..time2
+	
+	// 0 not enough players
+	// 1 playing
+	// 2 round ended, about to restart
+	// 4 waiting for map switch
+	if(self.RoundStage == 1)then
+		draw.SimpleTextOutlined(time, "RoundTimerFont", ScrW()/2, 30, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black)
+	end
+	
 end
 
 function GM:DrawStartRoundInformation()
@@ -169,15 +188,15 @@ function GM:DrawGameHUD(ply)
 			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
 		
 			drawTextShadow(translate.murdererFog, "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
-			drawTextShadow(translate.murdererFogSub, "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
+			drawTextShadow(translate.murdererFogSub, "MersRadial", ScrW() * 0.5, ScrH() / 1.03, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
 		end
 	end
 
 	-- surface.SetFont("MersRadial")
 	-- local w,h = surface.GetTextSize("Health")
 
-	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_BOTTOM)
-	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_BOTTOM)
+	-- drawTextShadow("Health", "MersRadial", 20, ScrH() - 10, healthCol, 0, TEXT_ALIGN_TOP)
+	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_TOP)
 
 	local tr = ply:GetEyeTraceNoCursor()
 	
@@ -202,16 +221,13 @@ function GM:DrawGameHUD(ply)
 				if sp.visible then
 					local sz = 16
 					local col = Color(190, 20, 20)
-					if but:GetNextUseTime() > CurTime() then
-						col = Color(150, 150, 150)
-					end
+					if LocalPlayer():KeyDown(IN_USE) then col = Color(230, 30, 30) end
 					local ft, fh = draw.GetFontHeight("MersText1"), draw.GetFontHeight("MersHead1")
+
 					drawTextShadow(but:GetDescription(), "MersHead1", sp.x, sp.y, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 					local text
-					if but:GetNextUseTime() > CurTime() then
-						text = Translator:VarTranslate(translate.ttt_tbut_waittime, {timesec = math.ceil(but:GetNextUseTime() - CurTime()) .. "s"})
-					elseif but:GetDelay() < 0 then
+					if but:GetDelay() < 0 then
 						text = translate.ttt_tbut_single
 					elseif but:GetDelay() == 0 then
 						text = translate.ttt_tbut_reuse
@@ -221,7 +237,7 @@ function GM:DrawGameHUD(ply)
 					drawTextShadow(text, "MersText1", sp.x, sp.y + fh, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 					
 					local key = input.LookupBinding("use")
-					if key && but:GetNextUseTime() <= CurTime() then
+					if key then
 						text = Translator:VarTranslate(translate.ttt_tbut_help, {key = key:upper()})
 						drawTextShadow(text, "MersText1", sp.x, sp.y + ft + fh, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 					end
@@ -242,7 +258,7 @@ function GM:DrawGameHUD(ply)
 			local col = self.LastLooked:GetPlayerColor() or Vector()
 			col = Color(col.x * 255, col.y * 255, col.z * 255)
 			col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
-			drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2.2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 
@@ -283,7 +299,7 @@ function GM:DrawGameHUD(ply)
 		surface.SetFont("MersRadialSmall")
 		local w,h = surface.GetTextSize(ply:GetBystanderName())
 		local x = math.max(size * 0.6 + w / -2, size * 0.1)
-		drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.1, col, 0, TEXT_ALIGN_BOTTOM)
+		drawTextShadow(ply:GetBystanderName(), "MersRadialSmall", x, ScrH() - size * 1.3, col, 0, TEXT_ALIGN_TOP)
 	end
 
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderFlashlightCharge")
@@ -328,7 +344,7 @@ function GM:DrawGameHUD(ply)
 			color = Color(190, 20, 20)
 		end
 
-		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_BOTTOM)
+		drawTextShadow(name, "MersRadial", ScrW() - 20, ScrH() - 10, color, 2, TEXT_ALIGN_TOP)
 	end
 end
 

@@ -39,7 +39,8 @@ pt.adminMurdererSelect = "{player} will be Murderer next round"
 pt.adminMurdererForce = "Force murderer next round"
 pt.adminSpectate = "Spectate"
 pt.adminMoveToSpectate = "Move to {spectate}"
-
+pt.showProfile = "Show profile"
+pt.copySteamID = "Copy SteamID"
 pt.mapChange = "Changing map to {map}"
 
 pt.scoreboard = "Scoreboard"

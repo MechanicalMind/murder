@@ -1,4 +1,6 @@
-
+GM.RoundStartTime = 0
+GM.RoundTime = 0
+GM.RoundTimeLeft = 0
 GM.RoundStage = 0
 GM.LootCollected = 0
 GM.RoundSettings = {}
@@ -35,6 +37,14 @@ net.Receive("SetRound", function (length)
 		end)
 		GAMEMODE.LootCollected = 0
 	end
+	
+	if GAMEMODE.RoundStartTime < 1 then
+		GAMEMODE.RoundStartTime = net.ReadDouble()
+		GAMEMODE.RoundTime = net.ReadUInt(32)
+	else
+		GAMEMODE.RoundStartTime = CurTime()
+	end
+	
 end)
 
 net.Receive("DeclareWinner" , function (length)
@@ -76,4 +86,8 @@ end)
 
 net.Receive("SetLoot", function (length)
 	GAMEMODE.LootCollected = net.ReadUInt(32)
+end)
+
+net.Receive("RoundRoundTime", function (length)
+	GAMEMODE.RoundTime = net.ReadUInt(32)
 end)

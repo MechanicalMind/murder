@@ -32,13 +32,14 @@ pt.murdererDisconnect = "У убийцы RageQuit!"
 pt.murdererDisconnectKnown = "Убийца покинул сервер, его звали {murderer}"
 
 pt.winBystanders = "Свидетели победили!"
-pt.winBystandersMurdererWas = " Убийцей был {murderer}"
+pt.winBystandersMurdererWas = " Убийцей был(а) {murderer}"
 pt.winMurderer = "Убийца победил!"
-pt.winMurdererMurdererWas = " Его звали {murderer}"
+pt.winMurdererMurdererWas = " Его(её) звали {murderer}"
 
 pt.minimumPlayers = "Недостаточно игроков для начала игры"
 pt.roundStarted = "Новый раунд начался"
-
+pt.showProfile = "Посмотреть профиль"
+pt.copySteamID = "Скопировать SteamID"
 
 pt.adminMurdererSelect = "{player} будет Убийцей в следующем раунде"
 pt.adminMurdererForce = "Сделать Убийцей в следующем раунде"
@@ -55,9 +56,9 @@ pt.scoreboardStatus = "Статус"
 pt.scoreboardChance = "Шанс"
 pt.scoreboardRefresh = "Обновить"
 
-pt.scoreboardJoinTeam = "Присоединиться"
+pt.scoreboardJoinTeam = "Вступить"
 
-pt.scoreboardActionAdmin = "Администратор"
+pt.scoreboardActionAdmin = "Админ"
 pt.scoreboardActionMute = "Заглушить"
 pt.scoreboardActionUnmute = "Снять заглушку"
 
@@ -68,12 +69,10 @@ pt.endroundMurdererWas = "Убийцей был {murderer}"
 
 pt.endroundLootCollected = "Собрана Улика"
 
-pt.adminPanel = "Панель Администратора"
+pt.adminPanel = "Панель Админа"
 
 pt.spectating = "Наблюдение"
 
-pt.adMelonbomberWhy = "Почему бы не попробовать "
-pt.adMelonbomberBy = " игровой режим от создателя Murder"
 pt.voiceHelp = "Помогите"
 pt.voiceHelpDescription = "Позвать на помощь"
 pt.voiceFunny = "Шутка"
@@ -105,7 +104,7 @@ pt.startHelpMurderer = {
 }
 
 pt.murdererFog = "Ваша злая сущность стала видимой"
-pt.murdererFogSub = "Убейте кого-нибудь чтобы спрятаться"
+pt.murdererFogSub = "Убейте кого-нибудь чтобы спрятаться!"
 
 pt.pressEToDisguiseFor1Loot = "[E] Замаскироваться за 1 улику"
 
