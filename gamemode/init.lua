@@ -170,3 +170,7 @@ concommand.Add("mu_version", function (ply)
 		print("Murder by Mechanical Mind version " .. tostring(GAMEMODE.Version or "error"))
 	end
 end)
+
+function GM:MaxDeathRagdolls()
+	return 20
+end

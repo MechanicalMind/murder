@@ -1,37 +1,6 @@
 local PlayerMeta = FindMetaTable("Player")
 local EntityMeta = FindMetaTable("Entity")
 
-local dtypes = {}
-dtypes[DMG_GENERIC]=""
-dtypes[DMG_CRUSH]="Blunt Force"
-dtypes[DMG_BULLET]="Bullet"
-dtypes[DMG_SLASH]="Laceration"
-dtypes[DMG_BURN]="Fire"
-dtypes[DMG_VEHICLE]="Blunt Force"
-dtypes[DMG_FALL]="Fall force"
-dtypes[DMG_BLAST]="Explosion"
-dtypes[DMG_CLUB]="Blunt Force"
-dtypes[DMG_SHOCK]="Shock"
-dtypes[DMG_SONIC]="Sonic"
-dtypes[DMG_ENERGYBEAM]="Enery"
-dtypes[DMG_DROWN]="Hydration"
-dtypes[DMG_PARALYZE]="Paralyzation"
-dtypes[DMG_NERVEGAS]="Nervegas"
-dtypes[DMG_POISON]="Poison"
-dtypes[DMG_RADIATION]="Radiation"
-dtypes[DMG_DROWNRECOVER]=""
-dtypes[DMG_ACID]="Acid"
-dtypes[DMG_PLASMA]="Plasma"
-dtypes[DMG_AIRBOAT]="Energy"
-dtypes[DMG_DISSOLVE]="Energy"
-dtypes[DMG_BLAST_SURFACE]=""
-dtypes[DMG_DIRECT]="Fire"
-dtypes[DMG_BUCKSHOT]="Bullet"
-
-
-local DeathRagdollsPerPlayer = 3
-local DeathRagdollsPerServer = 22
-
 if !PlayerMeta.CreateRagdollOld then
 	PlayerMeta.CreateRagdollOld = PlayerMeta.CreateRagdoll
 end
