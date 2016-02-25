@@ -4,7 +4,7 @@ GM.Author 	= "MechanicalMind"
 // credits to Waddlesworth for the logo and menu icon
 GM.Email 	= ""
 GM.Website 	= "www.codingconcoctions.com/murder/"
-GM.Version = "23"
+GM.Version = "24"
 
 function GM:SetupTeams()
 	team.SetUp(1, translate.teamSpectators, Color(150, 150, 150))
