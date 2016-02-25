@@ -1,10 +1,6 @@
 
 EFFECT.Mat = Material( "effects/tracer_middle" )
 
---[[---------------------------------------------------------
-   Init( data table )
------------------------------------------------------------]]
-
 local smoke = {
 	"particle/smokesprites_0001",
 	"particle/smokesprites_0002",
@@ -30,7 +26,6 @@ function EFFECT:Init( data )
 	self.WeaponEnt = data:GetEntity()
 	self.Attachment = data:GetAttachment()
 	
-	-- Keep the start and end pos - we're going to interpolate between them
 	self.StartPos = self:GetTracerShootPos( self.Position, self.WeaponEnt, self.Attachment )
 	self.EndPos = data:GetOrigin()
 	
@@ -38,9 +33,7 @@ function EFFECT:Init( data )
 	self.LifeTime = RealTime() + self.Time
 
 	self:SetRenderBoundsWS( self.StartPos, self.EndPos )
-	
-	-- sound.Play( "weapons/explode"..math.random(3,5).. ".wav", pos, 90, 130 )
-		
+			
 	local emitter = ParticleEmitter((self.StartPos + self.EndPos) / 2) 
 
 	for i = 0, 30 do
@@ -61,34 +54,15 @@ function EFFECT:Init( data )
 		particle:SetCollide(true)
 		particle:SetBounce(0.2)
 	end
-	
-		
-	-- 	local particle = emitter:Add( "particles/smokey",pos)
-	-- 	particle:SetVelocity( VectorRand() * 60 )
-	-- 	particle:SetDieTime( 2.6)
-	-- 	particle:SetStartAlpha( 150 )
-	-- 	particle:SetEndAlpha( 0 )
-	-- 	particle:SetStartSize( 10 )
-	-- 	particle:SetEndSize( 70 )   
-	-- 	particle:SetRoll( 0 )
-	-- 	particle:SetRollDelta( 0 )
-	-- 	particle:SetColor( math.random(150,160),150,150 )
-	-- end
 		
 	emitter:Finish()
 
 end
 
---[[---------------------------------------------------------
-   THINK
------------------------------------------------------------]]
 function EFFECT:Think( )	
 	return self.LifeTime >= RealTime()
 end
 
---[[---------------------------------------------------------
-   Draw the effect
------------------------------------------------------------]]
 function EFFECT:Render()
 	local per = (self.LifeTime - RealTime()) / self.Time
 	
@@ -99,5 +73,4 @@ function EFFECT:Render()
 	local bendpos = bstartpos + (self.StartPos - self.EndPos):GetNormal() * 160
 	
 	render.DrawBeam(bstartpos, bendpos, 8, 0, 1, Color( 255, 255, 255, 255))
-
 end

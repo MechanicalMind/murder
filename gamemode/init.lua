@@ -1,23 +1,19 @@
-AddCSLuaFile("shared.lua")
-AddCSLuaFile("sh_translate.lua")
-AddCSLuaFile("weightedrandom.lua")
-AddCSLuaFile("cl_scoreboard.lua")
-AddCSLuaFile("cl_hud.lua")
-AddCSLuaFile("cl_footsteps.lua")
-AddCSLuaFile("cl_respawn.lua")
-AddCSLuaFile("cl_murderer.lua")
-AddCSLuaFile("cl_player.lua")
-AddCSLuaFile("cl_fixplayercolor.lua")
-AddCSLuaFile("cl_ragdoll.lua")
-AddCSLuaFile("cl_chattext.lua")
-AddCSLuaFile("cl_voicepanels.lua")
-AddCSLuaFile("cl_rounds.lua")
-AddCSLuaFile("cl_endroundboard.lua")
-AddCSLuaFile("cl_qmenu.lua")
-AddCSLuaFile("cl_spectate.lua")
-AddCSLuaFile("cl_adminpanel.lua")
-AddCSLuaFile("cl_flashlight.lua")
-AddCSLuaFile("cl_halos.lua")
+// add cs lua all the cl_ or sh_ files
+local folders = {
+	(GM or GAMEMODE).Folder:sub(11) .. "/gamemode/"
+}
+for k, folder in pairs(folders) do
+	local files, subfolders = file.Find(folder .. "*", "LUA")
+	for k, filename in pairs(files) do
+		if filename:sub(1, 3) == "cl_" || filename:sub(1, 3) == "sh_" || filename == "shared.lua"
+			|| folder:match("/sh_") || folder:match("/cl_") then
+			AddCSLuaFile(folder .. filename)
+		end
+	end
+	for k, subfolder in pairs(subfolders) do
+		table.insert(folders, folder .. subfolder .. "/")
+	end
+end
 
 include("sh_translate.lua")
 include("shared.lua")
