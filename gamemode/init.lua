@@ -52,6 +52,7 @@ GM.AFKMoveToSpec = CreateConVar("mu_moveafktospectator", 1, bit.bor(FCVAR_NOTIFY
 GM.RoundLimit = CreateConVar("mu_roundlimit", 0, bit.bor(FCVAR_NOTIFY), "Number of rounds we should play before map change" )
 GM.FlashlightBattery = CreateConVar("mu_flashlight_battery", 10, bit.bor(FCVAR_NOTIFY), "How long the flashlight should last in seconds (0 for infinite)" )
 GM.Language = CreateConVar("mu_language", "", bit.bor(FCVAR_NOTIFY), "The language Murder should use" )
+GM.AdminNoClip = CreateConVar("mu_admin_noclip", 0, bit.bor(FCVAR_NOTIFY), "Should admins be allowed to noclip" )
 
 // replicated
 GM.ShowAdminsOnScoreboard = CreateConVar("mu_scoreboard_show_admins", 1, bit.bor(0), "Should show admins on scoreboard" )
@@ -122,7 +123,7 @@ function GM:AllowPlayerPickup( ply, ent )
 end
 
 function GM:PlayerNoClip( ply )
-	return ply:IsSuperAdmin() || ply:GetMoveType() == MOVETYPE_NOCLIP
+	return self.AdminNoClip:GetBool() and ply:IsAdmin() or ply:GetMoveType() == MOVETYPE_NOCLIP
 end
 
 function GM:OnEndRound()
@@ -148,6 +149,19 @@ function GM:EntityTakeDamage( ent, dmginfo )
 	end
 
 
+end
+
+function GM:RemoveRagdolls(player_only)
+	for k, ent in pairs(ents.FindByClass("prop_ragdoll")) do
+		if IsValid(ent) then
+			if not player_only and string.find(ent:GetModel(), "zm_", 6, true) then
+				ent:Remove()
+			elseif ent.player_ragdoll then
+				-- cleanup ought to catch these but you know
+				ent:Remove()
+			end
+		end
+	end
 end
 
 function file.ReadDataAndContent(path)

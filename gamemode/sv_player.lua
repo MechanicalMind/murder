@@ -144,7 +144,7 @@ function GM:DoPlayerDeath( ply, attacker, dmginfo )
 
 	ply:UnMurdererDisguise()
 
-	ply:Freeze(false) // why?, *sigh*
+	ply:Freeze(false) -- why?, *sigh*
 	ply:CreateRagdoll()
 
 	local ent = ply:GetNWEntity("DeathRagdoll")
@@ -170,7 +170,7 @@ end
 local plyMeta = FindMetaTable("Player")
 
 function plyMeta:CalculateSpeed()
-	// set the defaults
+	-- set the defaults
 	local walk,run,canrun = 250,310,false
 	local jumppower = 200
 
@@ -193,7 +193,7 @@ function plyMeta:CalculateSpeed()
 		end
 	end
 
-	// handcuffs
+	-- handcuffs
 	-- if self:GetHandcuffed() then
 	-- 	walk = walk * 0.3
 	-- 	jumppower = 150
@@ -205,7 +205,7 @@ function plyMeta:CalculateSpeed()
 	-- 	canrun = false
 	-- end
 
-	// set out new speeds
+	-- set out new speeds
 	if canrun then
 		self:SetRunSpeed(run)
 	else
@@ -258,12 +258,12 @@ end
 
 
 function GM:PlayerDeathSound()
-	// don't play sound
+	-- don't play sound
 	return true
 end
 
 function GM:ScalePlayerDamage( ply, hitgroup, dmginfo )
-	// Don't scale it depending on hitgroup
+	-- Don't scale it depending on hitgroup
 end
 
 function GM:PlayerDeath(ply, Inflictor, attacker )
@@ -349,6 +349,57 @@ function GM:PlayerDeathThink(ply)
 	
 end
 
+function GM:GetFallDamage(ply, speed)
+	return 0
+end
+
+local fallsounds = {
+	Sound("player/damage1.wav"),
+	Sound("player/damage2.wav"),
+	Sound("player/damage3.wav")
+}
+
+function GM:OnPlayerHitGround(ply, in_water, on_floater, speed)
+	if in_water or speed < 450 or not IsValid(ply) then return end
+	local damage = math.pow(0.05 * (speed - 420), 1.75)
+
+	if on_floater then damage = damage / 2 end
+
+	local ground = ply:GetGroundEntity()
+	if IsValid(ground) and ground:IsPlayer() then
+		if math.floor(damage) > 0 then
+			local att = ply
+			local dmg = DamageInfo()
+
+			dmg:SetAttacker(att)
+			dmg:SetInflictor(att)
+			dmg:SetDamageForce(Vector(0,0,-1))
+			dmg:SetDamage(damage)
+
+			ground:TakeDamageInfo(dmg)
+		end
+
+		 -- our own falling damage is cushioned
+		 damage = damage / 3
+	end
+
+	if math.floor(damage) > 0 then
+		local dmg = DamageInfo()
+		dmg:SetDamageType(DMG_FALL)
+		dmg:SetAttacker(game.GetWorld())
+		dmg:SetInflictor(game.GetWorld())
+		dmg:SetDamageForce(Vector(0,0,1))
+		dmg:SetDamage(damage)
+
+		ply:TakeDamageInfo(dmg)
+
+		-- play CS:S fall sound if we got somewhat significant damage
+		if damage > 5 then
+			sound.Play(table.Random(fallsounds), ply:GetShootPos(), 55 + math.Clamp(damage, 0, 50), 100)
+		end
+	end
+end
+
 function EntityMeta:GetPlayerColor()
 	return self.playerColor or Vector()
 end
@@ -364,18 +415,18 @@ end
 
 function GM:PlayerCanPickupWeapon( ply, ent )
 
-	// can't pickup a weapon twice
+	-- can't pickup a weapon twice
 	if ply:HasWeapon(ent:GetClass()) then
 		return false
 	end
 
 	if ent:GetClass() == "weapon_mu_magnum" then
-		// murderer can't have the gun
+		-- murderer can't have the gun
 		if ply:GetMurderer() then
 			return false
 		end
 
-		// penalty for killing a bystander
+		-- penalty for killing a bystander
 		if ply:GetTKer() then
 			if ply.TempGiveMagnum then
 				ply.TempGiveMagnum = nil
@@ -386,7 +437,7 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 	end
 
 	if ent:GetClass() == "weapon_mu_knife" then
-		// bystanders can't have the knife
+		-- bystanders can't have the knife
 		if !ply:GetMurderer() then
 			return false
 		end
@@ -410,7 +461,7 @@ function GM:PlayerCanHearChatVoice(listener, talker, typ)
 		end
 		local ply = listener
 
-		// listen as if spectatee when spectating
+		-- listen as if spectatee when spectating
 		if listener:IsCSpectating() && IsValid(listener:GetCSpectatee()) then
 			ply = listener:GetCSpectatee()
 		end
@@ -547,7 +598,7 @@ end
 local function pressedUse(self, ply)
 	local tr = ply:GetEyeTraceNoCursor()
 
-	// press e on windows to break them
+	-- press e on windows to break them
 	if IsValid(tr.Entity) && (tr.Entity:GetClass() == "func_breakable" || tr.Entity:GetClass() == "func_breakable_surf") && tr.HitPos:Distance(tr.StartPos) < 50 then
 		local dmg = DamageInfo()
 		dmg:SetAttacker(game.GetWorld())
@@ -560,7 +611,7 @@ local function pressedUse(self, ply)
 		return
 	end
 
-	// disguise as ragdolls
+	-- disguise as ragdolls
 	if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
 		if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
 			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then 
@@ -572,7 +623,7 @@ local function pressedUse(self, ply)
 	end
 	
 	if ply:GetMurderer() then
-		// find closest button to cursor with usable range
+		-- find closest button to cursor with usable range
 		local dis, dot, but
 		for k, lbut in pairs(ents.FindByClass("ttt_traitor_button")) do
 			if lbut.TraitorButton then
