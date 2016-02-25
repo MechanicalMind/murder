@@ -104,7 +104,6 @@ function GM:LoadBystanderNames()
 			tab.name = name
 			tab.sex = sex
 			table.insert(tbl, tab)
-			print("DEBUG Read bystander part", name, sex)
 		end
 		self.BystanderNameParts = tbl
 	end
