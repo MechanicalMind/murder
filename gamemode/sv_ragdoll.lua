@@ -101,16 +101,3 @@ function EntityMeta:GetRagdollOwner()
 	end
 	return self:GetRagdollOwnerOld()
 end
-
-function GM:RagdollSetDeathDetails(victim, inflictor, attacker) 
-	local rag = victim:GetRagdollEntity()
-	if rag then
-		if IsValid(inflictor) && inflictor:IsWeapon() then
-			if inflictor.PrintName then
-				rag.Corpse.inflictor = inflictor.PrintName
-			else
-				rag.Corpse.inflictor = inflictor:GetClass()
-			end
-		end
-	end
-end

@@ -325,16 +325,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 	umsg.Start("rp_death", ply)
 	umsg.Long(5)
 	umsg.Long(4)
-	umsg.End()
-	
-	if ( Inflictor && Inflictor == attacker && (Inflictor:IsPlayer() || Inflictor:IsNPC()) ) then
-	
-		Inflictor = Inflictor:GetActiveWeapon()
-		if ( !Inflictor || Inflictor == NULL ) then Inflictor = attacker end
-	
-	end
-
-	self:RagdollSetDeathDetails(ply, Inflictor, attacker)
+	umsg.End()	
 end
 
 function GM:PlayerDeathThink(ply)

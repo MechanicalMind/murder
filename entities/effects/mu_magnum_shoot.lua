@@ -58,6 +58,8 @@ function EFFECT:Init( data )
 		particle:SetAirResistance(105)
 		local g = math.random(200, 255)
 		particle:SetColor(g, g, g)
+		particle:SetCollide(true)
+		particle:SetBounce(0.2)
 	end
 	
 		
