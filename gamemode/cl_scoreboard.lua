@@ -86,6 +86,13 @@ function GM:DoScoreboardActionPopup(ply)
 				ply:SetMuted(!ply:IsMuted())
 			end
 		end
+		local steamId = actions:AddOption(translate.scoreboardGetSteamId)
+		steamId:SetIcon("icon16/user_gray.png")
+		function steamId:DoClick()
+			if IsValid(ply) then
+				ply:ShowProfile()
+			end
+		end
 	end
 	
 	if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
