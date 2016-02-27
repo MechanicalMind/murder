@@ -84,6 +84,11 @@ function SWEP:Initialize()
 	self.BaseClass.Initialize(self)
 end
 
+function SWEP:SetupDataTables()
+	self.BaseClass.SetupDataTables(self)
+	self:NetworkVar("Float", 3, "FistHit")
+end
+
 function SWEP:Holster()
 	if SERVER then
 		if IsValid(self.Owner) then
@@ -104,29 +109,18 @@ end
 
 function SWEP:DoPrimaryAttackEffect()
 	-- self.Owner:ViewPunch(Angle(3, 0, math.Rand(-3, 3)))
-	if IsFirstTimePredicted() then
-		self.FistHit = RealTime() + 0.1
-	end
+	self:SetFistHit(CurTime() + 0.1)
 end
 
 function SWEP:Think()
 	self.BaseClass.Think(self)
-	if IsFirstTimePredicted() then
-		if self.FistHit && self.FistHit < RealTime() then
-			self.FistHit = nil
+	if self:GetFistHit() != 0 && self:GetFistHit() < RealTime() then
+		self:SetFistHit(0)
+		if IsFirstTimePredicted() then
 			self:AttackTrace()
 		end
 	end
 	
-	if self.FistCanAttack && self.FistCanAttack < CurTime() then
-		self.FistCanAttack = nil
-		self:SendWeaponAnim( ACT_VM_IDLE )
-		self.IdleTime = CurTime() + 0.1
-	end	
-	if self.FistHit && self.FistHit < CurTime() then
-		self.FistHit = nil
-		self:AttackTrace()
-	end
 	if SERVER && self.ChargeStart then
 		if !IsValid(self.Owner) || !self.Owner:KeyDown(IN_ATTACK2) then
 			if IsValid(self.Owner) then
@@ -162,6 +156,9 @@ function SWEP:GetTrace(left, up)
 end
 
 function SWEP:AttackTrace()
+	if self.Owner:IsPlayer() then
+		self.Owner:LagCompensation( true )
+	end
 	local trace = {}
 	trace.filter = self.Owner
 	trace.start = self.Owner:GetShootPos()
@@ -172,13 +169,17 @@ function SWEP:AttackTrace()
 	local tr = util.TraceHull(trace)
 	tr.TraceAimVector = self.Owner:GetAimVector()
 
+	print(CurTime(), trace.start, trace.endpos)
 	// aim around
 	if !IsValid(tr.Entity) then tr = self:GetTrace() end
 	if !IsValid(tr.Entity) then tr = self:GetTrace(10,0) end
 	if !IsValid(tr.Entity) then tr = self:GetTrace(-10,0) end
 	if !IsValid(tr.Entity) then tr = self:GetTrace(0,10) end
 	if !IsValid(tr.Entity) then tr = self:GetTrace(0,-10) end
+	
 	if tr.Hit then
+		DebugInfo(1, "" .. CurTime())
+		print(2, CurTime())
 		-- self.Owner:ViewPunch(Angle(-7, 0, 0))
 		if IsValid(tr.Entity) then
 			if CLIENT && LocalPlayer() == self.Owner then
@@ -210,6 +211,9 @@ function SWEP:AttackTrace()
 			self:EmitSound("Weapon_Crowbar.Single")
 		end
 	end
+	if self.Owner:IsPlayer() then
+		self.Owner:LagCompensation( false )
+	end
 end
 
 function SWEP:GetCharge()
@@ -235,9 +239,7 @@ function SWEP:ThrowKnife(force)
 end
 
 function SWEP:SecondaryAttack()
-	if self.FistCanAttack then return end
-	if self.IdleTime && self.IdleTime > CurTime() then return end
-	self.FistCanAttack = CurTime() + self.Primary.Delay
+	if !self:IsIdle() then return end
 
 	if SERVER then
 		if self.KnifeChargeConvar:GetBool() then
@@ -263,7 +265,6 @@ function SWEP:Reload()
 			net.WriteUInt(0, 8)
 			net.Send(self.Owner)
 		end
-		self.FistCanAttack = CurTime() + self.Primary.Delay
 		return
 	end
 end
