@@ -3,7 +3,7 @@ pt.murderer = "Assassino"
 pt.spectator = "Observador"
 
 pt.knife = "Faca"
-pt.magnum = "Revolver"
+pt.magnum = "Magnum"
 pt.gun = "Arma"
 pt.hands = "Mãos"
 
@@ -23,20 +23,20 @@ pt.teamMovedAFK = "{player} foi movido para {team} por ficar AFK"
 
 pt.spectateFailed = "Você não pode observar. Você não está morto."
 
-pt.murdererDisconnect = "O Assassino não aguentou a pressão e saiu."
-pt.murdererDisconnectKnown = "O Assassino saiu, ele era {murderer}"
+pt.murdererDisconnect = "O assassino não aguentou a pressão e saiu"
+pt.murdererDisconnectKnown = "O assassino saiu, ele era {murderer}"
 
 pt.winBystanders = "Os inocentes venceram!"
-pt.winBystandersMurdererWas = " o assassino era {murderer}"
-pt.winMurderer = "O Assassino venceu!"
-pt.winMurdererMurdererWas = " ele era {murderer}"
+pt.winBystandersMurdererWas = " O assassino era {murderer}"
+pt.winMurderer = "O assassino venceu!"
+pt.winMurdererMurdererWas = " Ele era {murderer}"
 
 pt.minimumPlayers = "Jogadores insuficientes para inicar a partida."
 pt.roundStarted = "Uma nova rodada começou"
 
 
-pt.adminMurdererSelect = "{player} será o assassino no prox. round"
-pt.adminMurdererForce = "Forçar assassino prox. round"
+pt.adminMurdererSelect = "{player} será o assassino no próximo round"
+pt.adminMurdererForce = "Forçar assassino próximo round"
 pt.adminSpectate = "Observar"
 pt.adminMoveToSpectate = "Mover para {spectate}"
 
@@ -46,19 +46,20 @@ pt.scoreboard = "Placar"
 pt.scoreboardName = "Nome"
 pt.scoreboardPing = "Ping"
 pt.scoreboardBystanderName = "Pseudónimo"
-pt.scoreboardStatus = "Status"
+pt.scoreboardStatus = "Estado"
 pt.scoreboardChance = "Chance"
-pt.scoreboardRefresh = "Refresh"
+pt.scoreboardRefresh = "Atualizar"
 
 pt.scoreboardJoinTeam = "Entrar"
 
-pt.scoreboardActionAdmin = "É um Admin!"
+pt.scoreboardActionAdmin = "É um Admin"
 pt.scoreboardActionMute = "Silenciar"
 pt.scoreboardActionUnmute = "Dessilenciar"
+pt.scoreboardActionViewProfile = "Ver Perfil"
 
-pt.endroundMurdererQuit = "Os Inocentes venceram! O Assassino não aguentou a pressão e saiu!"
-pt.endroundBystandersWin = "Inocentes venceram!"
-pt.endroundMurdererWins = "O Assassino venceu!"
+pt.endroundMurdererQuit = "Os inocentes venceram! O assassino não aguentou a pressão e saiu!"
+pt.endroundBystandersWin = "Os inocentes venceram!"
+pt.endroundMurdererWins = "O assassino venceu!"
 pt.endroundMurdererWas = "O assassino era {murderer}"
 
 pt.endroundLootCollected = "Loot Coletado"
@@ -75,35 +76,35 @@ pt.voiceHelpDescription = "Grite por ajuda"
 pt.voiceFunny = "Piada"
 pt.voiceFunnyDescription = "Um pouco de humor"
 pt.voiceScream = "Gritar"
-pt.voiceScreamDescription = "Grite como uma garotinha"
+pt.voiceScreamDescription = "Como uma garotinha"
 pt.voiceMorose = "Resmungar"
 pt.voiceMoroseDescription = "Sinta a tristeza"
 
 
-pt.startHelpBystanderTitle = "Você é um Inocente"
+pt.startHelpBystanderTitle = "Você é um inocente"
 pt.startHelpBystander = {
 	"Porém temos um assassino a solta",
 	"Não seja morto"
 }
 
 
-pt.startHelpGunTitle = "Você é um Inocente"
+pt.startHelpGunTitle = "Você é um inocente"
 pt.startHelpGunSubtitle = "com uma arma secreta"
 pt.startHelpGun = {
 	"Porém temos um assassino a solta",
 	"Ache e elimine ele"
 }
 
-pt.startHelpMurdererTitle = "Você é o Assassino"
+pt.startHelpMurdererTitle = "Você é o assassino"
 pt.startHelpMurderer = {
 	"Mate todos eles",
 	"Não seja pego"
 }
 
-pt.murdererFog = "Sua presença maliguina está se mostrando!"
+pt.murdererFog = "Sua presença maliguina está aparecendo!"
 pt.murdererFogSub = "Mate alguem para se esconder"
 
-pt.pressEToDisguiseFor1Loot = "[E] Disfarce ( custa 1 loot )"
+pt.pressEToDisguiseFor1Loot = "[E] Se disfarce como por 1 de loot"
 
 pt.playerStatusDead = "Morto"
 
