@@ -55,6 +55,7 @@ pt.scoreboardJoinTeam = "Rejoindre"
 pt.scoreboardActionAdmin = "Est un admin"
 pt.scoreboardActionMute = "Mute"
 pt.scoreboardActionUnmute = "Unmute"
+pt.scoreboardActionViewProfile = "Voir le profil"
 
 pt.endroundMurdererQuit = "Les innocents ont gagné ! Le meurtrier a rage quit"
 pt.endroundBystandersWin = "Les innocents ont gagné !"
@@ -106,3 +107,10 @@ pt.murdererFogSub = "Tuer quelqu'un pour la cacher"
 pt.pressEToDisguiseFor1Loot = "[E] Se déguiser pour 1 objet"
 
 pt.playerStatusDead = "Mort"
+
+// ttt_traitor_button compatibility for TTT maps
+pt.ttt_tbut_single  = "Usage unique"
+pt.ttt_tbut_reuse   = "Réutilisable"
+pt.ttt_tbut_retime  = "Réutilisable après {num}s"
+pt.ttt_tbut_waittime  = "Réutilisable dans {timesec}"
+pt.ttt_tbut_help    = "Appuyez sur {key} pour l'activer"
