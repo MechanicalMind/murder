@@ -55,6 +55,7 @@ pt.scoreboardJoinTeam = "Join"
 pt.scoreboardActionAdmin = "Is an admin"
 pt.scoreboardActionMute = "Mute"
 pt.scoreboardActionUnmute = "Unmute"
+pt.scoreboardActionViewProfile = "View Profile"
 
 pt.endroundMurdererQuit = "Bystanders win! The murderer rage quit"
 pt.endroundBystandersWin = "Bystanders win!"

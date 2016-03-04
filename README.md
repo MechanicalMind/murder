@@ -4,6 +4,3 @@ One person is a murderer with a knife, who is trying to secretly kill off the ot
 The other players must use their wits to find out who it is and kill them first. Unfortunately they only have the one gun between them. 
 
 Requires **Counter Strike: Source**, you must own it and have it installed. If you don't have the maps, textures or some models you most likely are missing CSS. 
-
-How add more loot support for some maps?
-Throw data folder (from murder-master) into your server or client folder.

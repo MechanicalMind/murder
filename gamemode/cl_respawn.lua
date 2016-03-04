@@ -25,11 +25,9 @@ function GM:RenderDeathOverlay()
 	end
 end
 
-GM.DeathEndTime = 0
 GM.SpectateTime = 0
-usermessage.Hook("rp_death",function (um)
-	GAMEMODE.DeathEndTime = CurTime() + um:ReadLong()
-	GAMEMODE.SpectateTime = CurTime() + um:ReadLong()
+net.Receive("mu_death", function()
+	GAMEMODE.SpectateTime = CurTime() + net.ReadUInt(4)
 end)
 
 function GM:RenderRespawnText()

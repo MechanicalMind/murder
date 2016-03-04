@@ -75,15 +75,24 @@ function GM:DoScoreboardActionPopup(ply)
 	end
 
 	if ply != LocalPlayer() then
-		local t = translate.scoreboardActionMute
-		if ply:IsMuted() then
-			t = translate.scoreboardActionUnmute
-		end
-		local mute = actions:AddOption( t )
-		mute:SetIcon("icon16/sound_mute.png")
-		function mute:DoClick()
-			if IsValid(ply) then
-				ply:SetMuted(!ply:IsMuted())
+		if !ply:IsBot() then
+			local t = translate.scoreboardActionMute
+			if ply:IsMuted() then
+				t = translate.scoreboardActionUnmute
+			end
+			local mute = actions:AddOption( t )
+			mute:SetIcon("icon16/sound_mute.png")
+			function mute:DoClick()
+				if IsValid(ply) then
+					ply:SetMuted(!ply:IsMuted())
+				end
+			end
+			local viewProfile = actions:AddOption(translate.scoreboardActionViewProfile)
+			viewProfile:SetIcon("icon16/user_gray.png")
+			function viewProfile:DoClick()
+				if IsValid(ply) then
+					ply:ShowProfile()
+				end
 			end
 		end
 	end

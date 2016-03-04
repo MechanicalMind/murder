@@ -84,7 +84,7 @@ function SWEP:SetupDataTables()
 	self:NetworkVar("String", 0, "WeaponState")
 	self:NetworkVar("Float", 0, "ReloadEnd")
 	self:NetworkVar("Float", 1, "NextIdle")
-	self:NetworkVar("Float", 3, "DrawEnd")
+	self:NetworkVar("Float", 2, "DrawEnd")
 end
 
 function SWEP:IsIdle()
