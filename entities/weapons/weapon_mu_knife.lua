@@ -178,7 +178,7 @@ function SWEP:AttackTrace()
 	if !IsValid(tr.Entity) then tr = self:GetTrace(0,-10) end
 	
 	if tr.Hit then
-		DebugInfo(1, "" .. CurTime())
+		--DebugInfo(1, "" .. CurTime())
 		print(2, CurTime())
 		-- self.Owner:ViewPunch(Angle(-7, 0, 0))
 		if IsValid(tr.Entity) then
