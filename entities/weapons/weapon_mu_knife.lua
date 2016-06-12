@@ -169,7 +169,6 @@ function SWEP:AttackTrace()
 	local tr = util.TraceHull(trace)
 	tr.TraceAimVector = self.Owner:GetAimVector()
 
-	print(CurTime(), trace.start, trace.endpos)
 	// aim around
 	if !IsValid(tr.Entity) then tr = self:GetTrace() end
 	if !IsValid(tr.Entity) then tr = self:GetTrace(10,0) end
