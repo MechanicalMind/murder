@@ -231,7 +231,7 @@ function SWEP:Deploy()
 			time = self.SequenceDrawTime
 		end
 	end
-	self:SetDrawEnd(CurTime() + time)
+	self:SetDrawEnd(CurTime() + 0)
 	self:SetNextIdle(CurTime() + time)
 	return true
 end

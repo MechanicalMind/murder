@@ -52,16 +52,8 @@ function SWEP:DoPrimaryAttackEffect(stats)
 	bullet.Dir = self.Owner:GetAimVector()
 	bullet.Spread = Vector(stats.cone or 0, stats.cone or 0, 0)
 	bullet.Tracer = 1
-	bullet.TracerName = "mu_magnum_shoot"
 	bullet.Force = self.Primary.Force or ((self.Primary.Damage or 1) * 3)
 	bullet.Damage = stats.damage or 1
 	self.Owner:FireBullets(bullet)
-	
-	local eff = EffectData()
-	eff:SetOrigin(self.Owner:GetShootPos())
-	eff:SetNormal(self.Owner:GetAimVector())
-	eff:SetEntity(self.Owner)
-	eff:SetAttachment(1)
-	-- util.Effect("mu_magnum_shoot",eff)
 end
 	
