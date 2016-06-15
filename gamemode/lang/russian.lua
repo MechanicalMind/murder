@@ -1,6 +1,7 @@
 --[[
 Encoding must be UTF-8, or you will get "�".
-Translated by Fixator10
+	Translated by Fixator10 
+	http://vk.com/fixator10 | http://steamcommunity.com/id/fixator10 | https://telegram.me/fixator10
 --]]
 
 pt.bystander = "Свидетель"
@@ -40,8 +41,8 @@ pt.minimumPlayers = "Недостаточно игроков для начала
 pt.roundStarted = "Новый раунд начался"
 
 
-pt.adminMurdererSelect = "{player} будет Убийцей в следующем раунде"
-pt.adminMurdererForce = "Сделать Убийцей в следующем раунде"
+pt.adminMurdererSelect = "{player} будет убийцей в следующем раунде"
+pt.adminMurdererForce = "Сделать убийцей в следующем раунде"
 pt.adminSpectate = "Наблюдать"
 pt.adminMoveToSpectate = "Переместить в {spectate}"
 
@@ -50,7 +51,7 @@ pt.mapChange = "Смена карты на {map}"
 pt.scoreboard = "Таблица игроков"
 pt.scoreboardName = "Имя"
 pt.scoreboardPing = "Ping"
-pt.scoreboardBystanderName = "Имя Свидетеля"
+pt.scoreboardBystanderName = "Имя свидетеля"
 pt.scoreboardStatus = "Статус"
 pt.scoreboardChance = "Шанс"
 pt.scoreboardRefresh = "Обновить"
@@ -60,15 +61,16 @@ pt.scoreboardJoinTeam = "Присоединиться"
 pt.scoreboardActionAdmin = "Администратор"
 pt.scoreboardActionMute = "Заглушить"
 pt.scoreboardActionUnmute = "Снять заглушку"
+pt.scoreboardActionViewProfile = "Просмотреть профиль"
 
 pt.endroundMurdererQuit = "Свидетели победили! Убийца вышел"
 pt.endroundBystandersWin = "Свидетели победили!"
 pt.endroundMurdererWins = "Убийца победил!"
 pt.endroundMurdererWas = "Убийцей был {murderer}"
 
-pt.endroundLootCollected = "Собрана Улика"
+pt.endroundLootCollected = "Собрано улик"
 
-pt.adminPanel = "Панель Администратора"
+pt.adminPanel = "Панель администратора"
 
 pt.spectating = "Наблюдение"
 
