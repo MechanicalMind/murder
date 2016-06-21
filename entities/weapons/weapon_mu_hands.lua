@@ -127,11 +127,12 @@ end
 function SWEP:PrimaryAttack()
 	if SERVER then
 		if IsValid(self.Owner) then
-			if self.Owner:HasWeapon("weapon_mu_knife") then
-				self.Owner:SelectWeapon("weapon_mu_knife")
-			elseif self.Owner:HasWeapon("weapon_mu_magnum") then
-				self.Owner:SelectWeapon("weapon_mu_magnum")
-			end
+			// Disabled until https://github.com/Facepunch/garrysmod-issues/issues/2668 is fixed
+			-- if self.Owner:HasWeapon("weapon_mu_knife") then
+			-- 	self.Owner:SelectWeapon("weapon_mu_knife")
+			-- elseif self.Owner:HasWeapon("weapon_mu_magnum") then
+			-- 	self.Owner:SelectWeapon("weapon_mu_magnum")
+			-- end
 		end
 	end
 end
