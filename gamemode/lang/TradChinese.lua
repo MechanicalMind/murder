@@ -21,7 +21,7 @@ pt.changeTeam ="{player}變更隊伍為{team}"
 pt.teamMoved ="{player}被變更為{team}"
 pt.teamMovedAFK ="{player}因為掛網被變更為{team}"
 
-pt.spectateFailed ="您不能旁觀，您是不是死了。"
+pt.spectateFailed ="您不能當觀眾，您還沒死。"
 
 pt.murdererDisconnect ="兇手憤而中離"
 pt.murdererDisconnectKnown ="兇手{murderer}憤怒的離開遊戲"
@@ -104,7 +104,7 @@ pt.startHelpMurderer = {
 pt.murdererFog ="您的邪惡氣息外洩"
 pt.murdererFogSub ="殺一個人來隱藏"
 
-pt.pressEToDisguiseFor1Loot ="[E] 偽裝成戰利品"
+pt.pressEToDisguiseFor1Loot ="[E] 偽裝成另一個樣貌"
 
 pt.playerStatusDead ="死亡"
 
