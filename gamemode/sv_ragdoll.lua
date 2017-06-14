@@ -45,7 +45,8 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 
 	local data = duplicator.CopyEntTable(self)
 	if !util.IsValidRagdoll(data.Model) then
-		return
+		data.Model = "models/player/skeleton.mdl"
+		// if use pointshop or something similar to handle character models, just return could be problem with disguise.
 	end
 
 	local ent = ents.Create( "prop_ragdoll" )
