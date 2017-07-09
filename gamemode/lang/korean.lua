@@ -12,8 +12,8 @@ pt.teamSpectators = "관전자"
 pt.teamPlayers = "플레이어"
 pt.teamAss = "케이크"
 
-pt.killedTeamKill = "{player} 가 무고한 시민을 죽였습니다."
-pt.killedMurderer = "{player} 가 살인마를 죽였습니다."
+pt.killedTeamKill = "{player} 님이 무고한 시민을 죽였습니다."
+pt.killedMurderer = "{player} 님이 살인마를 죽였습니다."
 
 pt.murdererDeathUnknown = "살인마가 알수없는 이유로 죽었습니다." 
 
