@@ -32,7 +32,7 @@ pt.winMurderer = "Der Mörder gewinnt!"
 pt.winMurdererMurdererWas = " Es war {murderer}"
 
 pt.minimumPlayers = "Es sind nicht genug Spieler vorhanden, um die Runde zu starten!"
-pt.waitingToStart = "No translation available"
+pt.waitingToStart = "Warten auf die Runde"
 pt.roundStarted = "Eine neue Runde wurde gestartet"
 
 
