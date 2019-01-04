@@ -51,7 +51,7 @@ end
 // 1 playing
 // 2 round ended, about to restart
 // 4 waiting for map switch
-// 5 waiting to start new round after player join
+// 5 waiting to start new round after enough players
 function GM:RoundThink()
 	local players = team.GetPlayers(2)
 	if self.RoundStage == 0 then
