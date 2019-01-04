@@ -51,11 +51,13 @@ end
 // 1 playing
 // 2 round ended, about to restart
 // 4 waiting for map switch
+// 5 waiting to start new round after player join
 function GM:RoundThink()
 	local players = team.GetPlayers(2)
 	if self.RoundStage == 0 then
 		if #players > 1 && (!self.LastPlayerSpawn || self.LastPlayerSpawn + 1 < CurTime()) then 
-			self:StartNewRound()
+			self.StartNewRoundTime = CurTime() + self.DelayAfterEnoughPlayers:GetFloat()
+			self:SetRound(5)
 		end
 	elseif self.RoundStage == 1 then
 		if !self.RoundLastDeath || self.RoundLastDeath < CurTime() then
@@ -92,7 +94,14 @@ function GM:RoundThink()
 		if self.RoundTime + 5 < CurTime() then
 			self:StartNewRound()
 		end
-	end
+
+	elseif self.RoundStage == 5 then
+		if #players <= 1 then
+			self:SetRound(0)
+		elseif CurTime() >= self.StartNewRoundTime then
+			self:StartNewRound()
+		end
+	end	
 end
 
 function GM:RoundCheckForWin()

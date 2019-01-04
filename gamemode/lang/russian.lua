@@ -38,6 +38,7 @@ pt.winMurderer = "Убийца победил!"
 pt.winMurdererMurdererWas = " Его звали {murderer}"
 
 pt.minimumPlayers = "Недостаточно игроков для начала игры"
+pt.waitingToStart = "No translation available"
 pt.roundStarted = "Новый раунд начался"
 
 

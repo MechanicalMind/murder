@@ -32,6 +32,7 @@ pt.winMurderer = "The murderer wins!"
 pt.winMurdererMurdererWas = " He was {murderer}"
 
 pt.minimumPlayers = "Not enough players to start round"
+pt.waitingToStart = "Waiting to start round"
 pt.roundStarted = "A new round has started"
 
 

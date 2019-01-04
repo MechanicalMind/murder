@@ -62,6 +62,8 @@ function GM:HUDPaint()
 
 	if round == 0 then
 		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+	elseif round == 5 then
+		drawTextShadow(translate.waitingToStart, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 	end
 
 	if client:Team() == 2 then
