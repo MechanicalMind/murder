@@ -25,7 +25,7 @@ Server ConVars
 	mu_scoreboard_show_admins <0/1> - Should show admins on scoreboard
 	mu_show_bystander_tks <0/1> - Should show name of killer in chat on a bystander team kill
 	mu_allow_admin_panel <0/1> - Should allow admins to use mu_admin_panel
-	mu_tk_penalty_time <time> - Time (in seconds) for a bystander to be penalized for a team kill
+	mu_tk_penalty_time <time> - Time (in seconds) for a bystander to be penalised for a team kill
 	mu_murderer_fogtime <time> - Time (in seconds) it takes for a Murderer to show fog for no kills, 0 to disable
 	mu_flashlight_battery <time> - How long the flashlight should last in seconds (0 for infinite)
 	mu_localchat <0/1> - Local chat, when enabled only nearby players can hear other players
