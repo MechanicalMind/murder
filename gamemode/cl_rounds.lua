@@ -26,7 +26,11 @@ net.Receive("SetRound", function (length)
 		GAMEMODE.RoundSettings.ShowSpectateInfo = net.ReadUInt(8) != 0
 	end
 
-	if r == 1 then
+	if r == GAMEMODE.Round.RoundStarting then
+		GAMEMODE.StartNewRoundTime = net.ReadDouble()
+	end
+
+	if r == GAMEMODE.Round.Playing then
 		timer.Simple(0.2, function ()
 			local pitch = math.random(70, 140)
 			if IsValid(LocalPlayer()) then

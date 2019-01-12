@@ -15,9 +15,10 @@ surface.CreateFont( "MersHead1" , {
 	italic = false
 })
 
+local baseSize = ScrH() / 23
 surface.CreateFont( "MersRadial" , {
 	font = "coolvetica",
-	size = math.ceil(ScrW() / 34),
+	size = math.ceil(baseSize),
 	weight = 500,
 	antialias = true,
 	italic = false
@@ -25,7 +26,7 @@ surface.CreateFont( "MersRadial" , {
 
 surface.CreateFont( "MersRadialBig" , {
 	font = "coolvetica",
-	size = math.ceil(ScrW() / 24),
+	size = math.ceil(baseSize * 1.41),
 	weight = 500,
 	antialias = true,
 	italic = false
@@ -33,7 +34,7 @@ surface.CreateFont( "MersRadialBig" , {
 
 surface.CreateFont( "MersRadialSmall" , {
 	font = "coolvetica",
-	size = math.ceil(ScrW() / 60),
+	size = math.ceil(baseSize * .56),
 	weight = 100,
 	antialias = true,
 	italic = false
@@ -41,7 +42,7 @@ surface.CreateFont( "MersRadialSmall" , {
 
 surface.CreateFont( "MersDeathBig" , {
 	font = "coolvetica",
-	size = math.ceil(ScrW() / 18),
+	size = math.ceil(baseSize * .188),
 	weight = 500,
 	antialias = true,
 	italic = false
@@ -63,7 +64,16 @@ function GM:HUDPaint()
 	if round == 0 then
 		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
 	elseif round == 5 then
-		drawTextShadow(translate.waitingToStart, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		if self.StartNewRoundTime then
+			local seconds = math.ceil(self.StartNewRoundTime - CurTime())
+			if seconds <= 0 then 
+				seconds = 0
+			end
+			drawTextShadow(Translator:QuickVar(translate.roundStartsInTime, "seconds", tostring(seconds)), "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		else
+
+			drawTextShadow(translate.waitingToStart, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		end
 	end
 
 	if client:Team() == 2 then

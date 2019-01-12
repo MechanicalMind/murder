@@ -40,6 +40,10 @@ function GM:NetworkRound(ply)
 		net.WriteUInt(0, 8)
 	end
 
+	if self.RoundStage == 5 then
+		net.WriteDouble(self.StartNewRoundTime)
+	end
+
 	if ply == nil then
 		net.Broadcast()
 	else
@@ -47,19 +51,15 @@ function GM:NetworkRound(ply)
 	end
 end
 
-// 0 not enough players
-// 1 playing
-// 2 round ended, about to restart
-// 4 waiting for map switch
-// 5 waiting to start new round after enough players
+
 function GM:RoundThink()
 	local players = team.GetPlayers(2)
-	if self.RoundStage == 0 then
+	if self.RoundStage == self.Round.NotEnoughPlayers then
 		if #players > 1 && (!self.LastPlayerSpawn || self.LastPlayerSpawn + 1 < CurTime()) then 
 			self.StartNewRoundTime = CurTime() + self.DelayAfterEnoughPlayers:GetFloat()
-			self:SetRound(5)
+			self:SetRound(self.Round.RoundStarting)
 		end
-	elseif self.RoundStage == 1 then
+	elseif self.RoundStage == self.Round.Playing then
 		if !self.RoundLastDeath || self.RoundLastDeath < CurTime() then
 			self:RoundCheckForWin()
 		end
@@ -90,12 +90,12 @@ function GM:RoundThink()
 			end
 		end
 
-	elseif self.RoundStage == 2 then
+	elseif self.RoundStage == self.Round.RoundEnd then
 		if self.RoundTime + 5 < CurTime() then
 			self:StartNewRound()
 		end
 
-	elseif self.RoundStage == 5 then
+	elseif self.RoundStage == self.Round.RoundStarting then
 		if #players <= 1 then
 			self:SetRound(0)
 		elseif CurTime() >= self.StartNewRoundTime then
@@ -144,9 +144,8 @@ end
 
 
 function GM:DoRoundDeaths(dead, attacker)
-	if self.RoundStage == 1 then
+	if self.RoundStage == self.Round.Playing then
 		self.RoundLastDeath = CurTime() + 2
-		
 	end
 end
 
@@ -154,7 +153,7 @@ end
 // 2 Murderer loses
 // 3 Murderer rage quit
 function GM:EndTheRound(reason, murderer)
-	if self.RoundStage != 1 then return end
+	if self.RoundStage != self.Round.Playing then return end
 
 	local players = team.GetPlayers(2)
 	for k, ply in pairs(players) do
@@ -265,7 +264,7 @@ function GM:StartNewRound()
 		local ct = ChatText()
 		ct:Add(translate.minimumPlayers, Color(255, 150, 50))
 		ct:SendAll()
-		self:SetRound(0)
+		self:SetRound(self.Round.NotEnoughPlayers)
 		return
 	end
 
@@ -273,7 +272,7 @@ function GM:StartNewRound()
 	ct:Add(translate.roundStarted)
 	ct:SendAll()
 
-	self:SetRound(1)
+	self:SetRound(self.Round.Playing)
 	self.RoundUnFreezePlayers = CurTime() + 10
 
 	local players = team.GetPlayers(2)
