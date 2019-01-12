@@ -32,6 +32,7 @@ pt.winMurderer = "살인마 승리! "
 pt.winMurdererMurdererWas = "살인마는 {murderer} 였습니다."
 
 pt.minimumPlayers = "새 게임을 시작하기 위한 인원이 부족합니다."
+pt.waitingToStart = "라운드를 기다리는 중입니다."
 pt.roundStarted = "새로운 라운드가 시작됩니다."
 
 

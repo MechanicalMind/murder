@@ -28,6 +28,7 @@ Server ConVars
 	mu_tk_penalty_time <time> - Time (in seconds) for a bystander to be penalised for a team kill
 	mu_murderer_fogtime <time> - Time (in seconds) it takes for a Murderer to show fog for no kills, 0 to disable
 	mu_flashlight_battery <time> - How long the flashlight should last in seconds (0 for infinite)
+	mu_delay_after_enough_players <time> - Time (in seconds) we should wait to start the round after enough players have joined
 	mu_localchat <0/1> - Local chat, when enabled only nearby players can hear other players
 	mu_localchat_range <distance> - The range at which you can hear other players, default 550
 	mu_disguise <0/1> - Whether the murderer can disguise as dead players

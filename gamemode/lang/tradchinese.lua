@@ -32,6 +32,7 @@ pt.winMurderer = "兇手獲勝！"
 pt.winMurdererMurdererWas = "兇手是{murderer}"
 
 pt.minimumPlayers = "沒有足夠的玩家開始一輪新遊戲"
+pt.waitingToStart = "等待開始"
 pt.roundStarted = "新一輪的開始"
 
 
