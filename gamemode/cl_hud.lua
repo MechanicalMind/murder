@@ -114,6 +114,7 @@ function GM:HUDPaint()
 	end
 
 	self:DrawRadialMenu()
+	self:DrawSpawnsVisualise()
 end
 
 function GM:DrawStartRoundInformation()

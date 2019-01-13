@@ -17,6 +17,7 @@ include("cl_spectate.lua")
 include("cl_adminpanel.lua")
 include("cl_flashlight.lua")
 include("cl_halos.lua")
+include("cl_spawns.lua")
 
 GM.Debug = CreateClientConVar( "mu_debug", 0, true, true )
 GM.HaloRender = CreateClientConVar( "mu_halo_render", 1, true, true ) // should we render halos

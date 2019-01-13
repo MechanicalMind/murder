@@ -211,26 +211,18 @@ local function generateSpawnEntities(spawnList)
 end
 
 function GM:PlayerSelectTeamSpawn( TeamID, pl )
-
-	local SpawnPoints = team.GetSpawnPoints( TeamID )
-
-	SpawnPoints = generateSpawnEntities(TeamSpawns["spawns"])
-
-	if ( !SpawnPoints || table.Count( SpawnPoints ) == 0 ) then return end
+	local spawnPoints = generateSpawnEntities(TeamSpawns["spawns"])
+	if ( !spawnPoints || table.Count( spawnPoints ) == 0 ) then return end
 	
-	local ChosenSpawnPoint = nil
-	
-	for i=0, 6 do
-	
-		local ChosenSpawnPoint = table.Random( SpawnPoints )
-		if ( GAMEMODE:IsSpawnpointSuitable( pl, ChosenSpawnPoint, i==6 ) ) then
-			return ChosenSpawnPoint
+	local spawnPoint = nil
+	for i = 0, 6 do
+		local spawnPoint = table.Random( spawnPoints )
+		if ( GAMEMODE:IsSpawnpointSuitable( pl, spawnPoint, i == 6 ) ) then
+			return spawnPoint
 		end
-	
 	end
 	
-	return ChosenSpawnPoint
-
+	return spawnPoint
 end
 
 

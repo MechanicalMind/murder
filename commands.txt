@@ -1,8 +1,10 @@
 Spawns
 	mu_spawn_add spawns - Adds a spawn at your current position
 	mu_spawn_list spawns - Lists all spawns
-	mu_spawn_remove spawns <key> - Removes the spawn with the specified key
+	mu_spawn_remove spawns <key/closest> - Removes the spawn with the specified key
 	mu_spawn_closest spawns - Lists the closest spawn
+	mu_spawn_visualise spawns - Shows the current spawns as green men in the world
+	mu_spawn_counts - Lists the number of spawns
 
 Loot
 	mu_loot_add <model> - Adds a loot spawn where you are looking, use "random" as the model to create a spawn with a random model
