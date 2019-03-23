@@ -505,15 +505,19 @@ local function pressedUse(self, ply)
 
 	// press e on windows to break them
 	if IsValid(tr.Entity) && (tr.Entity:GetClass() == "func_breakable" || tr.Entity:GetClass() == "func_breakable_surf") && tr.HitPos:Distance(tr.StartPos) < 50 then
-		local dmg = DamageInfo()
-		dmg:SetAttacker(game.GetWorld())
-		dmg:SetInflictor(game.GetWorld())
-		dmg:SetDamage(10)
-		dmg:SetDamageType(DMG_BULLET)
-		dmg:SetDamageForce(ply:GetAimVector() * 500)
-		dmg:SetDamagePosition(tr.HitPos)
-		tr.Entity:TakeDamageInfo(dmg)
-		return
+		if tr.Entity:GetClass() == "func_breakable" then
+			local dmg = DamageInfo()
+			dmg:SetAttacker(game.GetWorld())
+			dmg:SetInflictor(game.GetWorld())
+			dmg:SetDamage(10)
+			dmg:SetDamageType(DMG_BULLET)
+			dmg:SetDamageForce(ply:GetAimVector() * 500)
+			dmg:SetDamagePosition(tr.HitPos)
+			tr.Entity:TakeDamageInfo(dmg)
+			return
+		elseif tr.Entity:GetClass() == "func_breakable_surf" then
+			tr.Entity:Fire("shatter", "0.5 0.5 4", 0)
+		end
 	end
 
 	// disguise as ragdolls
