@@ -26,11 +26,11 @@ local function getSelected()
 	local ang = 0
 	local dis = math.sqrt(x2 ^ 2 + y2 ^ 2)
 	if dis / w <= 1 then
-		if y2 <= 0 && x2 <= 0 then
+		if y2 <= 0 and x2 <= 0 then
 			ang = math.acos(x2 / dis)
-		elseif x2 > 0 && y2 <= 0 then
+		elseif x2 > 0 and y2 <= 0 then
 			ang = -math.asin(y2 / dis)
-		elseif x2 <= 0 && y2 > 0 then
+		elseif x2 <= 0 and y2 > 0 then
 			ang = math.asin(y2 / dis) + math.pi
 		else
 			ang = math.pi * 2 - math.acos(x2 / dis)
@@ -42,8 +42,8 @@ end
 function GM:RadialMousePressed(code, vec)
 	if radialOpen then
 		local selected = getSelected()
-		if selected && selected > 0 && code == MOUSE_LEFT then
-			if selected && ments[selected] then
+		if selected and selected > 0 and code == MOUSE_LEFT then
+			if selected and ments[selected] then
 				RunConsoleCommand("mu_taunt", ments[selected].Code)
 			end
 		end
@@ -60,7 +60,7 @@ local function addElement(transCode, code)
 end
 
 concommand.Add("+menu", function (client, com, args, full)
-	if client:Alive() && client:Team() == 2 then
+	if client:Alive() and client:Team() == 2 then
 		elements = {}
 		addElement("Help", "help")
 		addElement("Funny", "funny")
@@ -95,7 +95,7 @@ function GM:DrawRadialMenu()
 		local selected = getSelected() or -1
 
 
-		if !circleVertex then
+		if not circleVertex then
 			circleVertex = {}
 			local max = 50
 			for i = 0, max do
@@ -107,7 +107,7 @@ function GM:DrawRadialMenu()
 
 		surface.SetTexture(tex)
 		local defaultTextCol = color_white
-		if selected <= 0 || selected ~= selected then
+		if selected <= 0 or selected ~= selected then
 			surface.SetDrawColor(20,20,20,180)
 		else
 			surface.SetDrawColor(20,20,20,120)
@@ -127,7 +127,7 @@ function GM:DrawRadialMenu()
 			if selected == k then
 				local vertexes = prevSelectedVertex
 
-				if prevSelected != selected then
+				if prevSelected ~= selected then
 					prevSelected = selected
 					vertexes = {}
 					prevSelectedVertex = vertexes

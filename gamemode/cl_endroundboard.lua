@@ -91,7 +91,7 @@ function GM:DisplayEndRoundBoard(data)
 	end)
 
 	for k, v in pairs(data.collectedLoot) do
-		if !v.playerName then continue end
+		if not v.playerName then continue end
 		local pnl = vgui.Create("DPanel")
 		pnl:SetTall(draw.GetFontHeight("MersRadialSmall"))
 		function pnl:Paint(w, h)

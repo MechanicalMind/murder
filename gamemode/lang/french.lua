@@ -58,7 +58,7 @@ pt.scoreboardActionMute = "Mute"
 pt.scoreboardActionUnmute = "Unmute"
 pt.scoreboardActionViewProfile = "Voir le profil"
 
-pt.endroundMurdererQuit = "Les innocents ont gagné ! Le meurtrier a rage quit"
+pt.endroundMurdererQuit = "Les innocents ont gagné  not Le meurtrier a rage quit"
 pt.endroundBystandersWin = "Les innocents ont gagné !"
 pt.endroundMurdererWins = "Le meurtrier a gagné !"
 pt.endroundMurdererWas = "Le meurtrier était {murderer}"

@@ -1,7 +1,7 @@
 local PlayerMeta = FindMetaTable("Player")
 local EntityMeta = FindMetaTable("Entity")
 
-if !LootItems then
+if not LootItems then
 	LootItems = {}
 end
 
@@ -89,7 +89,7 @@ end
 function GM:LootThink()
 	if self:GetRound() == 1 then
 
-		if !self.LastSpawnLoot || self.LastSpawnLoot < CurTime() then
+		if not self.LastSpawnLoot or self.LastSpawnLoot < CurTime() then
 			self.LastSpawnLoot = CurTime() + 12
 
 			local data = table.Random(LootItems)
@@ -103,12 +103,12 @@ end
 function GM:SaveLootData()
 
 	// ensure the folders are there
-	if !file.Exists("murder/","DATA") then
+	if not file.Exists("murder/","DATA") then
 		file.CreateDir("murder")
 	end
 
 	local mapName = game.GetMap()
-	if !file.Exists("murder/" .. mapName .. "/","DATA") then
+	if not file.Exists("murder/" .. mapName .. "/","DATA") then
 		file.CreateDir("murder/" .. mapName)
 	end
 
@@ -145,7 +145,7 @@ end
 function GM:PlayerPickupLoot(ply, ent)
 	ply.LootCollected = ply.LootCollected + 1
 
-	if !ply:GetMurderer() then
+	if not ply:GetMurderer() then
 		if ply.LootCollected == 5 then
 			giveMagnum(ply)
 		end
@@ -180,7 +180,7 @@ local function getLootPrintString(data, plyPos)
 end
 
 concommand.Add("mu_loot_add", function (ply, com, args, full)
-	if (!ply:IsAdmin()) then return end
+	if (not ply:IsAdmin()) then return end
 
 	if #args < 1 then
 		ply:ChatPrint("Too few args (model)")
@@ -190,12 +190,12 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 	local mdl = args[1]
 
 	local name = args[1]:lower()
-	if name == "rand" || name == "random" then
+	if name == "rand" or name == "random" then
 		mdl = table.Random(LootModels)
 	elseif name == "fruit" then
 		mdl = table.Random(FruitModels)
-	elseif !name:find("%.mdl$") then
-		if !LootModels[name] then
+	elseif not name:find("%.mdl$") then
+		if not LootModels[name] then
 			ply:ChatPrint("Invalid model alias " .. name)
 			return
 		end
@@ -226,7 +226,7 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 end)
 
 concommand.Add("mu_loot_list", function (ply, com, args, full)
-	if (!ply:IsAdmin()) then return end
+	if (not ply:IsAdmin()) then return end
 
 	if #args < 0 then
 		ply:ChatPrint("Too few args ()")
@@ -241,7 +241,7 @@ concommand.Add("mu_loot_list", function (ply, com, args, full)
 end)
 
 concommand.Add("mu_loot_closest", function (ply, com, args, full)
-	if (!ply:IsAdmin()) then return end
+	if (not ply:IsAdmin()) then return end
 
 	if #args < 0 then
 		ply:ChatPrint("Too few args ()")
@@ -255,7 +255,7 @@ concommand.Add("mu_loot_closest", function (ply, com, args, full)
 
 	local closest
 	for k, data in pairs(LootItems) do
-		if !closest || (LootItems[closest].pos:Distance(ply:GetPos()) > data.pos:Distance(ply:GetPos())) then
+		if not closest or (LootItems[closest].pos:Distance(ply:GetPos()) > data.pos:Distance(ply:GetPos())) then
 			closest = k
 		end
 	end
@@ -264,7 +264,7 @@ concommand.Add("mu_loot_closest", function (ply, com, args, full)
 end)
 
 concommand.Add("mu_loot_remove", function (ply, com, args, full)
-	if (!ply:IsAdmin()) then return end
+	if (not ply:IsAdmin()) then return end
 
 	if #args < 1 then
 		ply:ChatPrint("Too few args (key)")
@@ -272,7 +272,7 @@ concommand.Add("mu_loot_remove", function (ply, com, args, full)
 	end
 
 	local key = tonumber(args[1]) or 0
-	if !LootItems[key] then
+	if not LootItems[key] then
 		ply:ChatPrint("Invalid key, position inexists")
 		return
 	end
@@ -285,7 +285,7 @@ concommand.Add("mu_loot_remove", function (ply, com, args, full)
 end)
 
 concommand.Add("mu_loot_adjustpos", function (ply, com, args, full)
-	if (!ply:IsAdmin()) then return end
+	if (not ply:IsAdmin()) then return end
 
 	if #args < 0 then
 		ply:ChatPrint("Too few args ()")
@@ -294,14 +294,14 @@ concommand.Add("mu_loot_adjustpos", function (ply, com, args, full)
 
 	local key
 	local ent = ply:GetEyeTrace().Entity
-	if IsValid(ent) && ent:GetClass() == "mu_loot" && ent.LootData then
+	if IsValid(ent) and ent:GetClass() == "mu_loot" and ent.LootData then
 		for k,v in pairs(LootItems) do
 			if v == ent.LootData then
 				key = k
 			end
 		end
 	end
-	if !key then
+	if not key then
 		ply:ChatPrint("Not a loot item")
 		return
 	end
@@ -315,13 +315,13 @@ concommand.Add("mu_loot_adjustpos", function (ply, com, args, full)
 end)
 
 concommand.Add("mu_loot_respawn", function (ply, com, args, full)
-	if (!ply:IsAdmin()) then return end
+	if (not ply:IsAdmin()) then return end
 
 	GAMEMODE:SpawnLoot()
 end)
 
 concommand.Add("mu_loot_models_list", function (ply, com, args, full)
-	if (!ply:IsAdmin()) then return end
+	if (not ply:IsAdmin()) then return end
 
 	ply:ChatPrint("Loot models")
 	for alias, model in pairs(LootModels) do

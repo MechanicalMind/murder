@@ -20,7 +20,7 @@ if ( SERVER ) then
 else
 	net.Receive("mers_base_holdtype", function (len)
 		local wep = net.ReadEntity()
-		if IsValid(wep) && wep:IsWeapon() && wep.SetWeaponHoldType then
+		if IsValid(wep) and wep:IsWeapon() and wep.SetWeaponHoldType then
 			wep:SetWeaponHoldType(net.ReadString())
 		end
 	end)
@@ -71,10 +71,10 @@ end
 function SWEP:CalculateHoldType()
 	local holdtype = self.HoldType
 	// crouching in passive holdtype looks wierd, use smg instead
-	if holdtype == "passive" && IsValid(self.Owner) && self.Owner:Crouching() then
+	if holdtype == "passive" and IsValid(self.Owner) and self.Owner:Crouching() then
 		holdtype = self.HoldType or "smg"
 	end
-	if self.OldHoldType != holdtype then
+	if self.OldHoldType ~= holdtype then
 		self.OldHoldType = holdtype
 		self:SetNetHoldType(holdtype)
 	end
@@ -88,15 +88,15 @@ function SWEP:SetupDataTables()
 end
 
 function SWEP:IsIdle()
-	if self:GetReloadEnd() > 0 && self:GetReloadEnd() >= CurTime() then return false end
-	if self:GetNextPrimaryFire() > 0 && self:GetNextPrimaryFire() >= CurTime() then return false end
-	if self:GetDrawEnd() > 0 && self:GetDrawEnd() >= CurTime() then return false end
+	if self:GetReloadEnd() > 0 and self:GetReloadEnd() >= CurTime() then return false end
+	if self:GetNextPrimaryFire() > 0 and self:GetNextPrimaryFire() >= CurTime() then return false end
+	if self:GetDrawEnd() > 0 and self:GetDrawEnd() >= CurTime() then return false end
 	return true
 end
 
 function SWEP:PrimaryAttack()
-	if !self:IsIdle() then return end
-	if self:GetMaxClip1() > 0 && self:Clip1() <= 0 then
+	if not self:IsIdle() then return end
+	if self:GetMaxClip1() > 0 and self:Clip1() <= 0 then
 		self:Reload()
 		return
 	end
@@ -127,7 +127,7 @@ function SWEP:PrimaryAttack()
 	stats.cone = self.Primary.Cone or 0.1
 	if self.Primary.Recoil then
 		stats.recoil = stats.recoil or 1
-		if IsFirstTimePredicted() && CLIENT then
+		if IsFirstTimePredicted() and CLIENT then
 			local circle = Angle(0, math.Rand(0, 360), 0)
 			local vec = circle:Forward() * math.Rand(stats.recoil * 0.8, stats.recoil) * 0.1
 			vec.y = -math.abs(vec.y) - stats.recoil * 0.2
@@ -162,7 +162,7 @@ end
 
 function SWEP:Think()
 	self:CalculateHoldType()
-	if self:GetReloadEnd() > 0 && self:GetReloadEnd() < CurTime() then
+	if self:GetReloadEnd() > 0 and self:GetReloadEnd() < CurTime() then
 		self:SetReloadEnd(0)
 
 		if self.Primary.InfiniteAmmo then
@@ -174,25 +174,25 @@ function SWEP:Think()
 			self.Owner:SetAmmo(spare - addAmmo, self:GetPrimaryAmmoType())
 		end
 	end
-	if self:GetNextIdle() > 0 && self:GetNextIdle() < CurTime() then
+	if self:GetNextIdle() > 0 and self:GetNextIdle() < CurTime() then
 		self:SetNextIdle(0)
 
 		local sequence = self.SequenceIdle
 		local vm = self.Owner:GetViewModel()
 		vm:SendViewModelMatchingSequence(vm:LookupSequence(sequence))
 		if self.Primary.AutoReload then
-			if self:GetMaxClip1() > 0 && self:Clip1() <= 0 then
+			if self:GetMaxClip1() > 0 and self:Clip1() <= 0 then
 				self:Reload()
 			end
 		end
 	end
 
 	if IsValid(self.Owner) then
-		if !self.Owner:KeyDown(IN_RELOAD) then
+		if not self.Owner:KeyDown(IN_RELOAD) then
 			self.ReloadHoldStart = nil
 		end
 		self.UsingIronsights = false
-		if self.Owner:KeyDown(IN_ATTACK2) && self:GetWeaponState() != "holster" then
+		if self.Owner:KeyDown(IN_ATTACK2) and self:GetWeaponState() ~= "holster" then
 			self.UsingIronsights = true
 		end
 	end
@@ -202,9 +202,9 @@ end
 
 function SWEP:Reload()
 	if self:IsIdle() then
-		if self:GetWeaponState() == "normal" && self:GetMaxClip1() > 0 && self:Clip1() < self:GetMaxClip1() then
+		if self:GetWeaponState() == "normal" and self:GetMaxClip1() > 0 and self:Clip1() < self:GetMaxClip1() then
 			local spare = self.Owner:GetAmmoCount(self:GetPrimaryAmmoType())
-			if spare > 0 || self.Primary.InfiniteAmmo then
+			if spare > 0 or self.Primary.InfiniteAmmo then
 				local vm = self.Owner:GetViewModel()
 				vm:SendViewModelMatchingSequence(vm:LookupSequence(self.ReloadSequence))
 				if self.ReloadSound then

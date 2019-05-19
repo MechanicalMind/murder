@@ -41,7 +41,7 @@ else
 		local ent = net.ReadEntity()
 		if not IsValid(ent) then return end
 
-		local charging = net.ReadUInt(8) != 0
+		local charging = net.ReadUInt(8) ~= 0
 		if charging then
 			ent.ChargeStart = net.ReadDouble()
 		else
@@ -114,15 +114,15 @@ end
 
 function SWEP:Think()
 	self.BaseClass.Think(self)
-	if self:GetFistHit() != 0 && self:GetFistHit() < RealTime() then
+	if self:GetFistHit() ~= 0 and self:GetFistHit() < RealTime() then
 		self:SetFistHit(0)
 		if IsFirstTimePredicted() then
 			self:AttackTrace()
 		end
 	end
 
-	if SERVER && self.ChargeStart then
-		if !IsValid(self.Owner) || !self.Owner:KeyDown(IN_ATTACK2) then
+	if SERVER and self.ChargeStart then
+		if not IsValid(self.Owner) or not self.Owner:KeyDown(IN_ATTACK2) then
 			if IsValid(self.Owner) then
 				self:ThrowKnife(self:GetCharge())
 				net.Start("mu_knife_charge")
@@ -170,15 +170,15 @@ function SWEP:AttackTrace()
 	tr.TraceAimVector = self.Owner:GetAimVector()
 
 	// aim around
-	if !IsValid(tr.Entity) then tr = self:GetTrace() end
-	if !IsValid(tr.Entity) then tr = self:GetTrace(10,0) end
-	if !IsValid(tr.Entity) then tr = self:GetTrace(-10,0) end
-	if !IsValid(tr.Entity) then tr = self:GetTrace(0,10) end
-	if !IsValid(tr.Entity) then tr = self:GetTrace(0,-10) end
+	if not IsValid(tr.Entity) then tr = self:GetTrace() end
+	if not IsValid(tr.Entity) then tr = self:GetTrace(10,0) end
+	if not IsValid(tr.Entity) then tr = self:GetTrace(-10,0) end
+	if not IsValid(tr.Entity) then tr = self:GetTrace(0,10) end
+	if not IsValid(tr.Entity) then tr = self:GetTrace(0,-10) end
 
 	if tr.Hit then
 		if IsValid(tr.Entity) then
-			if CLIENT && LocalPlayer() == self.Owner then
+			if CLIENT and LocalPlayer() == self.Owner then
 				self:EmitSound("Weapon_Crowbar.Melee_Hit")
 			end
 			local dmg = DamageInfo()
@@ -190,7 +190,7 @@ function SWEP:AttackTrace()
 			dmg:SetDamageType(DMG_SLASH)
 			tr.Entity:DispatchTraceAttack(dmg, tr)
 
-			if tr.Entity != self && tr.Entity != self.Owner && (tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll") then
+			if tr.Entity ~= self and tr.Entity ~= self.Owner and (tr.Entity:IsPlayer() or tr.Entity:GetClass() == "prop_ragdoll") then
 				local edata = EffectData()
 				edata:SetStart(self.Owner:GetShootPos())
 				edata:SetOrigin(tr.HitPos)
@@ -203,7 +203,7 @@ function SWEP:AttackTrace()
 		end
 	else
 		// only play the sound for the murderer
-		if CLIENT && LocalPlayer() == self.Owner then
+		if CLIENT and LocalPlayer() == self.Owner then
 			self:EmitSound("Weapon_Crowbar.Single")
 		end
 	end
@@ -235,7 +235,7 @@ function SWEP:ThrowKnife(force)
 end
 
 function SWEP:SecondaryAttack()
-	if !self:IsIdle() then return end
+	if not self:IsIdle() then return end
 
 	if SERVER then
 		if self.KnifeChargeConvar:GetBool() then

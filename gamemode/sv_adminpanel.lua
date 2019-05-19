@@ -2,8 +2,8 @@
 util.AddNetworkString("mu_adminpanel_details")
 
 net.Receive("mu_adminpanel_details", function (length, ply)
-	if !ply:IsAdmin() then return end
-	if !GAMEMODE.AdminPanelAllowed:GetBool() then return end
+	if not ply:IsAdmin() then return end
+	if not GAMEMODE.AdminPanelAllowed:GetBool() then return end
 
 	local tab = {}
 	tab.players = {}

@@ -35,7 +35,7 @@ function GM:DrawFootprints()
 
 	local errored, retval = pcall(renderfoot, self)
 
-	if ( !errored ) then
+	if ( not errored ) then
 		ErrorNoHalt( retval )
 	end
 
@@ -50,7 +50,7 @@ function GM:AddFootstep(ply, pos, ang)
 	else
 		fpos = fpos + ang:Right() * -5
 	end
-	ply.LastFoot = !ply.LastFoot
+	ply.LastFoot = not ply.LastFoot
 
 	local trace = {}
 	trace.start = fpos
@@ -75,15 +75,15 @@ end
 
 function GM:FootStepsFootstep(ply, pos, foot, sound, volume, filter)
 
-	if ply != LocalPlayer() then return end
+	if ply ~= LocalPlayer() then return end
 
-	if !self:CanSeeFootsteps() then return end
+	if not self:CanSeeFootsteps() then return end
 
 	self:AddFootstep(ply, pos, ply:GetAimVector():Angle())
 end
 
 function GM:CanSeeFootsteps()
-	if self:GetAmMurderer() && LocalPlayer():Alive() then return true end
+	if self:GetAmMurderer() and LocalPlayer():Alive() then return true end
 	return false
 end
 
@@ -96,11 +96,11 @@ net.Receive("add_footstep", function ()
 	local pos = net.ReadVector()
 	local ang = net.ReadAngle()
 
-	if !IsValid(ply) then return end
+	if not IsValid(ply) then return end
 
 	if ply == LocalPlayer() then return end
 
-	if !GAMEMODE:CanSeeFootsteps() then return end
+	if not GAMEMODE:CanSeeFootsteps() then return end
 
 	GAMEMODE:AddFootstep(ply, pos, ang)
 end)

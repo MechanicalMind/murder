@@ -1,7 +1,7 @@
 local PlayerMeta = FindMetaTable("Player")
 local EntityMeta = FindMetaTable("Entity")
 
-if !PlayerMeta.GetRagdollEntityOld then
+if not PlayerMeta.GetRagdollEntityOld then
 	PlayerMeta.GetRagdollEntityOld = PlayerMeta.GetRagdollEntity
 end
 function PlayerMeta:GetRagdollEntity()
@@ -12,7 +12,7 @@ function PlayerMeta:GetRagdollEntity()
 	return self:GetRagdollEntityOld()
 end
 
-if !PlayerMeta.GetRagdollOwnerOld then
+if not PlayerMeta.GetRagdollOwnerOld then
 	PlayerMeta.GetRagdollOwnerOld = PlayerMeta.GetRagdollOwner
 end
 function EntityMeta:GetRagdollOwner()

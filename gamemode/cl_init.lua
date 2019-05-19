@@ -32,12 +32,12 @@ GM.FogEmitters = {}
 if GAMEMODE then GM.FogEmitters = GAMEMODE.FogEmitters end
 function GM:Think()
 	for k, ply in pairs(player.GetAll()) do
-		if ply:Alive() && ply:GetNWBool("MurdererFog") then
-			if !ply.FogEmitter then
+		if ply:Alive() and ply:GetNWBool("MurdererFog") then
+			if not ply.FogEmitter then
 				ply.FogEmitter = ParticleEmitter(ply:GetPos())
 				self.FogEmitters[ply] = ply.FogEmitter
 			end
-			if !ply.FogNextPart then ply.FogNextPart = CurTime() end
+			if not ply.FogNextPart then ply.FogNextPart = CurTime() end
 
 			local pos = ply:GetPos() + Vector(0,0,30)
 			local client = LocalPlayer()
@@ -73,7 +73,7 @@ function GM:Think()
 
 	// clean up old fog emitters
 	for ply, emitter in pairs(self.FogEmitters) do
-		if !IsValid(ply) || !ply:IsPlayer() then
+		if not IsValid(ply) or not ply:IsPlayer() then
 			emitter:Finish()
 			self.FogEmitters[ply] = nil
 		end
@@ -87,7 +87,7 @@ end
 
 function GM:PostDrawViewModel( vm, ply, weapon )
 
-	if ( weapon.UseHands || !weapon:IsScripted() ) then
+	if ( weapon.UseHands or not weapon:IsScripted() ) then
 
 		local hands = LocalPlayer():GetHands()
 		if ( IsValid( hands ) ) then hands:DrawModel() end
@@ -107,11 +107,11 @@ end
 function GM:PreDrawMurderHalos(Add)
 	local client = LocalPlayer()
 
-	if IsValid(client) && client:Alive() && self.HaloRender:GetBool() then
+	if IsValid(client) and client:Alive() and self.HaloRender:GetBool() then
 		local halos = {}
 		if self.HaloRenderLoot:GetBool() then
 			for k, v in pairs(ents.FindByClass("weapon_mu_magnum")) do
-				if !IsValid(v.Owner) then
+				if not IsValid(v.Owner) then
 					table.insert(halos, {ent = v, color = 3})
 				end
 			end
@@ -120,9 +120,9 @@ function GM:PreDrawMurderHalos(Add)
 			end
 		end
 
-		if self:GetAmMurderer() && self.HaloRenderKnife:GetBool() then
+		if self:GetAmMurderer() and self.HaloRenderKnife:GetBool() then
 			for k, v in pairs(ents.FindByClass("weapon_mu_knife")) do
-				if !IsValid(v.Owner) then
+				if not IsValid(v.Owner) then
 					table.insert(halos, {ent = v, color = 2})
 				end
 			end
@@ -137,5 +137,5 @@ function GM:PreDrawMurderHalos(Add)
 end
 
 net.Receive("mu_tker", function (len)
-	GAMEMODE.TKerPenalty = net.ReadUInt(8) != 0
+	GAMEMODE.TKerPenalty = net.ReadUInt(8) ~= 0
 end)

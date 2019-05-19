@@ -58,7 +58,7 @@ pt.scoreboardActionAdmin = "Jest administratorem"
 pt.scoreboardActionMute = "Wycisz"
 pt.scoreboardActionUnmute = "PrzywrÃ³Ä‡ gÅ‚os"
 
-pt.endroundMurdererQuit = "Åšwiadkowie wygrywajÄ…! Morderca zdenerwowaÅ‚ siÄ™ i wyszedÅ‚ z gry"
+pt.endroundMurdererQuit = "Åšwiadkowie wygrywajÄ… not Morderca zdenerwowaÅ‚ siÄ™ i wyszedÅ‚ z gry"
 pt.endroundBystandersWin = "Åšwiadkowie wygrywajÄ…!"
 pt.endroundMurdererWins = "Morderca wygrywa!"
 pt.endroundMurdererWas = "MordercÄ… byÅ‚ {murderer}"

@@ -12,7 +12,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 	but:SetTall(40)
 	but:SetText("")
 	function but:Paint(w, h)
-		local showAdmins = GetConVarNumber("mu_scoreboard_show_admins") != 0
+		local showAdmins = GetConVarNumber("mu_scoreboard_show_admins") ~= 0
 
 		local col = team.GetColor(pteam)
 		if IsValid(ply) then
@@ -28,10 +28,10 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		surface.SetDrawColor(color_black)
 		surface.DrawOutlinedRect(0, 0, w, h)
 
-		if IsValid(ply) && ply:IsPlayer() then
+		if IsValid(ply) and ply:IsPlayer() then
 			local s = 0
 
-			if showAdmins && ply:IsAdmin() then
+			if showAdmins and ply:IsAdmin() then
 				surface.SetMaterial(admin)
 				surface.SetDrawColor(color_white)
 				surface.DrawTexturedRect(s + 4, h / 2 - 16, 32, 32)
@@ -63,10 +63,10 @@ local function addPlayerItem(self, mlist, ply, pteam)
 
 			local status = translate.bystander
 			local statusColor = team.GetColor(2)
-			if !ply:Alive() then
+			if not ply:Alive() then
 				status = translate.playerStatusDead
 				statusColor = Color(120,120,120)
-			elseif playerData && playerData.players[ply:EntIndex()] && playerData.players[ply:EntIndex()].murderer then
+			elseif playerData and playerData.players[ply:EntIndex()] and playerData.players[ply:EntIndex()].murderer then
 				status = translate.murderer
 				statusColor = Color(190, 20, 20)
 			end
@@ -75,7 +75,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 			draw.DrawText(status, "ScoreboardPlayer", w * 0.64, 8, statusColor, 0)
 
 			local chance = "?"
-			if playerData && playerData.players[ply:EntIndex()] then
+			if playerData and playerData.players[ply:EntIndex()] then
 				chance = math.Round(playerData.players[ply:EntIndex()].murdererChance * 100) .. "%"
 			end
 			draw.DrawText(chance, "ScoreboardPlayer", w * 0.86 + 1, 9, color_black, 0)
@@ -102,14 +102,14 @@ local function doPlayerItems(self, mlist, pteam)
 			end
 		end
 
-		if !found then
+		if not found then
 			addPlayerItem(self, mlist, ply, pteam)
 		end
 	end
 	local del = false
 
 	for t,v in pairs(mlist:GetCanvas():GetChildren()) do
-		if v.ctime != CurTime() then
+		if v.ctime ~= CurTime() then
 			v:Remove()
 			del = true
 		end
@@ -131,7 +131,7 @@ local function makeTeamList(parent, pteam)
 	end
 
 	function pnl:Think()
-		if !self.RefreshWait || self.RefreshWait < CurTime() then
+		if not self.RefreshWait or self.RefreshWait < CurTime() then
 			self.RefreshWait = CurTime() + 0.1
 			doPlayerItems(self, mlist, pteam)
 
@@ -201,9 +201,9 @@ end)
 
 
 concommand.Add("mu_adminpanel", function (client)
-	if !client:IsAdmin() then return end
+	if not client:IsAdmin() then return end
 	local canUse = GAMEMODE.RoundSettings.AdminPanelAllowed
-	if !canUse then return end
+	if not canUse then return end
 
 	if IsValid(menu) then
 		menu:SetVisible(true)

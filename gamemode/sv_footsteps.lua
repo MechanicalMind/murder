@@ -16,7 +16,7 @@ function GM:FootstepsOnFootstep(ply, pos, foot, sound, volume, filter)
 end
 
 function GM:CanSeeFootsteps(ply)
-	if ply:GetMurderer() && ply:Alive() then return true end
+	if ply:GetMurderer() and ply:Alive() then return true end
 	return false
 end
 

@@ -32,11 +32,11 @@ function ENT:Use(ply)
 end
 
 function ENT:Think()
-	if self.RemoveNext && IsValid(self) then
+	if self.RemoveNext and IsValid(self) then
 		self.RemoveNext = false
 		self:Remove()
 	end
-	if self.HitSomething && self:GetVelocity():Length2D() < 1.5 then
+	if self.HitSomething and self:GetVelocity():Length2D() < 1.5 then
 		self.HitSomething = false
 		local knife = ents.Create("weapon_mu_knife")
 		knife:SetPos(self:GetPos())
@@ -66,7 +66,7 @@ function ENT:PhysicsCollide( data, physobj )
 	if self.RemoveNext then return end
 
 	local ply = data.HitEntity
-	if IsValid(ply) && ply:IsPlayer() then
+	if IsValid(ply) and ply:IsPlayer() then
 
 		-- self.RemoveNext = true
 		-- self:SetColor(Color(0,0,0,0))

@@ -20,10 +20,10 @@ net.Receive("SetRound", function (length)
 
 	GAMEMODE.RoundSettings = {}
 	local settings = net.ReadUInt(8)
-	if settings != 0 then
-		GAMEMODE.RoundSettings.ShowAdminsOnScoreboard = net.ReadUInt(8) != 0
-		GAMEMODE.RoundSettings.AdminPanelAllowed = net.ReadUInt(8) != 0
-		GAMEMODE.RoundSettings.ShowSpectateInfo = net.ReadUInt(8) != 0
+	if settings ~= 0 then
+		GAMEMODE.RoundSettings.ShowAdminsOnScoreboard = net.ReadUInt(8) ~= 0
+		GAMEMODE.RoundSettings.AdminPanelAllowed = net.ReadUInt(8) ~= 0
+		GAMEMODE.RoundSettings.ShowSpectateInfo = net.ReadUInt(8) ~= 0
 	end
 
 	if r == GAMEMODE.Round.RoundStarting then

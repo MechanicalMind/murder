@@ -14,7 +14,7 @@ function Translator:LoadLanguage(name, overridePath)
 	setmetatable(tempG, meta)
 
 	local f = CompileFile(overridePath or (rootFolder .. "lang/" .. name .. ".lua"))
-	if !f then
+	if not f then
 		return
 	end
 	setfenv(f, tempG)
@@ -77,7 +77,7 @@ if SERVER then
 
 		if lang == "" then lang = "english" end
 
-		if lang != Translator.language then
+		if lang ~= Translator.language then
 			Translator:ChangeLanguage(lang)
 		end
 	end)
@@ -85,7 +85,7 @@ if SERVER then
 	function Translator:NetworkLanguage(ply)
 		net.Start("translator_language")
 		net.WriteString(self:GetLanguage())
-		if ply != nil then
+		if ply ~= nil then
 			net.Send(ply)
 		else
 			net.Broadcast()
@@ -105,10 +105,10 @@ end
 function Translator:Translate(languageTable, names)
 	for k, name in pairs(names) do
 		local a = rawget(languageTable, name)
-		if a != nil then
+		if a ~= nil then
 			if type(a) == "function" then
 				local ret = a(name)
-				if ret != nil then
+				if ret ~= nil then
 					return ret
 				end
 			end
@@ -116,10 +116,10 @@ function Translator:Translate(languageTable, names)
 		end
 	end
 	local a = rawget(languageTable, "default")
-	if a != nil then
+	if a ~= nil then
 		if type(a) == "function" then
 			local ret = a(names[1])
-			if ret != nil then
+			if ret ~= nil then
 				return ret
 			end
 		end
@@ -181,20 +181,20 @@ end
 local tmeta = {}
 local function get(args)
 	local a = Translator:Translate(Translator:GetLanguageTable(), args)
-	if a != nil then
+	if a ~= nil then
 		return a
 	end
 
 	// default to english if we don't have the translation
 	local a = Translator:Translate(Translator:GetEnglishTable(), args)
-	if a != nil then
+	if a ~= nil then
 		return a
 	end
 end
 local function trans(self, ...)
 	local args = {...}
 	local a = get(args)
-	if a != nil then
+	if a ~= nil then
 		return tostring(a)
 	end
 	local first = args[1]

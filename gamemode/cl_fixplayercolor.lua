@@ -21,12 +21,12 @@ matproxy.Add(
 
 	bind	=	function( self, mat, ent )
 
-		if ( !IsValid( ent ) ) then return end
+		if ( not IsValid( ent ) ) then return end
 
 		// retarded garry shit
 		-- if ( ent:IsRagdoll() ) then
 		-- 	ent = ent:GetRagdollOwner()
-		-- 	if ( !IsValid( ent ) ) then return end
+		-- 	if ( not IsValid( ent ) ) then return end
 		-- end
 
 		if ( ent.GetPlayerColor ) then

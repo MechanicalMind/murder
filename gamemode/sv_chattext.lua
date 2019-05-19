@@ -49,7 +49,7 @@ function meta:NetConstructMsg()
 	for k, msg in pairs(self.msgs) do
 		net.WriteUInt(1,8)
 		net.WriteString(msg.text)
-		if !msg.color then
+		if not msg.color then
 			msg.color = self.default_color or color_white
 		end
 		net.WriteVector(Vector(msg.color.r, msg.color.g, msg.color.b))

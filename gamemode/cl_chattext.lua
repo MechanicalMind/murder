@@ -14,7 +14,7 @@ end)
 
 net.Receive("msg_clients", function (len)
 	local lines = {}
-	while net.ReadUInt(8) != 0 do
+	while net.ReadUInt(8) ~= 0 do
 		local r = net.ReadUInt(8)
 		local g = net.ReadUInt(8)
 		local b = net.ReadUInt(8)

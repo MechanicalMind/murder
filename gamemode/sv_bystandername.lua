@@ -44,8 +44,8 @@ GM.BystanderWords = CreateClientConVar( "mu_bystandername_words", 1, FCVAR_ARCHI
 // adds a name to the bystander parts generation table
 function GM:AddBystanderNamePart(name, sex)
 	name = tostring(name)
-	if !name then error("arg 1 must be a string") end
-	if sex != "male" && sex != "female" then sex = nil end
+	if not name then error("arg 1 must be a string") end
+	if sex ~= "male" and sex ~= "female" then sex = nil end
 	local tab = {}
 	tab.name = name
 	tab.sex = sex
@@ -55,7 +55,7 @@ end
 // removes a name to the bystander parts generation table
 function GM:RemoveBystanderNamePart(name, sex)
 	for k, v in pairs(self.BystanderNameParts) do
-		if v.name == name && v.sex == sex then
+		if v.name == name and v.sex == sex then
 			table.remove(self.BystanderNameParts, k)
 			break
 		end
@@ -75,12 +75,12 @@ function GM:GenerateName(words, sex)
 	for i = 1, words do
 		local tab = {}
 		for k, v in pairs(self.BystanderNameParts) do
-			if v.sex == sex || v.sex == nil then
+			if v.sex == sex or v.sex == nil then
 				table.insert(tab, v.name)
 			end
 		end
 		local word = tab[math.random(#tab)]
-		if !name then
+		if not name then
 			name = word
 		else
 			name = name .. " " .. word
@@ -96,10 +96,10 @@ function GM:LoadBystanderNames()
 		local i = 1
 		for line in text:gmatch("[^\r\n]+") do
 			local name, sex = line:match("([^,]+)/([^,]+)")
-			if !name then name = line end
+			if not name then name = line end
 			if sex == "m" then sex = "male" end
 			if sex == "f" then sex = "female" end
-			if sex != "male" && sex != "female" then sex = nil end
+			if sex ~= "male" and sex ~= "female" then sex = nil end
 			local tab = {}
 			tab.name = name
 			tab.sex = sex
@@ -123,14 +123,14 @@ end
 
 function EntityMeta:GetBystanderName()
 	local name = self:GetNWString("bystanderName")
-	if !name || name == "" then
+	if not name or name == "" then
 		return "Bystander"
 	end
 	return name
 end
 
 concommand.Add("mu_print_players", function (admin, com, args)
-	if !admin:IsAdmin() then return end
+	if not admin:IsAdmin() then return end
 
 	for k, ply in pairs(player.GetAll()) do
 		local c = ChatText()

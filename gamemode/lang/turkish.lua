@@ -57,7 +57,7 @@ pt.scoreboardActionMute = "Sustur"
 pt.scoreboardActionUnmute = "Sesi aç"
 pt.scoreboardActionViewProfile = "Profiline bak"
 
-pt.endroundMurdererQuit = "Masumlar kazandı! Katil oyundan kaçtı!"
+pt.endroundMurdererQuit = "Masumlar kazandı not Katil oyundan kaçtı!"
 pt.endroundBystandersWin = "Masumlar kazandı!"
 pt.endroundMurdererWins = "Katil kazandı!"
 pt.endroundMurdererWas = "{murderer} katil rolündeydi."

@@ -20,7 +20,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 	function but:Paint(w, h)
 		local showAdmins = GAMEMODE.RoundSettings.ShowAdminsOnScoreboard
 
-		if IsValid(ply) && showAdmins && ply:IsAdmin() then
+		if IsValid(ply) and showAdmins and ply:IsAdmin() then
 			surface.SetDrawColor(Color(150,50,50))
 		else
 			surface.SetDrawColor(team.GetColor(pteam))
@@ -33,10 +33,10 @@ local function addPlayerItem(self, mlist, ply, pteam)
 		surface.SetDrawColor(color_black)
 		surface.DrawOutlinedRect(0, 0, w, h)
 
-		if IsValid(ply) && ply:IsPlayer() then
+		if IsValid(ply) and ply:IsPlayer() then
 			local s = 0
 
-			if showAdmins && ply:IsAdmin() then
+			if showAdmins and ply:IsAdmin() then
 				surface.SetMaterial(admin)
 				surface.SetDrawColor(color_white)
 				surface.DrawTexturedRect(s + 4, h / 2 - 16, 32, 32)
@@ -74,8 +74,8 @@ function GM:DoScoreboardActionPopup(ply)
 		admin:SetIcon("icon16/shield.png")
 	end
 
-	if ply != LocalPlayer() then
-		if !ply:IsBot() then
+	if ply ~= LocalPlayer() then
+		if not ply:IsBot() then
 			local t = translate.scoreboardActionMute
 			if ply:IsMuted() then
 				t = translate.scoreboardActionUnmute
@@ -84,7 +84,7 @@ function GM:DoScoreboardActionPopup(ply)
 			mute:SetIcon("icon16/sound_mute.png")
 			function mute:DoClick()
 				if IsValid(ply) then
-					ply:SetMuted(!ply:IsMuted())
+					ply:SetMuted(not ply:IsMuted())
 				end
 			end
 			local viewProfile = actions:AddOption(translate.scoreboardActionViewProfile)
@@ -97,7 +97,7 @@ function GM:DoScoreboardActionPopup(ply)
 		end
 	end
 
-	if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
+	if IsValid(LocalPlayer()) and LocalPlayer():IsAdmin() then
 		actions:AddSpacer()
 
 		if ply:Team() == 2 then
@@ -138,14 +138,14 @@ local function doPlayerItems(self, mlist, pteam)
 			end
 		end
 
-		if !found then
+		if not found then
 			addPlayerItem(self, mlist, ply, pteam)
 		end
 	end
 	local del = false
 
 	for t,v in pairs(mlist:GetCanvas():GetChildren()) do
-		if v.ctime != CurTime() then
+		if v.ctime ~= CurTime() then
 			v:Remove()
 			del = true
 		end
@@ -167,7 +167,7 @@ local function makeTeamList(parent, pteam)
 	end
 
 	function pnl:Think()
-		if !self.RefreshWait || self.RefreshWait < CurTime() then
+		if not self.RefreshWait or self.RefreshWait < CurTime() then
 			self.RefreshWait = CurTime() + 0.1
 			doPlayerItems(self, mlist, pteam)
 

@@ -1,7 +1,7 @@
 local PlayerMeta = FindMetaTable("Player")
 local EntityMeta = FindMetaTable("Entity")
 
-if !PlayerMeta.CreateRagdollOld then
+if not PlayerMeta.CreateRagdollOld then
 	PlayerMeta.CreateRagdollOld = PlayerMeta.CreateRagdoll
 end
 
@@ -15,7 +15,7 @@ local function clearupRagdolls(ragdolls, max)
 		end
 	end
 
-	if max >= 0 && count > max then
+	if max >= 0 and count > max then
 		while true do
 			if count > max then
 				if IsValid(ragdolls[1]) then
@@ -34,17 +34,17 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	local ent = self:GetNWEntity("DeathRagdoll")
 
 	// remove old player ragdolls
-	if !self.DeathRagdolls then self.DeathRagdolls = {} end
+	if not self.DeathRagdolls then self.DeathRagdolls = {} end
 	local max = hook.Run("MaxDeathRagdollsPerPlayer", self)
 	clearupRagdolls(self.DeathRagdolls, max or 1)
 
 	// remove old server ragdolls
-	if !GAMEMODE.DeathRagdolls then GAMEMODE.DeathRagdolls = {} end
+	if not GAMEMODE.DeathRagdolls then GAMEMODE.DeathRagdolls = {} end
 	local max = hook.Run("MaxDeathRagdolls")
 	clearupRagdolls(GAMEMODE.DeathRagdolls, max or 1)
 
 	local data = duplicator.CopyEntTable(self)
-	if !util.IsValidRagdoll(data.Model) then
+	if not util.IsValidRagdoll(data.Model) then
 		data.Model = "models/player/skeleton.mdl"
 		// if use pointshop or something similar to handle character models, just return could be problem with disguise.
 	end
@@ -81,7 +81,7 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	end
 end
 
-if !PlayerMeta.GetRagdollEntityOld then
+if not PlayerMeta.GetRagdollEntityOld then
 	PlayerMeta.GetRagdollEntityOld = PlayerMeta.GetRagdollEntity
 end
 function PlayerMeta:GetRagdollEntity()
@@ -92,7 +92,7 @@ function PlayerMeta:GetRagdollEntity()
 	return self:GetRagdollEntityOld()
 end
 
-if !PlayerMeta.GetRagdollOwnerOld then
+if not PlayerMeta.GetRagdollOwnerOld then
 	PlayerMeta.GetRagdollOwnerOld = PlayerMeta.GetRagdollOwner
 end
 function EntityMeta:GetRagdollOwner()

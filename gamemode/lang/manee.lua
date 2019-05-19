@@ -1,6 +1,6 @@
 pt.default = function (n)
 	local a = Translator:Translate(Translator:GetEnglishTable(), {n})
-	if type(a) != "string" then
+	if type(a) ~= "string" then
 		return tostring(n)
 	end
 

@@ -2,9 +2,9 @@
 
 function GM:CanRespawn(ply)
 	if self:GetRound() == 0 then
-		if ply.NextSpawnTime && ply.NextSpawnTime > CurTime() then return end
+		if ply.NextSpawnTime and ply.NextSpawnTime > CurTime() then return end
 
-		if ply:KeyPressed(IN_JUMP) || ply:KeyPressed(IN_ATTACK) then
+		if ply:KeyPressed(IN_JUMP) or ply:KeyPressed(IN_ATTACK) then
 			return true
 		end
 	end

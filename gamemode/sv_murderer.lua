@@ -21,7 +21,7 @@ end
 function PlayerMeta:SetMurdererRevealed(bool)
 	self:SetNWBool("MurdererFog", bool)
 	if bool then
-		if !self.MurdererRevealed then
+		if not self.MurdererRevealed then
 		end
 	else
 		if self.MurdererRevealed then
@@ -46,11 +46,11 @@ function GM:MurdererThink()
 	end
 
 	// regenerate knife if on ground
-	if IsValid(murderer) && murderer:Alive() then
+	if IsValid(murderer) and murderer:Alive() then
 		if murderer:HasWeapon("weapon_mu_knife") then
 			murderer.LastHadKnife = CurTime()
 		else
-			if murderer.LastHadKnife && murderer.LastHadKnife + NO_KNIFE_TIME < CurTime() then
+			if murderer.LastHadKnife and murderer.LastHadKnife + NO_KNIFE_TIME < CurTime() then
 				for k, ent in pairs(ents.FindByClass("weapon_mu_knife")) do
 					ent:Remove()
 				end

@@ -14,7 +14,7 @@ function ENT:Initialize()
 
 	self:SetDelay(self.RawDelay or 1)
 
-	if self:GetDelay() < 0 || self.RemoveOnPress then
+	if self:GetDelay() < 0 or self.RemoveOnPress then
 		self:SetDelay(-1)
 		self.RemoveOnPress = true
 	end

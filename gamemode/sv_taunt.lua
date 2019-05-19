@@ -1,10 +1,10 @@
 local taunts = {}
 
 function addTaunt(cat, soundFile, sex)
-	if !taunts[cat] then
+	if not taunts[cat] then
 		taunts[cat] = {}
 	end
-	if !taunts[cat][sex] then
+	if not taunts[cat][sex] then
 		taunts[cat][sex] = {}
 	end
 	local t = {}
@@ -59,16 +59,16 @@ addTaunt("funny", "vo/npc/female01/question06.wav", "female")
 addTaunt("funny", "vo/npc/female01/question09.wav", "female")
 
 concommand.Add("mu_taunt", function (ply, com, args, full)
-	if ply.LastTaunt && ply.LastTaunt > CurTime() then return end
-	if !ply:Alive() then return end
-	if ply:Team() != 2 then return end
+	if ply.LastTaunt and ply.LastTaunt > CurTime() then return end
+	if not ply:Alive() then return end
+	if ply:Team() ~= 2 then return end
 
 	if #args < 1 then return end
 	local cat = args[1]:lower()
-	if !taunts[cat] then return end
+	if not taunts[cat] then return end
 
 	local sex = string.lower(ply.ModelSex or "male")
-	if !taunts[cat][sex] then return end
+	if not taunts[cat][sex] then return end
 
 	local taunt = table.Random(taunts[cat][sex])
 	ply:EmitSound(taunt.sound)

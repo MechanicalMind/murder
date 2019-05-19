@@ -3,7 +3,7 @@ util.AddNetworkString("spectating_status")
 local PlayerMeta = FindMetaTable("Player")
 
 function PlayerMeta:CSpectate(mode, spectatee)
-	mode = mode || OBS_MODE_IN_EYE
+	mode = mode or OBS_MODE_IN_EYE
 	self:Spectate(mode)
 	if IsValid(spectatee) then
 		self:SpectateEntity(spectatee)
@@ -69,7 +69,7 @@ function GM:SpectateNext(ply, direction)
 			ply:CSpectate(OBS_MODE_IN_EYE, ent)
 		else
 			if IsValid(ply:GetRagdollEntity()) then
-				if ply:GetCSpectating() != ply:GetRagdollEntity() then
+				if ply:GetCSpectating() ~= ply:GetRagdollEntity() then
 					ply:CSpectate(OBS_MODE_CHASE, ply:GetRagdollEntity())
 				end
 			else
@@ -83,13 +83,13 @@ end
 
 function GM:ChooseSpectatee(ply)
 
-	-- if ((!ply.SpectateTime || ply.SpectateTime < CurTime()) && ply:KeyPressed(IN_ATTACK))
-	--  || !IsValid(ply:GetCSpectatee()) || (ply:GetCSpectatee():IsPlayer() && !ply:GetCSpectatee():Alive()) then
+	-- if ((not ply.SpectateTime or ply.SpectateTime < CurTime()) and ply:KeyPressed(IN_ATTACK))
+	--  or not IsValid(ply:GetCSpectatee()) or (ply:GetCSpectatee():IsPlayer() and not ply:GetCSpectatee():Alive()) then
 
 	-- 	// recalculate spectating
 	-- 	local players = team.GetPlayers(2)
 	-- 	for k,v in pairs(players) do
-	-- 		if !(v:Alive()) then
+	-- 		if not (v:Alive()) then
 	-- 			players[k] = nil
 	-- 		end
 	-- 	end
@@ -98,7 +98,7 @@ function GM:ChooseSpectatee(ply)
 	-- 	if IsValid(ent) then
 	-- 		ply:CSpectate(OBS_MODE_IN_EYE, ent)
 	-- 	elseif IsValid(ply:IsCSpectating()) then
-	-- 		if ply:GetCSpectating() != ply:GetRagdollEntity() then
+	-- 		if ply:GetCSpectating() ~= ply:GetRagdollEntity() then
 	-- 			ply:CSpectate(OBS_MODE_CHASE, ply:GetRagdollEntity())
 	-- 		end
 	-- 	elseif ply:IsCSpectating() then
@@ -106,7 +106,7 @@ function GM:ChooseSpectatee(ply)
 	-- 	end
 	-- end
 
-	if !ply.SpectateTime || ply.SpectateTime < CurTime() then
+	if not ply.SpectateTime or ply.SpectateTime < CurTime() then
 
 		local direction
 		if ply:KeyPressed(IN_ATTACK) then
@@ -121,7 +121,7 @@ function GM:ChooseSpectatee(ply)
 	end
 
 	// if invalid or dead
-	if !IsValid(ply:GetCSpectatee()) || ( ply:GetCSpectatee():IsPlayer() && !ply:GetCSpectatee():Alive() ) then
+	if not IsValid(ply:GetCSpectatee()) or ( ply:GetCSpectatee():IsPlayer() and not ply:GetCSpectatee():Alive() ) then
 		self:SpectateNext(ply)
 	end
 end

@@ -53,7 +53,7 @@ local pickupWhiteList = {
 
 if SERVER then
 	function SWEP:CanPickup(ent)
-		if ent:IsWeapon() || ent:IsPlayer() || ent:IsNPC() then return false end
+		if ent:IsWeapon() or ent:IsPlayer() or ent:IsNPC() then return false end
 
 		local class = ent:GetClass()
 		if pickupWhiteList[class] then return true end
@@ -67,7 +67,7 @@ function SWEP:SecondaryAttack()
 		self:SetCarrying()
 		local tr = self.Owner:GetEyeTraceNoCursor()
 
-		if IsValid(tr.Entity) && self:CanPickup(tr.Entity) then
+		if IsValid(tr.Entity) and self:CanPickup(tr.Entity) then
 			self:SetCarrying(tr.Entity, tr.PhysicsBone)
 			self:ApplyForce()
 		end
@@ -115,7 +115,7 @@ end
 
 function SWEP:Think()
 	self.BaseClass.Think(self)
-	if IsValid(self.Owner) && self.Owner:KeyDown(IN_ATTACK2) then
+	if IsValid(self.Owner) and self.Owner:KeyDown(IN_ATTACK2) then
 		if IsValid(self.CarryEnt) then
 			self:ApplyForce()
 		end
