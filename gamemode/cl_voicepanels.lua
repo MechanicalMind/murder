@@ -37,11 +37,11 @@ function PANEL:Setup( ply )
 
 	self.ply = ply
 
-	self:CheckBystanderState()	
+	self:CheckBystanderState()
 
 	self.Avatar:SetPlayer( ply )
 	self.ColorBlock.Player = ply
-	
+
 	self:InvalidateLayout()
 
 end
@@ -88,7 +88,7 @@ function PANEL:SetBystanderState(state)
 		self.LabelName:SetTextColor(color)
 		self.ColorBlock:SetVisible(true)
 		self.Avatar:SetVisible(false)
-	else	
+	else
 		self.LabelName:SetTextColor(color_white)
 		self.LabelName:SetText( self.ply:Nick() )
 		self.ColorBlock:SetVisible(false)
@@ -113,17 +113,17 @@ function PANEL:Think( )
 end
 
 function PANEL:FadeOut( anim, delta, data )
-	
+
 	if ( anim.Finished ) then
-	
+
 		if ( IsValid( PlayerVoicePanels[ self.ply ] ) ) then
 			PlayerVoicePanels[ self.ply ]:Remove()
 			PlayerVoicePanels[ self.ply ] = nil
 			return
 		end
-		
+
 	return end
-			
+
 	self:SetAlpha( 255 - (255 * delta) )
 
 end
@@ -135,7 +135,7 @@ derma.DefineControl( "VoiceNotifyMurder", "", PANEL, "DPanel" )
 function GM:PlayerStartVoice( ply )
 
 	if ( !IsValid( g_VoicePanelList ) ) then return end
-	
+
 	-- There'd be an exta one if voice_loopback is on, so remove it.
 	GAMEMODE:PlayerEndVoice( ply )
 
@@ -157,20 +157,20 @@ function GM:PlayerStartVoice( ply )
 
 	local pnl = g_VoicePanelList:Add( "VoiceNotifyMurder" )
 	pnl:Setup( ply )
-	
+
 	PlayerVoicePanels[ ply ] = pnl
-	
+
 end
 
 
 local function VoiceClean()
 
 	for k, v in pairs( PlayerVoicePanels ) do
-	
+
 		if ( !IsValid( k ) ) then
 			GAMEMODE:PlayerEndVoice( k )
 		end
-	
+
 	end
 
 end
@@ -179,7 +179,7 @@ timer.Create( "VoiceClean", 10, 0, VoiceClean )
 
 
 function GM:PlayerEndVoice( ply )
-	
+
 	if ( IsValid( PlayerVoicePanels[ ply ] ) ) then
 
 		if ( PlayerVoicePanels[ ply ].fadeAnim ) then return end
@@ -188,7 +188,7 @@ function GM:PlayerEndVoice( ply )
 		PlayerVoicePanels[ ply ].fadeAnim:Start( 2 )
 
 	end
-	
+
 end
 
 

@@ -1,26 +1,26 @@
 if SERVER then
 	AddCSLuaFile()
-	
-		
+
+
 	util.AddNetworkString("mu_knife_charge")
 
 	SWEP.KnifeChargeConvar = CreateConVar("mu_knife_charge", 1, bit.bor(FCVAR_NOTIFY), "Should we use a charge bar on alt attack?" )
 else
 	killicon.AddFont("weapon_mu_knife", "HL2MPTypeDeath", "5", Color(0, 0, 255, 255))
-	
+
 	function SWEP:DrawWeaponSelection( x, y, w, h, alpha )
 		local name = translate and translate.knife or "Knife"
 		surface.SetFont("MersText1")
 		local tw, th = surface.GetTextSize(name:sub(2))
-		
+
 		surface.SetFont("MersHead1")
 		local twf, thf = surface.GetTextSize(name:sub(1, 1))
 		tw = tw + twf + 1
-		
+
 		draw.DrawText(name:sub(2), "MersText1", x + w * 0.5 - tw / 2 + twf + 1, y + h * 0.51, Color(255, 150, 0, alpha), 0)
 		draw.DrawText(name:sub(1, 1), "MersHead1", x + w * 0.5 - tw / 2 , y + h * 0.49, Color(255, 50, 50, alpha), 0)
 	end
-	
+
 	function SWEP:DrawHUD()
 		if self.ChargeStart then
 			local sw, sh = ScrW(), ScrH()
@@ -35,12 +35,12 @@ else
 			surface.SetDrawColor(255, 0, 0, 150)
 			surface.DrawRect(sw / 2 - w / 2, sh / 2 - h / 2 + 120, w * charge, h)
 		end
-	end  
+	end
 
 	net.Receive("mu_knife_charge", function(len)
 		local ent = net.ReadEntity()
 		if not IsValid(ent) then return end
-		
+
 		local charging = net.ReadUInt(8) != 0
 		if charging then
 			ent.ChargeStart = net.ReadDouble()
@@ -70,7 +70,7 @@ SWEP.Primary.Sequence = {"midslash1", "midslash2"}
 SWEP.Primary.Delay = 0.5
 SWEP.Primary.Recoil = 3
 SWEP.Primary.Damage = 120
-SWEP.Primary.NumShots = 1	
+SWEP.Primary.NumShots = 1
 SWEP.Primary.Cone = 0.04
 SWEP.Primary.ClipSize = -1
 SWEP.Primary.Force = 900
@@ -97,7 +97,7 @@ function SWEP:Holster()
 			net.WriteUInt(0, 8)
 			net.Send(self.Owner)
 		end
-		
+
 		self.ChargeStart = nil
 	end
 	return self.BaseClass.Holster(self)
@@ -120,7 +120,7 @@ function SWEP:Think()
 			self:AttackTrace()
 		end
 	end
-	
+
 	if SERVER && self.ChargeStart then
 		if !IsValid(self.Owner) || !self.Owner:KeyDown(IN_ATTACK2) then
 			if IsValid(self.Owner) then
@@ -175,7 +175,7 @@ function SWEP:AttackTrace()
 	if !IsValid(tr.Entity) then tr = self:GetTrace(-10,0) end
 	if !IsValid(tr.Entity) then tr = self:GetTrace(0,10) end
 	if !IsValid(tr.Entity) then tr = self:GetTrace(0,-10) end
-	
+
 	if tr.Hit then
 		if IsValid(tr.Entity) then
 			if CLIENT && LocalPlayer() == self.Owner then

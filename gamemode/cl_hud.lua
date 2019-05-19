@@ -66,7 +66,7 @@ function GM:HUDPaint()
 	elseif round == 5 then
 		if self.StartNewRoundTime then
 			local seconds = math.ceil(self.StartNewRoundTime - CurTime())
-			if seconds <= 0 then 
+			if seconds <= 0 then
 				seconds = 0
 			end
 			drawTextShadow(Translator:QuickVar(translate.roundStartsInTime, "seconds", tostring(seconds)), "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
@@ -180,7 +180,7 @@ function GM:DrawGameHUD(ply)
 		if LocalPlayer() == ply && ply:GetNWBool("MurdererFog") && self:GetAmMurderer() then
 			surface.SetDrawColor(10,10,10,50)
 			surface.DrawRect(-1, -1, ScrW() + 2, ScrH() + 2)
-		
+
 			drawTextShadow(translate.murdererFog, "MersRadial", ScrW() * 0.5, ScrH() - 80, Color(90,20,20), 1, TEXT_ALIGN_CENTER)
 			drawTextShadow(translate.murdererFogSub, "MersRadialSmall", ScrW() * 0.5, ScrH() - 50, Color(130,130,130), 1, TEXT_ALIGN_CENTER)
 		end
@@ -193,7 +193,7 @@ function GM:DrawGameHUD(ply)
 	-- drawTextShadow(health, "MersRadialBig", 20 + w + 10, ScrH() - 10 + 3, healthCol, 0, TEXT_ALIGN_BOTTOM)
 
 	local tr = ply:GetEyeTraceNoCursor()
-	
+
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderTraitorButton")
 	if shouldDraw != false then
 		if self:GetAmMurderer() then
@@ -208,7 +208,7 @@ function GM:DrawGameHUD(ply)
 					but = lbut
 				end
 			end
-			
+
 			// draw the friggen button with excessive text
 			if but then
 				local sp = but:GetPos():ToScreen()
@@ -232,7 +232,7 @@ function GM:DrawGameHUD(ply)
 						text = Translator:VarTranslate(translate.ttt_tbut_retime, {num = but:GetDelay()})
 					end
 					drawTextShadow(text, "MersText1", sp.x, sp.y + fh, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-					
+
 					local key = input.LookupBinding("use")
 					if key && but:GetNextUseTime() <= CurTime() then
 						text = Translator:VarTranslate(translate.ttt_tbut_help, {key = key:upper()})
@@ -263,14 +263,14 @@ function GM:DrawGameHUD(ply)
 	if shouldDraw != false then
 		if self:GetAmMurderer() && self.LootCollected && self.LootCollected >= 1 then
 			if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
-				if tr.Entity:GetBystanderName() != ply:GetBystanderName() || colorDif(tr.Entity:GetPlayerColor(), ply:GetPlayerColor()) > 0.1 then 
+				if tr.Entity:GetBystanderName() != ply:GetBystanderName() || colorDif(tr.Entity:GetPlayerColor(), ply:GetPlayerColor()) > 0.1 then
 					local h = draw.GetFontHeight("MersRadial")
 					drawTextShadow(translate.pressEToDisguiseFor1Loot, "MersRadialSmall", ScrW() / 2, ScrH() / 2 + 80 + h * 0.7, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 				end
 			end
 		end
 	end
-	
+
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderHealthBall")
 	if shouldDraw != false then
 		// setup size
@@ -330,7 +330,7 @@ function GM:DrawGameHUD(ply)
 			surface.DrawTexturedRect(x + bord, ScrH() - h - size * 0.2 + bord, (w - bord * 2) * charge, h - bord * 2)
 		end
 	end
-	
+
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerType")
 	if shouldDraw != false then
 		local name = translate.bystander

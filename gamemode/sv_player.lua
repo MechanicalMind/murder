@@ -12,7 +12,7 @@ function GM:PlayerInitialSpawn( ply )
 			ply:KillSilent()
 		end
 	end)
-	
+
 	ply.HasMoved = true
 	ply:SetTeam(2)
 
@@ -32,7 +32,7 @@ function GM:PlayerSpawn( ply )
 
 		GAMEMODE:PlayerSpawnAsSpectator( ply )
 		return
-	
+
 	end
 
 	-- Stop observer mode
@@ -213,7 +213,7 @@ end
 function GM:PlayerSelectTeamSpawn( TeamID, pl )
 	local spawnPoints = generateSpawnEntities(TeamSpawns["spawns"])
 	if ( !spawnPoints || table.Count( spawnPoints ) == 0 ) then return end
-	
+
 	local spawnPoint = nil
 	for i = 0, 6 do
 		local spawnPoint = table.Random( spawnPoints )
@@ -221,7 +221,7 @@ function GM:PlayerSelectTeamSpawn( TeamID, pl )
 			return spawnPoint
 		end
 	end
-	
+
 	return spawnPoint
 end
 
@@ -302,7 +302,7 @@ function GM:PlayerDeathThink(ply)
 	else
 		self:ChooseSpectatee(ply)
 	end
-	
+
 end
 
 function EntityMeta:GetPlayerColor()
@@ -351,12 +351,12 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 	return true
 end
 
-function GM:PlayerCanHearPlayersVoice( listener, talker ) 
+function GM:PlayerCanHearPlayersVoice( listener, talker )
 	if !IsValid(talker) then return false end
-	return self:PlayerCanHearChatVoice(listener, talker, "voice") 
+	return self:PlayerCanHearChatVoice(listener, talker, "voice")
 end
 
-function GM:PlayerCanHearChatVoice(listener, talker, typ) 
+function GM:PlayerCanHearChatVoice(listener, talker, typ)
 	if self.RoundStage != 1 then
 		return true
 	end
@@ -393,13 +393,13 @@ function GM:PlayerDisconnected(ply)
 	self:PlayerLeavePlay(ply)
 end
 
-function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam) 
+function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam)
 	if oldTeam == 2 then
-		self:PlayerLeavePlay(ply)	
+		self:PlayerLeavePlay(ply)
 	end
 	ply:SetMurderer(false)
 	if newteam == 1 then
-		
+
 	end
 	ply.HasMoved = true
 	ply:KillSilent()
@@ -431,7 +431,7 @@ concommand.Add("mu_movetospectate", function (ply, com, args)
 
 	local ent = Entity(tonumber(args[1]) or -1)
 	if !IsValid(ent) || !ent:IsPlayer() then return end
-	
+
 	local curTeam = ent:Team()
 	if 1 != curTeam then
 		ent:SetTeam(1)
@@ -453,7 +453,7 @@ concommand.Add("mu_spectate", function (ply, com, args)
 
 	local ent = Entity(tonumber(args[1]) or -1)
 	if !IsValid(ent) || !ent:IsPlayer() then return end
-	
+
 	if ply:Alive() && ply:Team() != 1 then
 		local ct = ChatText()
 		ct:Add(translate.spectateFailed)
@@ -465,7 +465,7 @@ end)
 
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
 	if !IsValid(speaker) then return false end
-	local canhear = self:PlayerCanHearChatVoice(listener, speaker) 
+	local canhear = self:PlayerCanHearChatVoice(listener, speaker)
 	-- print( canhear, listener, speaker, listener:Alive())
 	return canhear
 end
@@ -519,14 +519,14 @@ local function pressedUse(self, ply)
 	// disguise as ragdolls
 	if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
 		if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
-			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then 
+			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then
 				ply:MurdererDisguise(tr.Entity)
 				ply:SetLootCollected(ply:GetLootCollected() - 1)
 				return
 			end
 		end
 	end
-	
+
 	if ply:GetMurderer() then
 		// find closest button to cursor with usable range
 		local dis, dot, but
@@ -551,7 +551,7 @@ end
 function GM:KeyPress(ply, key)
 	if key == IN_USE then
 		pressedUse(self, ply)
-		
+
 	end
 end
 

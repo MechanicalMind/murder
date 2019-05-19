@@ -24,7 +24,7 @@ function GM:DisplayEndRoundBoard(data)
 	function winnerPnl:PerformLayout()
 		self:SizeToChildren(false, true)
 	end
-	function winnerPnl:Paint(w, h) 
+	function winnerPnl:Paint(w, h)
 		surface.SetDrawColor(Color(50,50,50,255))
 		surface.DrawRect(2, 2, w - 4, h - 4)
 	end
@@ -71,7 +71,7 @@ function GM:DisplayEndRoundBoard(data)
 	local lootPnl = vgui.Create("DPanel", menu)
 	lootPnl:Dock(FILL)
 	lootPnl:DockPadding(24,24,24,24)
-	function lootPnl:Paint(w, h) 
+	function lootPnl:Paint(w, h)
 		surface.SetDrawColor(Color(50,50,50,255))
 		surface.DrawRect(2, 2, w - 4, h - 4)
 	end
@@ -82,7 +82,7 @@ function GM:DisplayEndRoundBoard(data)
 	desc:SetAutoStretchVertical(true)
 	desc:SetText(translate.endroundLootCollected)
 	desc:SetTextColor(color_white)
-	
+
 	local lootList = vgui.Create("DPanelList", lootPnl)
 	lootList:Dock(FILL)
 

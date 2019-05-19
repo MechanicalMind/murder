@@ -55,7 +55,7 @@ GM.ShowAdminsOnScoreboard = CreateConVar("mu_scoreboard_show_admins", 1, bit.bor
 GM.AdminPanelAllowed = CreateConVar("mu_allow_admin_panel", 1, bit.bor(FCVAR_NOTIFY), "Should allow admins to use mu_admin_panel" )
 GM.ShowSpectateInfo = CreateConVar("mu_show_spectate_info", 1, bit.bor(FCVAR_NOTIFY), "Should show players name and color to spectators" )
 
-function GM:Initialize() 
+function GM:Initialize()
 	self:LoadSpawns()
 	self.DeathRagdolls = {}
 	self:StartNewRound()
@@ -64,7 +64,7 @@ function GM:Initialize()
 	self:LoadBystanderNames()
 end
 
-function GM:InitPostEntity() 
+function GM:InitPostEntity()
 	local canAdd = self:CountLootItems() <= 0
 	for k, ent in pairs(ents.FindByClass("mu_loot")) do
 		if canAdd then
@@ -74,7 +74,7 @@ function GM:InitPostEntity()
 	self:InitPostEntityAndMapCleanup()
 end
 
-function GM:InitPostEntityAndMapCleanup() 
+function GM:InitPostEntityAndMapCleanup()
 	for k, ent in pairs(ents.GetAll()) do
 		if ent:IsWeapon() || ent:GetClass():match("^weapon_") then
 			ent:Remove()
@@ -128,7 +128,7 @@ end
 function GM:OnStartRound()
 end
 
-function GM:SendMessageAll(msg) 
+function GM:SendMessageAll(msg)
 	for k,v in pairs(player.GetAll()) do
 		v:ChatPrint(msg)
 	end

@@ -8,9 +8,9 @@ function GM:DrawSpawnsVisualise()
 		local pos = v.Pos:ToScreen()
 		if pos.visible then
 			local size = 8
-			draw.RoundedBox(size / 2, pos.x - size / 2, pos.y - size / 2, size, size, color_black) 	
+			draw.RoundedBox(size / 2, pos.x - size / 2, pos.y - size / 2, size, size, color_black)
 			local size = 6
-			draw.RoundedBox(size / 2, pos.x - size / 2, pos.y - size / 2, size, size, color_green) 	
+			draw.RoundedBox(size / 2, pos.x - size / 2, pos.y - size / 2, size, size, color_green)
 		end
 	end
 end

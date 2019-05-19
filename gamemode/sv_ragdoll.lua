@@ -52,12 +52,12 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	local ent = ents.Create( "prop_ragdoll" )
 	data.ModelScale = 1 // doesn't work on ragdolls
 	duplicator.DoGeneric(ent, data)
-	
+
 	self:SetNWEntity("DeathRagdoll", ent )
 	ent:SetNWEntity("RagdollOwner", self)
 	table.insert(self.DeathRagdolls,ent)
 	table.insert(GAMEMODE.DeathRagdolls,ent)
-	
+
 	if ent.SetPlayerColor then
 		ent:SetPlayerColor(self:GetPlayerColor())
 	end
@@ -65,7 +65,7 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	hook.Run("PreDeathRagdollSpawn", self, ent)
 	ent:Spawn()
 	ent:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-	
+
 	hook.Run("OnDeathRagdollCreated", self, ent)
 	ent:Fire("kill", "", 60 * 8)
 

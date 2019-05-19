@@ -12,15 +12,15 @@ net.Receive("spectating_status", function (length)
 
 end)
 
-function GM:IsCSpectating() 
+function GM:IsCSpectating()
 	return self.Spectating
 end
 
-function GM:GetCSpectatee() 
+function GM:GetCSpectatee()
 	return self.Spectatee
 end
 
-function GM:GetCSpectateMode() 
+function GM:GetCSpectateMode()
 	return self.SpectateMode
 end
 
@@ -38,7 +38,7 @@ function GM:RenderSpectate()
 		drawTextShadow(translate.spectating, "MersRadial", ScrW() / 2, ScrH() - 30 - h * 2, Color(20,120,255), 1)
 
 		if IsValid(self:GetCSpectatee()) && self:GetCSpectatee():IsPlayer() then
-			
+
 
 			if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
 				drawTextShadow(self:GetCSpectatee():Nick(), "MersRadialSmall", ScrW() / 2, ScrH() - 30 - h, Color(190, 190, 190), 1)

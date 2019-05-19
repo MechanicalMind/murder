@@ -64,7 +64,7 @@ function ENT:PhysicsCollide( data, physobj )
 
 	if self.HitSomething then return end
 	if self.RemoveNext then return end
-	
+
 	local ply = data.HitEntity
 	if IsValid(ply) && ply:IsPlayer() then
 

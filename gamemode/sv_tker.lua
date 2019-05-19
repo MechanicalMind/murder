@@ -7,7 +7,7 @@ function PlayerMeta:SetTKer(bool)
 	if bool then
 		self.LastTKTime = CurTime()
 
-		timer.Simple(0, function () 
+		timer.Simple(0, function ()
 			if IsValid(self) && self:HasWeapon("weapon_mu_magnum") then
 				local wep = self:GetWeapon("weapon_mu_magnum")
 				wep.LastTK = self

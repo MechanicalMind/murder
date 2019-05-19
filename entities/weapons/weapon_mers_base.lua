@@ -1,9 +1,9 @@
 if ( SERVER ) then
 	AddCSLuaFile()
-	
+
 	util.AddNetworkString("mers_base_holdtype")
-	
-	
+
+
 	concommand.Add("mers_weapon_info", function (ply)
 		local wep = ply:GetActiveWeapon()
 		local vm = ply:GetViewModel()
@@ -11,7 +11,7 @@ if ( SERVER ) then
 		for i = 0, vm:GetSequenceCount() - 1 do
 			ct:Add(i .. "\t" .. vm:GetSequenceName(i) .. "\t" .. vm:SequenceDuration(i) .. "\n")
 		end
-		
+
 		for k, v in pairs(wep.Primary) do
 			ct:Add(tostring(k) .. "\t" .. tostring(v) .. "\n")
 		end
@@ -111,16 +111,16 @@ function SWEP:PrimaryAttack()
 		end
 		vm:SendViewModelMatchingSequence(vm:LookupSequence(sequence))
 	end
-	
+
 	self:SetNextPrimaryFire(CurTime() + (self.Primary.Delay or vm:SequenceDuration()))
 	self:SetNextIdle(CurTime() + vm:SequenceDuration())
 	self:TakePrimaryAmmo(1)
-	
+
 	if self.Primary.Sound then
 		self:EmitSound(self.Primary.Sound)
 	end
 	self.Owner:SetAnimation(PLAYER_ATTACK1)
-	
+
 	local stats = {}
 	stats.recoil = self.Primary.Recoil or 1
 	stats.damage = self.Primary.Damage or 1
@@ -155,7 +155,7 @@ end
 
 local function lerp(from, to, step)
 	if from < to then
-		return math.min(from + step, to)	
+		return math.min(from + step, to)
 	end
 	return math.max(from - step, to)
 end
@@ -164,7 +164,7 @@ function SWEP:Think()
 	self:CalculateHoldType()
 	if self:GetReloadEnd() > 0 && self:GetReloadEnd() < CurTime() then
 		self:SetReloadEnd(0)
-		
+
 		if self.Primary.InfiniteAmmo then
 			self:SetClip1(self:GetMaxClip1())
 		else
@@ -176,7 +176,7 @@ function SWEP:Think()
 	end
 	if self:GetNextIdle() > 0 && self:GetNextIdle() < CurTime() then
 		self:SetNextIdle(0)
-		
+
 		local sequence = self.SequenceIdle
 		local vm = self.Owner:GetViewModel()
 		vm:SendViewModelMatchingSequence(vm:LookupSequence(sequence))
@@ -186,7 +186,7 @@ function SWEP:Think()
 			end
 		end
 	end
-	
+
 	if IsValid(self.Owner) then
 		if !self.Owner:KeyDown(IN_RELOAD) then
 			self.ReloadHoldStart = nil
@@ -196,7 +196,7 @@ function SWEP:Think()
 			self.UsingIronsights = true
 		end
 	end
-	
+
 	self.IronsightsPercent = lerp(self.IronsightsPercent, self.UsingIronsights and 1 or 0, FrameTime() * 2.5)
 end
 
@@ -251,7 +251,7 @@ local function addangle(ang,ang2)
 end
 
 function SWEP:CalcViewModelView(vm, opos, oang, pos, ang)
-	
+
 	// iron sights
 	local addpos, addang = Vector(0, 0, 0), Angle(0, 0, 0)
 	if self.Ironsights then

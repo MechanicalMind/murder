@@ -19,7 +19,7 @@ function PlayerMeta:CSpectate(mode, spectatee)
 	net.Send(self)
 end
 
-function PlayerMeta:UnCSpectate(mode, spectatee) 
+function PlayerMeta:UnCSpectate(mode, spectatee)
 	self:UnSpectate()
 	self.SpectateMode = nil
 	self.Spectatee = nil
@@ -30,15 +30,15 @@ function PlayerMeta:UnCSpectate(mode, spectatee)
 	net.Send(self)
 end
 
-function PlayerMeta:IsCSpectating() 
+function PlayerMeta:IsCSpectating()
 	return self.Spectating
 end
 
-function PlayerMeta:GetCSpectatee() 
+function PlayerMeta:GetCSpectatee()
 	return self.Spectatee
 end
 
-function PlayerMeta:GetCSpectateMode() 
+function PlayerMeta:GetCSpectateMode()
 	return self.SpectateMode
 end
 
@@ -81,7 +81,7 @@ function GM:SpectateNext(ply, direction)
 	end
 end
 
-function GM:ChooseSpectatee(ply) 
+function GM:ChooseSpectatee(ply)
 
 	-- if ((!ply.SpectateTime || ply.SpectateTime < CurTime()) && ply:KeyPressed(IN_ATTACK))
 	--  || !IsValid(ply:GetCSpectatee()) || (ply:GetCSpectatee():IsPlayer() && !ply:GetCSpectatee():Alive()) then
@@ -108,7 +108,7 @@ function GM:ChooseSpectatee(ply)
 
 	if !ply.SpectateTime || ply.SpectateTime < CurTime() then
 
-		local direction 
+		local direction
 		if ply:KeyPressed(IN_ATTACK) then
 			direction = 1
 		elseif ply:KeyPressed(IN_ATTACK2) then

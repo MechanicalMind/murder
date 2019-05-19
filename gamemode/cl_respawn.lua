@@ -12,7 +12,7 @@ function GM:RenderDeathOverlay()
 		render.SetColorModulation(1, 1, 1)
 		render.SetBlend(1)
 
-		
+
 		// render body
 		cam.Start3D( EyePos(), EyeAngles() )
 		cam.IgnoreZ(true)
@@ -33,9 +33,9 @@ end)
 function GM:RenderRespawnText()
 	local client = LocalPlayer()
 	local sw,sh = ScrW(),ScrH()
-	
+
 	local t = math.max(math.ceil(GAMEMODE.SpectateTime - CurTime()), 0)
-	
+
 	if t <= 0 then
 		self:RenderSpectate()
 	else

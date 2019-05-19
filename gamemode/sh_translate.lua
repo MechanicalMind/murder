@@ -206,7 +206,7 @@ end
 tmeta.__index = trans
 tmeta.__call = trans
 tmeta.__newindex = function (self, key, value)
-	
+
 end
 
 local tablemeta = {}
@@ -220,7 +220,7 @@ end
 tablemeta.__index = transtable
 tablemeta.__call = transtable
 tablemeta.__newindex = function (self, key, value)
-	
+
 end
 
 translate = {}

@@ -79,7 +79,7 @@ function ENT:TraitorButtonPressed(ply)
 	else
 		self:SetNextUseTime(CurTime() + self:GetDelay())
 	end
-	
+
 	net.Start("TTT_ConfirmUseTButton")
 	net.Send(ply)
 	return true

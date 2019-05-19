@@ -24,7 +24,7 @@ GM.HaloRender = CreateClientConVar( "mu_halo_render", 1, true, true ) // should 
 GM.HaloRenderLoot = CreateClientConVar( "mu_halo_loot", 1, true, true ) // shouuld we render loot halos
 GM.HaloRenderKnife = CreateClientConVar( "mu_halo_knife", 1, true, true ) // shouuld we render murderer's knife halos
 
-function GM:Initialize() 
+function GM:Initialize()
 	self:FootStepsInit()
 end
 
@@ -56,7 +56,7 @@ function GM:Think()
 				particle:SetStartAlpha( 180 )
 				particle:SetEndAlpha( 0 )
 				particle:SetStartSize( 6 )
-				particle:SetEndSize( 7 )   
+				particle:SetEndSize( 7 )
 				particle:SetRoll( 0 )
 				particle:SetRollDelta( 0 )
 				particle:SetColor( 0, 0, 0 )

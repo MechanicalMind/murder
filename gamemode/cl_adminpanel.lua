@@ -80,7 +80,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 			end
 			draw.DrawText(chance, "ScoreboardPlayer", w * 0.86 + 1, 9, color_black, 0)
 			draw.DrawText(chance, "ScoreboardPlayer", w * 0.86, 8, color_white, 0)
-			
+
 		end
 	end
 	function but:DoClick()
@@ -125,7 +125,7 @@ local function makeTeamList(parent, pteam)
 	local chaos
 	local pnl = vgui.Create("DPanel", parent)
 	pnl:DockPadding(8,8,8,8)
-	function pnl:Paint(w, h) 
+	function pnl:Paint(w, h)
 		surface.SetDrawColor(Color(50,50,50,255))
 		surface.DrawRect(2, 2, w - 4, h - 4)
 	end

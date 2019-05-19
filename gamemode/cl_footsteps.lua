@@ -7,7 +7,7 @@ end
 FootStepsG = FootSteps
 
 function GM:FootStepsInit()
-	
+
 end
 
 local footMat = Material( "thieves/footprint" )
@@ -21,7 +21,7 @@ local function renderfoot(self)
 	for k, footstep in pairs(FootSteps) do
 		if footstep.curtime + lifeTime > CurTime() then
 			if (footstep.pos - EyePos()):LengthSqr() < maxDistance then
-				render.DrawQuadEasy( footstep.pos + footstep.normal * 0.01, footstep.normal, 10, 20, footstep.col, footstep.angle )  
+				render.DrawQuadEasy( footstep.pos + footstep.normal * 0.01, footstep.normal, 10, 20, footstep.col, footstep.angle )
 			end
 		else
 			FootSteps[k] = nil
@@ -41,7 +41,7 @@ function GM:DrawFootprints()
 
 end
 
-function GM:AddFootstep(ply, pos, ang) 
+function GM:AddFootstep(ply, pos, ang)
 	ang.p = 0
 	ang.r = 0
 	local fpos = pos

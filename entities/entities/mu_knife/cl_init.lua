@@ -3,7 +3,7 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.Emitter = ParticleEmitter(self:GetPos())
-	self.NextPart = CurTime() 
+	self.NextPart = CurTime()
 end
 
 function ENT:Draw()
@@ -28,7 +28,7 @@ function ENT:Think()
 		particle:SetStartAlpha( 140 )
 		particle:SetEndAlpha( 0 )
 		particle:SetStartSize( 5 )
-		particle:SetEndSize( 6 )   
+		particle:SetEndSize( 6 )
 		particle:SetRoll( 0 )
 		particle:SetRollDelta( 0 )
 		particle:SetColor( 0, 0, 0 )

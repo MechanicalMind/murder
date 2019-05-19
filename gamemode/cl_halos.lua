@@ -133,7 +133,7 @@ hook.Add( "PostDrawEffects", "RenderMurderHalos", function()
 	hook.Run( "PreDrawMurderHalos", Add)
 
 	if ( #List == 0 ) then return end
-	
+
 	local a = SysTime()
 	for k, v in ipairs( List ) do
 		Render( v )

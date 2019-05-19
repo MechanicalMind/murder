@@ -55,7 +55,7 @@ end
 function GM:RoundThink()
 	local players = team.GetPlayers(2)
 	if self.RoundStage == self.Round.NotEnoughPlayers then
-		if #players > 1 && (!self.LastPlayerSpawn || self.LastPlayerSpawn + 1 < CurTime()) then 
+		if #players > 1 && (!self.LastPlayerSpawn || self.LastPlayerSpawn + 1 < CurTime()) then
 			self.StartNewRoundTime = CurTime() + self.DelayAfterEnoughPlayers:GetFloat()
 			self:SetRound(self.Round.RoundStarting)
 		end
@@ -101,15 +101,15 @@ function GM:RoundThink()
 		elseif CurTime() >= self.StartNewRoundTime then
 			self:StartNewRound()
 		end
-	end	
+	end
 end
 
 function GM:RoundCheckForWin()
 	local murderer
 	local players = team.GetPlayers(2)
-	if #players <= 0 then 
+	if #players <= 0 then
 		self:SetRound(0)
-		return 
+		return
 	end
 	local survivors = {}
 	for k,v in pairs(players) do
@@ -260,7 +260,7 @@ end
 
 function GM:StartNewRound()
 	local players = team.GetPlayers(2)
-	if #players <= 1 then 
+	if #players <= 1 then
 		local ct = ChatText()
 		ct:Add(translate.minimumPlayers, Color(255, 150, 50))
 		ct:SendAll()
@@ -291,7 +291,7 @@ function GM:StartNewRound()
 			oldMurderer = v
 		end
 	end
-	
+
 	local murderer
 
 	// get the weight multiplier
@@ -364,9 +364,9 @@ concommand.Add("mu_forcenextmurderer", function (ply, com, args)
 	if #args < 1 then return end
 
 	local ent = Entity(tonumber(args[1]) or -1)
-	if !IsValid(ent) || !ent:IsPlayer() then 
+	if !IsValid(ent) || !ent:IsPlayer() then
 		ply:ChatPrint("not a player")
-		return 
+		return
 	end
 
 	GAMEMODE.ForceNextMurderer = ent
@@ -395,7 +395,7 @@ end
 
 function GM:RotateMap()
 	local map = game.GetMap()
-	local index 
+	local index
 	for k, map2 in pairs(self.MapList) do
 		if map == map2 then
 			index = k
@@ -447,7 +447,7 @@ function GM:SaveMapList()
 	file.Write("murder/maplist.txt", txt)
 end
 
-function GM:LoadMapList() 
+function GM:LoadMapList()
 	local jason = file.ReadDataAndContent("murder/maplist.txt")
 	if jason then
 		local tbl = {}

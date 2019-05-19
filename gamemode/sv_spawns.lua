@@ -27,7 +27,7 @@ local function networkChange(listName)
 	end
 end
 
-function GM:LoadSpawns() 
+function GM:LoadSpawns()
 	for listName, spawnList in pairs(TeamSpawns) do
 		local jason = file.ReadDataAndContent("murder/" .. game.GetMap() .. "/spawns/" .. listName .. ".txt")
 		if jason then
@@ -61,7 +61,7 @@ function GM:SaveSpawns()
 	end
 end
 
-local function getPosPrintString(pos, plyPos) 
+local function getPosPrintString(pos, plyPos)
 	return math.Round(pos.x) .. "," .. math.Round(pos.y) .. "," .. math.Round(pos.z) .. " " .. math.Round(pos:Distance(plyPos) / 12) .. "ft"
 end
 
