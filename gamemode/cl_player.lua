@@ -12,8 +12,6 @@ end
 
 function EntityMeta:GetBystanderName()
 	local name = self:GetNWString("bystanderName")
-	if !name || name == "" then
-		return "Bystander" 
-	end
+	if not(name) or name == "" then return "Bystander" end
 	return name
 end
