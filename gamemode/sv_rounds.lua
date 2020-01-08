@@ -272,7 +272,6 @@ function GM:StartNewRound()
 	ct:Add(translate.roundStarted)
 	ct:SendAll()
 
-	self:SetRound(self.Round.Playing)
 	self.RoundUnFreezePlayers = CurTime() + 10
 
 	local players = team.GetPlayers(2)
@@ -344,6 +343,7 @@ function GM:StartNewRound()
 
 	self.MurdererLastKill = CurTime()
 
+	self:SetRound(self.Round.Playing)
 	hook.Call("OnStartRound")
 end
 
