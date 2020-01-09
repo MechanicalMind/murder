@@ -1,10 +1,10 @@
 GM.Name 	= "Murder"
 GM.Author 	= "MechanicalMind"
-// credits to Minty Fresh for some styling on the scoreboard
-// credits to Waddlesworth for the logo and menu icon
+-- credits to Minty Fresh for some styling on the scoreboard
+-- credits to Waddlesworth for the logo and menu icon
 GM.Email 	= ""
 GM.Website 	= "www.codingconcoctions.com/murder/"
-GM.Version = "28"
+GM.Version = "29"
 
 function GM:SetupTeams()
 	team.SetUp(1, translate.teamSpectators, Color(150, 150, 150))
