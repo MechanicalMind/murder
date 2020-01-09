@@ -130,14 +130,12 @@ function GM:DoPlayerDeath( ply, attacker, dmginfo )
 		ent:SetBystanderName(ply:GetBystanderName())
 	end
 
-	ply:AddDeaths( 1 )
-
 end
 
 local plyMeta = FindMetaTable("Player")
 
 function plyMeta:CalculateSpeed()
-	// set the defaults
+	-- set the defaults
 	local walk,run,canrun = 250,310,false
 	local jumppower = 200
 
@@ -160,19 +158,7 @@ function plyMeta:CalculateSpeed()
 		end
 	end
 
-	// handcuffs
-	-- if self:GetHandcuffed() then
-	-- 	walk = walk * 0.3
-	-- 	jumppower = 150
-	-- 	canrun = false
-	-- end
-	-- if self:GetTasered() then
-	-- 	walk = 40
-	-- 	jumppower = 100
-	-- 	canrun = false
-	-- end
-
-	// set out new speeds
+	-- set out new speeds
 	if canrun then
 		self:SetRunSpeed(run)
 	else
@@ -217,12 +203,12 @@ end
 
 
 function GM:PlayerDeathSound()
-	// don't play sound
+	-- don't play sound
 	return true
 end
 
 function GM:ScalePlayerDamage( ply, hitgroup, dmginfo )
-	// Don't scale it depending on hitgroup
+	-- Don't scale it depending on hitgroup
 end
 
 function GM:PlayerDeath(ply, Inflictor, attacker )
@@ -310,18 +296,18 @@ end
 
 function GM:PlayerCanPickupWeapon( ply, ent )
 
-	// can't pickup a weapon twice
+	-- can't pickup a weapon twice
 	if ply:HasWeapon(ent:GetClass()) then
 		return false
 	end
 
 	if ent:GetClass() == "weapon_mu_magnum" then
-		// murderer can't have the gun
+		-- murderer can't have the gun
 		if ply:GetMurderer() then
 			return false
 		end
 
-		// penalty for killing a bystander
+		-- penalty for killing a bystander
 		if ply:GetTKer() then
 			if ply.TempGiveMagnum then
 				ply.TempGiveMagnum = nil
@@ -332,7 +318,7 @@ function GM:PlayerCanPickupWeapon( ply, ent )
 	end
 
 	if ent:GetClass() == "weapon_mu_knife" then
-		// bystanders can't have the knife
+		-- bystanders can't have the knife
 		if !ply:GetMurderer() then
 			return false
 		end
@@ -356,7 +342,7 @@ function GM:PlayerCanHearChatVoice(listener, talker, typ)
 		end
 		local ply = listener
 
-		// listen as if spectatee when spectating
+		-- listen as if spectatee when spectating
 		if listener:IsCSpectating() && IsValid(listener:GetCSpectatee()) then
 			ply = listener:GetCSpectatee()
 		end
@@ -455,8 +441,8 @@ end)
 
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )
 	if !IsValid(speaker) then return false end
+
 	local canhear = self:PlayerCanHearChatVoice(listener, speaker) 
-	-- print( canhear, listener, speaker, listener:Alive())
 	return canhear
 end
 
@@ -472,7 +458,6 @@ function GM:PlayerSay( ply, text, team)
 				ct:Send(ply2)
 			end
 		end
-		-- ct:SendAll()
 		return false
 	end
 	return true
@@ -493,7 +478,7 @@ end
 local function pressedUse(self, ply)
 	local tr = ply:GetEyeTraceNoCursor()
 
-	// press e on windows to break them
+	-- press e on windows to break them
 	if IsValid(tr.Entity) && (tr.Entity:GetClass() == "func_breakable" || tr.Entity:GetClass() == "func_breakable_surf") && tr.HitPos:Distance(tr.StartPos) < 50 then
 		if tr.Entity:GetClass() == "func_breakable" then
 			local dmg = DamageInfo()
@@ -510,7 +495,7 @@ local function pressedUse(self, ply)
 		end
 	end
 
-	// disguise as ragdolls
+	-- disguise as ragdolls
 	if IsValid(tr.Entity) && tr.Entity:GetClass() == "prop_ragdoll" && tr.HitPos:Distance(tr.StartPos) < 80 then
 		if ply:GetMurderer() && ply:GetLootCollected() >= 1 then
 			if tr.Entity:GetBystanderName() != ply:GetBystanderName() || tr.Entity:GetPlayerColor() != ply:GetPlayerColor() then 
@@ -522,7 +507,7 @@ local function pressedUse(self, ply)
 	end
 	
 	if ply:GetMurderer() then
-		// find closest button to cursor with usable range
+		-- find closest button to cursor with usable range
 		local dis, dot, but
 		for k, lbut in pairs(ents.FindByClass("ttt_traitor_button")) do
 			if lbut.TraitorButton then
