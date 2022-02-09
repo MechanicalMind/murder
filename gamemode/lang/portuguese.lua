@@ -31,8 +31,9 @@ pt.winBystandersMurdererWas = " O assassino era {murderer}"
 pt.winMurderer = "O assassino venceu!"
 pt.winMurdererMurdererWas = " Ele era {murderer}"
 
-pt.minimumPlayers = "Jogadores insuficientes para começar a partida."
+pt.minimumPlayers = "Jogadores insuficientes para começar a rodada"
 pt.waitingToStart = "Aguardando para começar a rodada"
+pt.roundStartsInTime = "A rodada começará em {seconds}"
 pt.roundStarted = "Uma nova rodada começou"
 
 
