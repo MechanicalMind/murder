@@ -48,7 +48,7 @@ pt.scoreboard = "Placar"
 pt.scoreboardName = "Nome"
 pt.scoreboardPing = "Ping"
 pt.scoreboardBystanderName = "Pseudônimo"
-pt.scoreboardStatus = "Status"
+pt.scoreboardStatus = "Estado"
 pt.scoreboardChance = "Chance"
 pt.scoreboardRefresh = "Atualizar"
 
