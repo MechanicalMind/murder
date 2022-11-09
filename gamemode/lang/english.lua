@@ -15,7 +15,7 @@ pt.teamAss = "Cake"
 pt.killedTeamKill = "{player} killed an innocent bystander"
 pt.killedMurderer = "{player} killed the murderer"
 
-pt.murdererDeathUnknown = "The murderer died in mysterious circumstances"
+pt.murdererDeathUnknown = "The murderer died under mysterious circumstances"
 
 pt.changeTeam = "{player} changed team to {team}"
 pt.teamMoved = "{player} was moved to {team}"
