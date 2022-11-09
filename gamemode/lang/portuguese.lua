@@ -15,7 +15,7 @@ pt.teamAss = "Bolo"
 pt.killedTeamKill = "{player} matou um inocente"
 pt.killedMurderer = "{player} matou o assassino"
 
-pt.murdererDeathUnknown = "O assassino morreu misteriosamente"
+pt.murdererDeathUnknown = "O assassino morreu sob circunstâncias misteriosas"
 
 pt.changeTeam = "{player} entrou na equipe {team}"
 pt.teamMoved = "{player} foi movido para {team}"
