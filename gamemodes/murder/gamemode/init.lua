@@ -150,7 +150,7 @@ end
 function file.ReadDataAndContent(path)
 	local f = file.Read(path, "DATA")
 	if f then return f end
-	f = file.Read(GAMEMODE.Folder .. "/content/data/" .. path, "GAME")
+	f = file.Read("data_static/" .. path, "GAME")
 	return f
 end
 
