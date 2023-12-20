@@ -19,23 +19,23 @@ pt.murdererDeathUnknown = "Katil bilinmeyen bir nedenden ötürü öldü."
 
 pt.changeTeam = "{player} {team} takımına geçti."
 pt.teamMoved = "{player} {team} takımına taşınıldı."
-pt.teamMovedAFK = "{player} AFK olduğu için {team} takımına taşınıldı."
+pt.teamMovedAFK = "{player} boşta olduğu için {team} takımına taşınıldı."
 
 pt.spectateFailed = "Ölü değilsin. İzleyici olamazsın."
 
-pt.murdererDisconnect = "Katil rage quit attı."
-pt.murdererDisconnectKnown = "Murderer, namı diğer {murderer} rage quit attı."
+pt.murdererDisconnect = "Katil sinirlenip çıktı."
+pt.murdererDisconnectKnown = "Katil, namı diğer {murderer} sinirlenip çıktı."
 
 pt.winBystanders = "Masumlar kazandı!"
-pt.winBystandersMurdererWas = " {murderer} katil rolündeydi."
+pt.winBystandersMurdererWas = "{murderer} katil rolündeydi."
 pt.winMurderer = "Katil kazandı!"
-pt.winMurdererMurdererWas = " Onun adı buydu: {murderer}"
+pt.winMurdererMurdererWas = "Onun adı buydu: {murderer}"
 
-pt.minimumPlayers = "Randın başlaması için yeterince oyuncu yok."
-pt.roundStarted = "Yeni bir rand başladı."
+pt.minimumPlayers = "Raundun başlaması için yeterince oyuncu yok."
+pt.roundStarted = "Yeni bir raunt başladı."
 
 
-pt.adminMurdererSelect = "{player} sıradaki rand katil olacak."
+pt.adminMurdererSelect = "{player} sıradaki raunt katil olacak."
 pt.adminMurdererForce = "Sıradaki el zorla katil yap."
 pt.adminSpectate = "İzle"
 pt.adminMoveToSpectate = "{spectate} takımına taşı."
@@ -52,7 +52,7 @@ pt.scoreboardRefresh = "Yenile"
 
 pt.scoreboardJoinTeam = "Katıl"
 
-pt.scoreboardActionAdmin = "O bir admin."
+pt.scoreboardActionAdmin = "O bir yönetici."
 pt.scoreboardActionMute = "Sustur"
 pt.scoreboardActionUnmute = "Sesi aç"
 pt.scoreboardActionViewProfile = "Profiline bak"
@@ -64,7 +64,7 @@ pt.endroundMurdererWas = "{murderer} katil rolündeydi."
 
 pt.endroundLootCollected = "Toplanan Ganimet"
 
-pt.adminPanel = "Admin Paneli"
+pt.adminPanel = "Yönetici Paneli"
 
 pt.spectating = "İzleniyor"
 
@@ -83,22 +83,22 @@ pt.voiceMoroseDescription = "Mutsuzluğu hisset."
 
 pt.startHelpBystanderTitle = "Sen bir masumsun."
 pt.startHelpBystander = {
-	"Etrafta bir katil dolanmakta",
-	"hayatta kalmaya çalış!"
+        "Etrafta bir katil dolanmakta",
+        "hayatta kalmaya çalış!"
 }
 
 
 pt.startHelpGunTitle = "Sen elinde gizli bir silahı"
 pt.startHelpGunSubtitle = "olan özel birisin."
 pt.startHelpGun = {
-	"Etrafta bir katil dolanmakta",
-	"onu bul ve öldür!"
+        "Etrafta bir katil dolanmakta",
+        "onu bul ve öldür!"
 }
 
 pt.startHelpMurdererTitle = "Sen katilsin."
 pt.startHelpMurderer = {
-	"Herkesi öldür",
-	"ve yakalanma!"
+        "Herkesi öldür",
+        "ve yakalanma!"
 }
 
 pt.murdererFog = "Şeytani varlığın kendini gösteriyor."
