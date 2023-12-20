@@ -1,3 +1,6 @@
 # Sublime!
 *.sublime-project
 *.sublime-workspace
+pack/
+.vscode
+*.gma
