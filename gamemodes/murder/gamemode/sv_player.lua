@@ -375,7 +375,7 @@ function GM:PlayerOnChangeTeam(ply, newTeam, oldTeam)
 	end
 	ply:SetMurderer(false)
 	if newteam == 1 then
-		
+		ply:Freeze(false)
 	end
 	ply.HasMoved = true
 	ply:KillSilent()
