@@ -12,8 +12,8 @@ function PlayerMeta:GetRagdollEntity()
 	return self:GetRagdollEntityOld()
 end
 
-if !PlayerMeta.GetRagdollOwnerOld then
-	PlayerMeta.GetRagdollOwnerOld = PlayerMeta.GetRagdollOwner
+if !EntityMeta.GetRagdollOwnerOld then
+	EntityMeta.GetRagdollOwnerOld = EntityMeta.GetRagdollOwner
 end
 function EntityMeta:GetRagdollOwner()
 	local ent = self:GetNWEntity("RagdollOwner")
