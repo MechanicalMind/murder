@@ -32,6 +32,8 @@ pt.winMurderer = "Katil kazandı!"
 pt.winMurdererMurdererWas = "Onun adı buydu: {murderer}"
 
 pt.minimumPlayers = "Raundun başlaması için yeterince oyuncu yok."
+pt.waitingToStart = "Raundun başlaması bekleniyor"
+pt.roundStartsInTime = "Raunt {seconds} saniye içinde başlıyor"
 pt.roundStarted = "Yeni bir raunt başladı."
 
 
