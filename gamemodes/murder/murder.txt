@@ -1,9 +1,150 @@
 "Gamemode"
 {
-	"base"		"base"
-	"title"		"Murder"
-	"maps"		"^md_|^mu_|^murder_"
-	"menusystem"	"1"
-	"workshopid" "187073946"
-	"version"	"30"
+	"base"			"base"
+	"title"			"Murder"
+	"maps"			"^md_|^mu_|^murder_"
+	"menusystem"		"1"
+	"workshopid" 		"187073946"
+	"version"		"1"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"mu_language"
+			"text"		"language"
+			"type"		"Text"
+			"default"	"english"
+		}
+
+		2
+		{
+			"name"		"mu_roundlimit"
+			"text"		"round_limit"
+			"type"		"Numeric"
+			"default"	"12"
+		}
+		
+		
+		3
+		{
+			"name"		"mu_delay_after_enough_players"
+			"text"		"init_waiting_time"
+			"type"		"Numeric"
+			"default"	"10"
+		}
+		
+		4
+		{
+			"name"		"mu_murder_weight_multiplier"
+			"text"		"murder_multiplier"
+			"type"		"Numeric"
+			"default"	"1"
+		}
+
+		5
+		{
+			"name"		"mu_murderer_fogtime"
+			"text"		"murderer_fogtime"
+			"type"		"Numeric"
+			"default"	"90"
+		}
+
+		6
+		{
+			"name"		"mu_flashlight_battery"
+			"text"		"flashlight_battery"
+			"type"		"Numeric"
+			"default"	"30"
+		}
+
+		7
+		{
+			"name"		"mu_localchat_range"
+			"text"		"localchat_range"
+			"type"		"Numeric"
+			"default"	"500"
+		}
+
+		8
+		{
+			"name"		"mu_tk_penalty_time"
+			"text"		"tk_penalty_time"
+			"type"		"Numeric"
+			"default"	"30"
+		}
+
+		9
+		{
+			"name"		"mu_show_bystander_tks"
+			"text"		"show_bystander_tks"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		10
+		{
+			"name"		"mu_localchat"
+			"text"		"localchat"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+
+		11
+		{
+			"name"		"mu_knife_charge"
+			"text"		"knife_charge"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		12
+		{
+			"name"		"mu_disguise"
+			"text"		"disguise"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		13
+		{
+			"name"		"mu_disguise_removeonkill"
+			"text"		"disguise_removeonkill"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+				
+		14
+		{
+			"name"		"mu_scoreboard_show_admins"
+			"text"		"scoreboard_show_admins"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		15
+		{
+			"name"		"mu_allow_admin_panel"
+			"text"		"allow_admin_panel"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+
+		16
+		{
+			"name"		"mu_moveafktospectator"
+			"text"		"moveafktospectator"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+
+		17
+		{
+			"name"		"mu_show_spectate_info"
+			"text"		"show_spectate_info"
+			"type"		"CheckBox"
+			"default"	"1"
+		}
+	}
 }
