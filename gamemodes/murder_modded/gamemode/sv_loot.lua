@@ -57,7 +57,6 @@ local function loadLootFileInDir(fileDir)
 	if json then
 		LootItems = content
 		print("Successfully loaded loot data from "..filePath.."!")
-		-- 		PrintTable(LootItems)
 		return true
 	end
 
@@ -70,16 +69,19 @@ local function runLootReload(pathArg)
 	if (map == "menu") then return end
 
 	local dataPath = "data/murder/"..map
+	local embeddedPath = "gamemodes/murder/content/data/murder/"..map
 	local staticPath = "data_static/murder/"..map
 
 	if not pathArg then
 		if loadLootFileInDir(dataPath) then return end
+		if loadLootFileInDir(embeddedPath) then return end
 		if loadLootFileInDir(staticPath) then return end
 		print("No loot data file found to load!")
 		return
 	end
 
 	if pathArg == "--data" then loadLootFileInDir(dataPath)
+	elseif pathArg == "--embedded" then loadLootFileIndir(embedPath)
 	elseif pathArg == "--static" then loadLootFileInDir(staticPath)
 	else print("Invalid path argument!") end
 end
