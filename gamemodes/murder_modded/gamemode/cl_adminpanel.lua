@@ -16,7 +16,7 @@ local function addPlayerItem(self, mlist, ply, pteam)
 
 		local col = team.GetColor(pteam)
 		if IsValid(ply) then
-			col = ply:GetPlayerColor()
+			col = ply:GetNameColor()
 			col = Color(col.x * 255, col.y * 255, col.z * 255)
 		end
 		surface.SetDrawColor(col)

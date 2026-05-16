@@ -67,7 +67,7 @@ function GM:AddFootstep(ply, pos, ang)
 		tbl.curtime = CurTime()
 		tbl.angle = ang.y
 		tbl.normal = tr.HitNormal
-		local col = ply:GetPlayerColor()
+		local col = ply:GetNameColor()
 		tbl.col = Color(col.x * 255, col.y * 255, col.z * 255)
 		table.insert(FootSteps, tbl)
 	end

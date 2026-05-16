@@ -164,7 +164,7 @@ function GM:EndTheRound(reason, murderer)
 
 	if reason == 3 then
 		if murderer then
-			local col = murderer:GetPlayerColor()
+			local col = murderer:GetNameColor()
 			local msgs = Translator:AdvVarTranslate(translate.murdererDisconnectKnown, {
 				murderer = {text = murderer:Nick() .. ", " .. murderer:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
 			})
@@ -178,7 +178,7 @@ function GM:EndTheRound(reason, murderer)
 			ct:SendAll()
 		end
 	elseif reason == 2 then
-		local col = murderer:GetPlayerColor()
+		local col = murderer:GetNameColor()
 		local msgs = Translator:AdvVarTranslate(translate.winBystandersMurdererWas, {
 			murderer = {text = murderer:Nick() .. ", " .. murderer:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
 		})
@@ -187,7 +187,7 @@ function GM:EndTheRound(reason, murderer)
 		ct:AddParts(msgs)
 		ct:SendAll()
 	elseif reason == 1 then
-		local col = murderer:GetPlayerColor()
+		local col = murderer:GetNameColor()
 		local msgs = Translator:AdvVarTranslate(translate.winMurdererMurdererWas, {
 			murderer = {text = murderer:Nick() .. ", " .. murderer:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
 		})
@@ -201,7 +201,7 @@ function GM:EndTheRound(reason, murderer)
 	net.WriteUInt(reason, 8)
 	if murderer then
 		net.WriteEntity(murderer)
-		net.WriteVector(murderer:GetPlayerColor())
+		net.WriteVector(murderer:GetNameColor())
 		net.WriteString(murderer:GetBystanderName())
 	else
 		net.WriteEntity(Entity(0))
@@ -213,7 +213,7 @@ function GM:EndTheRound(reason, murderer)
 		net.WriteUInt(1, 8)
 		net.WriteEntity(ply)
 		net.WriteUInt(ply.LootCollected, 32)
-		net.WriteVector(ply:GetPlayerColor())
+		net.WriteVector(ply:GetNameColor())
 		net.WriteString(ply:GetBystanderName())
 	end
 	net.WriteUInt(0, 8)
@@ -226,7 +226,7 @@ function GM:EndTheRound(reason, murderer)
 			ply:SetTeam(1)
 			GAMEMODE:PlayerOnChangeTeam(ply, 1, oldTeam)
 
-			local col = ply:GetPlayerColor()
+			local col = ply:GetNameColor()
 			local msgs = Translator:AdvVarTranslate(translate.teamMovedAFK, {
 				player = {text = ply:Nick(), color = Color(col.x * 255, col.y * 255, col.z * 255)},
 				team = {text = team.GetName(1), color = team.GetColor(2)}
@@ -313,6 +313,7 @@ function GM:StartNewRound()
 	if IsValid(murderer) then
 		murderer:SetMurderer(true)
 	end
+
 	for k, ply in pairs(players) do
 		if ply != murderer then
 			ply:SetMurderer(false)
@@ -321,11 +322,13 @@ function GM:StartNewRound()
 		ply:KillSilent()
 		ply:Spawn()
 		ply:Freeze(true)
+
 		local vec = Vector(0, 0, 0)
 		vec.x = math.Rand(0, 1)
 		vec.y = math.Rand(0, 1)
 		vec.z = math.Rand(0, 1)
 		ply:SetPlayerColor(vec)
+		ply:SetNameColor(vec)
 
 		ply.LootCollected = 0
 		ply.HasMoved = false
@@ -334,6 +337,10 @@ function GM:StartNewRound()
 		ply:CalculateSpeed()
 		ply:GenerateBystanderName()
 	end
+
+	-- Set all players' custom characters
+	SetPlayerCharacters()
+	
 	local noobs = table.Copy(players)
 	table.RemoveByValue(noobs, murderer)
 	local magnum = table.Random(noobs)

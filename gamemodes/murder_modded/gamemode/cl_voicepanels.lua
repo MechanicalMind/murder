@@ -18,7 +18,7 @@ function PANEL:Init()
 	self.ColorBlock:SetSize(32,32)
 	function self.ColorBlock:Paint(w, h)
 		if IsValid(self.Player) && self.Player:IsPlayer() then
-			local col = self.Player:GetPlayerColor()
+			local col = self.Player:GetNameColor()
 			surface.SetDrawColor(Color(col.x * 255, col.y * 255, col.z * 255))
 			surface.DrawRect(0, 0, w, h)
 		end
@@ -66,7 +66,7 @@ function PANEL:CheckBystanderState(state)
 			self:SetBystanderState(newBystanderState)
 		end
 		if newBystanderState then
-			local col = self.ply:GetPlayerColor()
+			local col = self.ply:GetNameColor()
 			if col != self.PrevColor then
 				local color = Color(col.x * 255, col.y * 255, col.z * 255)
 				self.Color = color
@@ -78,7 +78,7 @@ function PANEL:CheckBystanderState(state)
 end
 
 function PANEL:SetBystanderState(state)
-	local col = self.ply:GetPlayerColor()
+	local col = self.ply:GetNameColor()
 	local color = Color(col.x * 255, col.y * 255, col.z * 255)
 	self.Color = color
 

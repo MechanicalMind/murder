@@ -22,6 +22,7 @@ function GM:PlayerInitialSpawn( ply )
 
 	local vec = Vector(0.5, 0.5, 0.5)
 	ply:SetPlayerColor(vec)
+	ply:SetNameColor(vec)
 end
 
 function GM:PlayerSpawn( ply )
@@ -109,6 +110,28 @@ function GM:PlayerSetModel( ply )
 	ply:SetModel( modelname )
 	ply.ModelSex = playerModel.sex
 
+end
+
+-- Set player hands on model change
+function GM:PlayerSetHandsModel(ply, hands) 
+    -- Get info from the hands model
+    local simplemodel = player_manager.TranslateToPlayerModelName(ply:GetModel())
+    local info = player_manager.TranslatePlayerHands(simplemodel)
+
+    -- Set hands model and skin
+    hands:SetModel(info.model)
+    hands:SetSkin(ply:GetSkin())
+
+    -- Get the corresponding bodygroup's value from the playermodel based on its name.
+    -- If they are different, there's nothing I can really do.
+    local handsBgs = hands:GetBodyGroups()
+    for k, handsBg in pairs(handsBgs) do
+        local modelBgId = ply:FindBodygroupByName(handsBg.name)
+        if modelBgId != -1 then
+            local value = ply:GetBodygroup(modelBgId)
+            hands:SetBodygroup(handsBg.id, value)
+        end
+    end
 end
 
 function GM:DoPlayerDeath( ply, attacker, dmginfo )
@@ -236,7 +259,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 				end
 			elseif attacker != ply then
 				if self.ShowBystanderTKs:GetBool() then
-					local col = attacker:GetPlayerColor()
+					local col = attacker:GetNameColor()
 					local msgs = Translator:AdvVarTranslate(translate.killedTeamKill, {
 						player = {text = attacker:Nick() .. ", " .. attacker:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
 					})
@@ -249,7 +272,7 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		end
 	else
 		if attacker != ply && IsValid(attacker) && attacker:IsPlayer() then
-			local col = attacker:GetPlayerColor()
+			local col = attacker:GetNameColor()
 			local msgs = Translator:AdvVarTranslate(translate.killedMurderer, {
 				player = {text = attacker:Nick() .. ", " .. attacker:GetBystanderName(), color = Color(col.x * 255, col.y * 255, col.z * 255)}
 			})
@@ -288,6 +311,15 @@ end
 function EntityMeta:SetPlayerColor(vec)
 	self.playerColor = vec
 	self:SetNWVector("playerColor", vec)
+end
+
+-- Name color getter/setter
+function EntityMeta:GetNameColor()
+	return self:GetNWVector("nameColor") or Vector()
+end
+
+function EntityMeta:SetNameColor(vec)
+	self:SetNWVector("nameColor", vec)
 end
 
 function GM:PlayerFootstep(ply, pos, foot, sound, volume, filter)
@@ -447,7 +479,7 @@ end
 function GM:PlayerSay( ply, text, team)
 	if ply:Team() == 2 && ply:Alive() && self:GetRound() != 0 then
 		local ct = ChatText()
-		local col = ply:GetPlayerColor()
+		local col = ply:GetNameColor()
 		ct:Add(ply:GetBystanderName(), Color(col.x * 255, col.y * 255, col.z * 255))
 		ct:Add(": " .. text, color_white)
 		for k, ply2 in pairs(player.GetAll()) do
@@ -534,14 +566,29 @@ end
 
 function PlayerMeta:MurdererDisguise(copyent)
 	if !self.Disguised then
-		self.DisguiseColor = self:GetPlayerColor()
 		self.DisguiseName = self:GetBystanderName()
+		self.DisguiseNameColor = self:GetNameColor()
+		self.DisguiseModel = self:GetModel()
+		self.DisguiseColor = self:GetPlayerColor()
+		self.DisguiseSkin = self:GetSkin()
+
+		self.DisguiseBodygroups = {}
+		for i = 0, self:GetNumBodyGroups() - 1 do
+			self.DisguiseBodygroups[i] = self:GetBodygroup(i)
+		end
 	end
 	if GAMEMODE.CanDisguise:GetBool() then
 		self.Disguised = true
 		self.DisguisedStart = CurTime()
 		self:SetBystanderName(copyent:GetBystanderName())
+		self:SetNameColor(copyent:GetNameColor())
+		self:SetModel(copyent:GetModel())
 		self:SetPlayerColor(copyent:GetPlayerColor())
+		self:SetSkin(copyent:GetSkin())
+		
+		for i = 0, copyent:GetNumBodyGroups() - 1 do
+			self:SetBodygroup(i, copyent:GetBodygroup(i))
+		end
 	else
 		self:UnMurdererDisguise()
 	end
@@ -549,8 +596,15 @@ end
 
 function PlayerMeta:UnMurdererDisguise()
 	if self.Disguised then
-		self:SetPlayerColor(self.DisguiseColor)
 		self:SetBystanderName(self.DisguiseName)
+		self:SetNameColor(self.DisguiseNameColor)
+		self:SetModel(self.DisguiseModel)
+		self:SetPlayerColor(self.DisguiseColor)
+		self:SetSkin(self.DisguiseSkin)
+
+		for i, v in pairs(self.DisguiseBodygroups) do
+			self:SetBodygroup(i, v)
+		end
 	end
 	self.Disguised = false
 end

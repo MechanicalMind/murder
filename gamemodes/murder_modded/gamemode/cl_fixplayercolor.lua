@@ -29,6 +29,8 @@ matproxy.Add(
 		-- 	if ( !IsValid( ent ) ) then return end
 		-- end
 
+		-- I'm pretty sure this is directly related to the model color, 
+		-- so I'm not replacing it with GetNameColor() here
 		if ( ent.GetPlayerColor ) then
 			local col = ent:GetPlayerColor()
 			if ( isvector( col ) ) then

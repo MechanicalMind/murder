@@ -61,6 +61,11 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	if ent.SetPlayerColor then
 		ent:SetPlayerColor(self:GetPlayerColor())
 	end
+
+	if ent.SetNameColor then
+		ent:SetNameColor(self:GetNameColor())
+	end
+
 	ent.PlayerRagdoll = true
 	hook.Run("PreDeathRagdollSpawn", self, ent)
 	ent:Spawn()

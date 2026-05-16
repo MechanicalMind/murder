@@ -1,3 +1,29 @@
+Custom Characters
+	mwcc_char_panel - Opens the Character Config panel
+	mwcc_load_chars (filename) - Loads a character config file
+	mwcc_save_chars (filename) - Save current character configs to a file
+	mwcc_print_chars - Prints all characters set in the config
+	mwcc_char_add [setting tag] [setting value] [...] - Adds a new character with optional settings
+	mwcc_char_info - (identifier) - Prints info on the character passed
+	mwcc_char_edit - (identifier) [setting tag] [setting value] - Edits a character with the settings passed
+	mwcc_char_delete - (identifier) - Deletes the character passed
+
+Notes:
+	At (identifier), you must pass either the name or index of the character you are referring to. 
+	Ex: "mwcc_char_info 1", or "mwcc_char_info Alyx".
+	If you wish to explicit whether it's a name or index, use "-byname" or "-byindex" respectively. 
+	Ex: "mwcc_char_info -byindex 4" or "mwcc_char_info -byname Combine"
+
+	Those are the possible [setting tag] types and its [setting value]s:
+	- "-name (charname)"
+	- "-namecolor (r g b OR random)"
+	- "-sex (male OR female)"
+	- "-pm (pm_name, NOT THE PATH)"
+	- "-pm-color (r g b OR random)"
+	- "-pm-body (bodygroup_name) (bodygroup_value)"
+
+------------------------------------------------------------------------------------------------------------
+
 Spawns
 	mu_spawn_add spawns - Adds a spawn at your current position
 	mu_spawn_list spawns - Lists all spawns
@@ -5,6 +31,8 @@ Spawns
 	mu_spawn_closest spawns - Lists the closest spawn
 	mu_spawn_visualise spawns - Shows the current spawns as green men in the world
 	mu_spawn_counts - Lists the number of spawns
+
+------------------------------------------------------------------------------------------------------------
 
 Loot
 	mu_loot_add <model> - Adds a loot spawn where you are looking, use "random" as the model to create a spawn with a random model
@@ -16,11 +44,15 @@ Loot
 	mu_loot_reload <path> - Reloads all loot data for this map. <path> is optional, use --data to load from the "data" directory, and --static for "data_static"
 	mu_loot_models_list - Lists all model aliases, these can be used instead of model filenames in mu_loot_add
 
+------------------------------------------------------------------------------------------------------------
+
 Misc
 	mu_taunt <category> - Plays a random taunt sound
 	mu_jointeam <team> - Trys to join the specified team
 	mu_print_players - Prints all the players, there bystander names and steam ids
 	mu_adminpanel - Brings up an admin panel where you can view information
+
+------------------------------------------------------------------------------------------------------------
 
 Server ConVars
 	mu_language <lang> - The language Murder should use
@@ -40,6 +72,8 @@ Server ConVars
 	mu_moveafktospectator <0/1> - Should we move AFK players to spectator on round end
 	mu_show_spectate_info <0/1> - Should show players name and color to spectators
 	mu_roundlimit <number> - Number of rounds we should play before map change
+
+------------------------------------------------------------------------------------------------------------
 
 Client ConVars
 	mu_debug <0/1> - Shows debug information

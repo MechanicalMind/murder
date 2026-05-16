@@ -62,7 +62,11 @@ function GM:HUDPaint()
 	local client = LocalPlayer()
 
 	if round == 0 then
-		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 30, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+
+		if LocalPlayer():IsAdmin() then
+			drawTextShadow("Type \"mwcc_char_panel\" in the console to get started!", "MersText1", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
+		end
 	elseif round == 5 then
 		if self.StartNewRoundTime then
 			local seconds = math.ceil(self.StartNewRoundTime - CurTime())
@@ -252,7 +256,7 @@ function GM:DrawGameHUD(ply)
 		end
 		if IsValid(self.LastLooked) && self.LookedFade + 2 > CurTime() then
 			local name = self.LastLooked:GetBystanderName() or "error"
-			local col = self.LastLooked:GetPlayerColor() or Vector()
+			local col = self.LastLooked:GetNameColor() or Vector()
 			col = Color(col.x * 255, col.y * 255, col.z * 255)
 			col.a = (1 - (CurTime() - self.LookedFade) / 2) * 255
 			drawTextShadow(name, "MersRadial", ScrW() / 2, ScrH() / 2 + 80, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
@@ -283,7 +287,7 @@ function GM:DrawGameHUD(ply)
 
 		// draw health circle
 		surface.SetTexture(tex)
-		local col = ply:GetPlayerColor()
+		local col = ply:GetNameColor()
 		col = Color(col.x * 255, col.y * 255, col.z * 255)
 		surface.SetDrawColor(col)
 		local hsize = math.Clamp(health, 0, 100) / 100 * size
@@ -331,6 +335,64 @@ function GM:DrawGameHUD(ply)
 		end
 	end
 	
+	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerModel")
+	if shouldDraw then
+		if !pmPanel or !ispanel(pmPanel) then
+			pmPanel = vgui.Create("DModelPanel")
+			pmPanel:SetSize(200, 250)
+			pmPanel:SetPos(ScrW() - pmPanel:GetWide(), ScrH() - pmPanel:GetTall())
+			pmPanel:SetFOV(20)
+			local h = 60
+			pmPanel:SetCamPos(Vector(80, 70, h))
+			pmPanel:SetLookAt(Vector(0, -10, h))
+			pmPanel.player = nil
+
+			function pmPanel:Refresh(ply)
+				self.player = ply
+				self:SetModel(ply:GetModel())
+				self:GetEntity():SetSkin(ply:GetSkin())
+				self:GetEntity():SetPlayerColor(ply:GetPlayerColor())
+				
+				for i = 0, ply:GetNumBodyGroups() - 1 do
+					self:GetEntity():SetBodygroup(i, ply:GetBodygroup(i))
+				end
+
+				function pmPanel:LayoutEntity(ent)
+					if !ply:IsValid() then return end
+
+					ent:SetSequence(ply:GetSequence())
+					ent:SetPoseParameter("move_x", ply:GetPoseParameter("move_x") * 2 - 1)
+					ent:SetPoseParameter("move_y", ply:GetPoseParameter("move_y") * 2 - 1)
+					ent:SetCycle(ply:GetCycle())
+				end
+			end
+
+			pmPanel:SetPaintedManually(true)
+		end
+
+		local function shouldRefresh()
+			local pmEnt = pmPanel:GetEntity()
+			if !pmEnt then return true end
+
+			for i = 0, pmEnt:GetNumBodyGroups() - 1 do
+				if pmEnt:GetBodygroup(i) != ply:GetBodygroup(i) then 
+					return true 
+				end
+			end
+
+			return pmPanel.player != ply 
+			or pmEnt:GetModel() != ply:GetModel()
+			or pmEnt:GetSkin() != ply:GetSkin()
+			or colorDif(pmEnt:GetPlayerColor(), ply:GetPlayerColor()) >= .1
+		end
+
+		if shouldRefresh() then
+			pmPanel:Refresh(ply)
+		end
+
+		pmPanel:PaintManual()
+	end
+
 	local shouldDraw = hook.Run("HUDShouldDraw", "MurderPlayerType")
 	if shouldDraw != false then
 		local name = translate.bystander
