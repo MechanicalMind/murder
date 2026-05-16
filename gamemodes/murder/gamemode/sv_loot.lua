@@ -44,13 +44,48 @@ local FruitModels = {
 util.AddNetworkString("GrabLoot")
 util.AddNetworkString("SetLoot")
 
-function GM:LoadLootData() 
-	local mapName = game.GetMap()
-	local jason = file.ReadDataAndContent("murder/" .. mapName .. "/loot.txt")
-	if jason then
-		local tbl = util.JSONToTable(jason)
-		LootItems = tbl
+local function loadLootFileInDir(fileDir)
+	local filePath = fileDir.."/loot.txt"
+	if not file.Exists(filePath, "GAME") then
+		print(filePath.." does not exist")
+		return false
 	end
+
+	local json = file.Read(filePath, "GAME")
+	local content = util.JSONToTable(json)
+
+	if json then
+		LootItems = content
+		print("Successfully loaded loot data from "..filePath.."!")
+		-- 		PrintTable(LootItems)
+		return true
+	end
+
+	print("Data inside "..filePath.." seems to be corrupted")
+	return false
+end
+
+local function runLootReload(pathArg)
+	local map = game.GetMap()
+	if (map == "menu") then return end
+
+	local dataPath = "data/murder/"..map
+	local staticPath = "data_static/murder/"..map
+
+	if not pathArg then
+		if loadLootFileInDir(dataPath) then return end
+		if loadLootFileInDir(staticPath) then return end
+		print("No loot data file found to load!")
+		return
+	end
+
+	if pathArg == "--data" then loadLootFileInDir(dataPath)
+	elseif pathArg == "--static" then loadLootFileInDir(staticPath)
+	else print("Invalid path argument!") end
+end
+
+function GM:LoadLootData() 
+	runLootReload()
 end
 
 function GM:CountLootItems()
@@ -178,6 +213,17 @@ local function getLootPrintString(data, plyPos)
 	str = str .. " " .. data.model
 	return str
 end
+
+concommand.Add("mu_loot_reload", function(ply, com, args, full)
+	if (not ply:IsAdmin()) then return end
+
+	local pathArg = nil
+	if #args >= 1 then
+		pathArg = args[1]
+	end
+
+	runLootReload(pathArg)
+end)
 
 concommand.Add("mu_loot_add", function (ply, com, args, full)
 	if (!ply:IsAdmin()) then return end
