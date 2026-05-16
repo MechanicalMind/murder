@@ -41,7 +41,7 @@ Loot
 	mu_loot_remove - Removes loot spawn with specified id
 	mu_loot_adjustpos - Sets the loot spawn position to the current position of the loot object you are looking at 
 	mu_loot_respawn - Respawns all loot
-	mu_loot_reload <path> - Reloads all loot data for this map. <path> is optional, use --data to load from the "data" directory, and --static for "data_static"
+	mu_loot_reload <path> - Reloads all loot data for this map. <path> is optional, use --data to load from the "data" directory, "--embedded" for data mounted from the addon, and --static for "data_static"
 	mu_loot_models_list - Lists all model aliases, these can be used instead of model filenames in mu_loot_add
 
 ------------------------------------------------------------------------------------------------------------
