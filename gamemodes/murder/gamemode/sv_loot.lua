@@ -44,10 +44,15 @@ local FruitModels = {
 util.AddNetworkString("GrabLoot")
 util.AddNetworkString("SetLoot")
 
+local printFailOutput = false
+local function printFail(msg)
+	if printFailOutput then print(msg) end
+end
+
 local function loadLootFileInDir(fileDir)
 	local filePath = fileDir.."/loot.txt"
 	if not file.Exists(filePath, "GAME") then
-		print(filePath.." does not exist")
+		printFail(filePath.." does not exist")
 		return false
 	end
 
@@ -60,11 +65,15 @@ local function loadLootFileInDir(fileDir)
 		return true
 	end
 
-	print("Data inside "..filePath.." seems to be corrupted")
+	printFail("Data inside "..filePath.." seems to be corrupted")
 	return false
 end
 
-local function runLootReload(pathArg)
+local function runLootReload(pathArg, printOutput)
+	if printOutput then 
+		printFailOutput = printOutput 
+	end
+
 	local map = game.GetMap()
 	if (map == "menu") then return end
 
@@ -87,7 +96,7 @@ local function runLootReload(pathArg)
 end
 
 function GM:LoadLootData() 
-	runLootReload()
+	runLootReload(nil, false)
 end
 
 function GM:CountLootItems()
@@ -224,7 +233,7 @@ concommand.Add("mu_loot_reload", function(ply, com, args, full)
 		pathArg = args[1]
 	end
 
-	runLootReload(pathArg)
+	runLootReload(pathArg, true)
 end)
 
 concommand.Add("mu_loot_add", function (ply, com, args, full)
