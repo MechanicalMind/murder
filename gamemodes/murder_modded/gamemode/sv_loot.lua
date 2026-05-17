@@ -81,7 +81,7 @@ local function runLootReload(pathArg)
 	end
 
 	if pathArg == "--data" then loadLootFileInDir(dataPath)
-	elseif pathArg == "--embedded" then loadLootFileIndir(embedPath)
+	elseif pathArg == "--embedded" then loadLootFileInDir(embedPath)
 	elseif pathArg == "--static" then loadLootFileInDir(staticPath)
 	else print("Invalid path argument!") end
 end
