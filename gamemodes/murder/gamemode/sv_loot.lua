@@ -44,13 +44,59 @@ local FruitModels = {
 util.AddNetworkString("GrabLoot")
 util.AddNetworkString("SetLoot")
 
-function GM:LoadLootData() 
-	local mapName = game.GetMap()
-	local jason = file.ReadDataAndContent("murder/" .. mapName .. "/loot.txt")
-	if jason then
-		local tbl = util.JSONToTable(jason)
-		LootItems = tbl
+local printFailOutput = false
+local function printFail(msg)
+	if printFailOutput then print(msg) end
+end
+
+local function loadLootFileInDir(fileDir)
+	local filePath = fileDir.."/loot.txt"
+	if not file.Exists(filePath, "GAME") then
+		printFail(filePath.." does not exist")
+		return false
 	end
+
+	local json = file.Read(filePath, "GAME")
+	local content = util.JSONToTable(json)
+
+	if json then
+		LootItems = content
+		print("Successfully loaded loot data from "..filePath.."!")
+		return true
+	end
+
+	printFail("Data inside "..filePath.." seems to be corrupted")
+	return false
+end
+
+local function runLootReload(pathArg, printOutput)
+	if printOutput then 
+		printFailOutput = printOutput 
+	end
+
+	local map = game.GetMap()
+	if (map == "menu") then return end
+
+	local dataPath = "data/murder/"..map
+	local embeddedPath = "gamemodes/murder/content/data/murder/"..map
+	local staticPath = "data_static/murder/"..map
+
+	if not pathArg then
+		if loadLootFileInDir(dataPath) then return end
+		if loadLootFileInDir(embeddedPath) then return end
+		if loadLootFileInDir(staticPath) then return end
+		print("No loot data file found to load!")
+		return
+	end
+
+	if pathArg == "--data" then loadLootFileInDir(dataPath)
+	elseif pathArg == "--embedded" then loadLootFileInDir(embeddedPath)
+	elseif pathArg == "--static" then loadLootFileInDir(staticPath)
+	else print("Invalid path argument!") end
+end
+
+function GM:LoadLootData() 
+	runLootReload(nil, false)
 end
 
 function GM:CountLootItems()
@@ -178,6 +224,17 @@ local function getLootPrintString(data, plyPos)
 	str = str .. " " .. data.model
 	return str
 end
+
+concommand.Add("mu_loot_reload", function(ply, com, args, full)
+	if (not ply:IsAdmin()) then return end
+
+	local pathArg = nil
+	if #args >= 1 then
+		pathArg = args[1]
+	end
+
+	runLootReload(pathArg, true)
+end)
 
 concommand.Add("mu_loot_add", function (ply, com, args, full)
 	if (!ply:IsAdmin()) then return end
