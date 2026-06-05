@@ -146,5 +146,13 @@
 			"type"		"CheckBox"
 			"default"	"1"
 		}
+
+		18
+		{
+			"name"		"mu_spectate_show_names"
+			"text"		"spectate_show_names"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
 	}
 }
