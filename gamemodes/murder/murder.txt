@@ -146,5 +146,21 @@
 			"type"		"CheckBox"
 			"default"	"1"
 		}
+
+		18
+		{
+			"name"		"mu_roundstart_unfreezetime"
+			"text"		"roundstart_unfreezetime"
+			"type"		"Numeric"
+			"default"	"10"
+		}
+
+		19
+		{
+			"name"		"mu_spectate_delay_after_death"
+			"text"		"spectate_delay_after_death"
+			"type"		"Numeric"
+			"default"	"4"
+		}
 	}
 }

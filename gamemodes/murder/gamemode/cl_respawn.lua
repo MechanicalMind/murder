@@ -27,7 +27,7 @@ end
 
 GM.SpectateTime = 0
 net.Receive("mu_death", function()
-	GAMEMODE.SpectateTime = CurTime() + net.ReadUInt(4)
+	GAMEMODE.SpectateTime = CurTime() + net.ReadUInt(8)
 end)
 
 function GM:RenderRespawnText()

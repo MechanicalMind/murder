@@ -263,12 +263,14 @@ function GM:PlayerDeath(ply, Inflictor, attacker )
 		end
 	end
 
-	ply.NextSpawnTime = CurTime() + 5
+	local spectateDelayAfterDeath = self.SpectateDelayAfterDeath:GetInt()
+
+	ply.NextSpawnTime = CurTime() + spectateDelayAfterDeath + 1
 	ply.DeathTime = CurTime()
-	ply.SpectateTime = CurTime() + 4
+	ply.SpectateTime = CurTime() + spectateDelayAfterDeath
 
 	net.Start("mu_death")
-	net.WriteUInt(4, 4)
+	net.WriteUInt(spectateDelayAfterDeath, 8)
 	net.Send(ply)
 end
 
