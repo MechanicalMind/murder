@@ -40,6 +40,7 @@ Server ConVars
 	mu_moveafktospectator <0/1> - Should we move AFK players to spectator on round end
 	mu_show_spectate_info <0/1> - Should show players name and color to spectators
 	mu_roundlimit <number> - Number of rounds we should play before map change
+	mu_spectate_show_names <0/1> - Whether regular players can see player names in spectate mode
 
 Client ConVars
 	mu_debug <0/1> - Shows debug information

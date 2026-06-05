@@ -5,10 +5,15 @@ net.Receive("spectating_status", function (length)
 	GAMEMODE.SpectateMode = net.ReadInt(8)
 	GAMEMODE.Spectating = false
 	GAMEMODE.Spectatee = nil
+
 	if GAMEMODE.SpectateMode >= 0 then
 		GAMEMODE.Spectating = true
 		GAMEMODE.Spectatee = net.ReadEntity()
+	else
+		net.ReadEntity() -- skip over passed entity
 	end
+
+	GAMEMODE.SpectateShowNames = net.ReadBool()
 
 end)
 
@@ -22,6 +27,10 @@ end
 
 function GM:GetCSpectateMode() 
 	return self.SpectateMode
+end
+
+function GM:GetSpectateShowNames()
+	return self.SpectateShowNames
 end
 
 
@@ -39,8 +48,7 @@ function GM:RenderSpectate()
 
 		if IsValid(self:GetCSpectatee()) && self:GetCSpectatee():IsPlayer() then
 			
-
-			if IsValid(LocalPlayer()) && LocalPlayer():IsAdmin() then
+			if self:GetSpectateShowNames() || (IsValid(LocalPlayer()) && LocalPlayer():IsAdmin()) then
 				drawTextShadow(self:GetCSpectatee():Nick(), "MersRadialSmall", ScrW() / 2, ScrH() - 30 - h, Color(190, 190, 190), 1)
 			end
 

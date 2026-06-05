@@ -2,7 +2,7 @@ util.AddNetworkString("spectating_status")
 
 local PlayerMeta = FindMetaTable("Player")
 
-function PlayerMeta:CSpectate(mode, spectatee)
+function PlayerMeta:CSpectate(mode, spectatee, showNames)
 	mode = mode || OBS_MODE_IN_EYE
 	self:Spectate(mode)
 	if IsValid(spectatee) then
@@ -13,9 +13,12 @@ function PlayerMeta:CSpectate(mode, spectatee)
 	end
 	self.SpectateMode = mode
 	self.Spectating = true
+	self.SpectateShowNames = showNames
+	
 	net.Start("spectating_status")
 	net.WriteInt(self.SpectateMode or -1, 8)
 	net.WriteEntity(self.Spectatee or Entity(-1))
+	net.WriteBool(showNames)
 	net.Send(self)
 end
 
@@ -24,9 +27,12 @@ function PlayerMeta:UnCSpectate(mode, spectatee)
 	self.SpectateMode = nil
 	self.Spectatee = nil
 	self.Spectating = false
+	self.SpectateShowNames = showNames
+
 	net.Start("spectating_status")
 	net.WriteInt(-1, 8)
 	net.WriteEntity(Entity(-1))
+	net.WriteBool(showNames)
 	net.Send(self)
 end
 
@@ -64,47 +70,25 @@ function GM:SpectateNext(ply, direction)
 			index = #players
 		end
 
+		local showNames = self.SpectateShowNames:GetBool()
 		local ent = players[index]
 		if IsValid(ent) then
-			ply:CSpectate(OBS_MODE_IN_EYE, ent)
+			ply:CSpectate(OBS_MODE_IN_EYE, ent, showNames)
 		else
 			if IsValid(ply:GetRagdollEntity()) then
 				if ply:GetCSpectating() != ply:GetRagdollEntity() then
-					ply:CSpectate(OBS_MODE_CHASE, ply:GetRagdollEntity())
+					ply:CSpectate(OBS_MODE_CHASE, ply:GetRagdollEntity(), showNames)
 				end
 			else
-				ply:CSpectate(OBS_MODE_ROAMING)
+				ply:CSpectate(OBS_MODE_ROAMING, nil, showNames)
 			end
 		end
 	else
-		ply:CSpectate(OBS_MODE_ROAMING)
+		ply:CSpectate(OBS_MODE_ROAMING, nil, showNames)
 	end
 end
 
 function GM:ChooseSpectatee(ply) 
-
-	-- if ((!ply.SpectateTime || ply.SpectateTime < CurTime()) && ply:KeyPressed(IN_ATTACK))
-	--  || !IsValid(ply:GetCSpectatee()) || (ply:GetCSpectatee():IsPlayer() && !ply:GetCSpectatee():Alive()) then
-
-	-- 	// recalculate spectating
-	-- 	local players = team.GetPlayers(2)
-	-- 	for k,v in pairs(players) do
-	-- 		if !(v:Alive()) then
-	-- 			players[k] = nil
-	-- 		end
-	-- 	end
-
-	-- 	local ent = table.Random(players)
-	-- 	if IsValid(ent) then
-	-- 		ply:CSpectate(OBS_MODE_IN_EYE, ent)
-	-- 	elseif IsValid(ply:IsCSpectating()) then
-	-- 		if ply:GetCSpectating() != ply:GetRagdollEntity() then
-	-- 			ply:CSpectate(OBS_MODE_CHASE, ply:GetRagdollEntity())
-	-- 		end
-	-- 	elseif ply:IsCSpectating() then
-	-- 		ply:CSpectate(OBS_MODE_ROAMING)
-	-- 	end
-	-- end
 
 	if !ply.SpectateTime || ply.SpectateTime < CurTime() then
 
