@@ -30,6 +30,8 @@ net.Receive("SetRound", function (length)
 		GAMEMODE.StartNewRoundTime = net.ReadDouble()
 	end
 
+	GAMEMODE.RoundStartUnfreezeTime = net.ReadFloat()
+
 	if r == GAMEMODE.Round.Playing then
 		timer.Simple(0.2, function ()
 			local pitch = math.random(70, 140)
