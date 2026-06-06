@@ -272,7 +272,8 @@ function GM:StartNewRound()
 	ct:Add(translate.roundStarted)
 	ct:SendAll()
 
-	self.RoundUnFreezePlayers = CurTime() + 10
+	local roundStartUnfreezeTime = self.RoundStartUnfreezeTime:GetFloat()
+	self.RoundUnFreezePlayers = CurTime() + roundStartUnfreezeTime
 
 	local players = team.GetPlayers(2)
 	for k,ply in pairs(players) do

@@ -38,6 +38,8 @@ resource.AddFile("materials/thieves/footprint.vmt")
 resource.AddFile("materials/murder/melon_logo_scoreboard.png")
 
 GM.SpectateShowNames = CreateConVar("mu_spectate_show_names", 0, bit.bor(FCVAR_NOTIFY), "Whether regular players can see player names in spectate mode")
+GM.RoundStartUnfreezeTime = CreateConVar("mu_roundstart_unfreezetime", 10, bit.bor(FCVAR_NOTIFY), "Time (in seconds) it takes for the round start screen to be hidden and players able to move around")
+GM.SpectateDelayAfterDeath = CreateConVar("mu_spectate_delay_after_death", 4, bit.bor(FCVAR_NOTIFY), "Duration (in seconds) of the \"black screen\" effect after dying", 0, 255)
 GM.ShowBystanderTKs = CreateConVar("mu_show_bystander_tks", 1, bit.bor(FCVAR_NOTIFY), "Should show name of killer in chat on a bystander team kill" )
 GM.MurdererFogTime = CreateConVar("mu_murderer_fogtime", 60 * 4, bit.bor(FCVAR_NOTIFY), "Time (in seconds) it takes for a Murderer to show fog for no kills, 0 to disable" )
 GM.TKPenaltyTime = CreateConVar("mu_tk_penalty_time", 20, bit.bor(FCVAR_NOTIFY), "Time (in seconds) for a bystander to be penalised for a team kill" )
