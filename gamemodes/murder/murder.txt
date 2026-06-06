@@ -153,10 +153,10 @@
 			"text"		"spectate_show_names"
 			"type"		"CheckBox"
 			"default"	"0"
-    }
-    
-    19
-    {
+		}
+		
+		19
+		{
 			"name"		"mu_roundstart_unfreezetime"
 			"text"		"roundstart_unfreezetime"
 			"type"		"Numeric"
