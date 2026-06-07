@@ -126,7 +126,7 @@ function GM:DoPlayerDeath( ply, attacker, dmginfo )
 
 	local ent = ply:GetNWEntity("DeathRagdoll")
 	if IsValid(ent) then
-		ply:CSpectate(OBS_MODE_CHASE, ent)
+		ply:CSpectate(OBS_MODE_CHASE, ent, self.SpectateShowNames:GetBool())
 		ent:SetBystanderName(ply:GetBystanderName())
 	end
 
@@ -436,7 +436,7 @@ concommand.Add("mu_spectate", function (ply, com, args)
 		ct:Send(ply)
 		return
 	end
-	ply:CSpectate(OBS_MODE_IN_EYE, ent)
+	ply:CSpectate(OBS_MODE_IN_EYE, ent, self.SpectateShowNames:GetBool())
 end)
 
 function GM:PlayerCanSeePlayersChat( text, teamOnly, listener, speaker )

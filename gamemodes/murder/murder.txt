@@ -149,13 +149,21 @@
 
 		18
 		{
+			"name"		"mu_spectate_show_names"
+			"text"		"spectate_show_names"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+		
+		19
+		{
 			"name"		"mu_roundstart_unfreezetime"
 			"text"		"roundstart_unfreezetime"
 			"type"		"Numeric"
 			"default"	"10"
 		}
 
-		19
+		20
 		{
 			"name"		"mu_spectate_delay_after_death"
 			"text"		"spectate_delay_after_death"
