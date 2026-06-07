@@ -44,6 +44,8 @@ function GM:NetworkRound(ply)
 		net.WriteDouble(self.StartNewRoundTime)
 	end
 
+	net.WriteFloat(self.RoundStartUnfreezeTime:GetFloat())
+
 	if ply == nil then
 		net.Broadcast()
 	else
