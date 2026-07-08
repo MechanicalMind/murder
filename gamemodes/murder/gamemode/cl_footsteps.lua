@@ -83,7 +83,8 @@ function GM:FootStepsFootstep(ply, pos, foot, sound, volume, filter)
 end
 
 function GM:CanSeeFootsteps()
-	if self:GetAmMurderer() && LocalPlayer():Alive() then return true end
+	local client = LocalPlayer()
+	if IsValid(client) && self:GetAmMurderer() && client:Alive() then return true end
 	return false
 end
 

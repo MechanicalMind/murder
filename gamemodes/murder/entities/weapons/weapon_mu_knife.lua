@@ -116,6 +116,7 @@ function SWEP:Think()
 	self.BaseClass.Think(self)
 	if self:GetFistHit() != 0 && self:GetFistHit() < RealTime() then
 		self:SetFistHit(0)
+		if !IsValid(self.Owner) then return end
 		if IsFirstTimePredicted() then
 			self:AttackTrace()
 		end
@@ -156,18 +157,21 @@ function SWEP:GetTrace(left, up)
 end
 
 function SWEP:AttackTrace()
-	if self.Owner:IsPlayer() then
-		self.Owner:LagCompensation( true )
+	local owner = self.Owner
+	if !IsValid(owner) then return end
+
+	if owner:IsPlayer() then
+		owner:LagCompensation( true )
 	end
 	local trace = {}
-	trace.filter = self.Owner
-	trace.start = self.Owner:GetShootPos()
+	trace.filter = owner
+	trace.start = owner:GetShootPos()
 	trace.mask = MASK_SHOT_HULL
-	trace.endpos = trace.start + self.Owner:GetAimVector() * self:GetFistRange()
+	trace.endpos = trace.start + owner:GetAimVector() * self:GetFistRange()
 	trace.mins = Vector(-10, -10, -10)
 	trace.maxs = Vector(10, 10, 10)
 	local tr = util.TraceHull(trace)
-	tr.TraceAimVector = self.Owner:GetAimVector()
+	tr.TraceAimVector = owner:GetAimVector()
 
 	// aim around
 	if !IsValid(tr.Entity) then tr = self:GetTrace() end
@@ -183,16 +187,16 @@ function SWEP:AttackTrace()
 			end
 			local dmg = DamageInfo()
 			dmg:SetDamage(self.Primary.Damage or 1)
-			dmg:SetAttacker(self.Owner)
+			dmg:SetAttacker(owner)
 			dmg:SetInflictor(self.Weapon or self)
-			dmg:SetDamageForce(self.Owner:GetAimVector() * self.Primary.Force)
+			dmg:SetDamageForce(owner:GetAimVector() * self.Primary.Force)
 			dmg:SetDamagePosition(tr.HitPos)
 			dmg:SetDamageType(DMG_SLASH)
 			tr.Entity:DispatchTraceAttack(dmg, tr)
 
 			if tr.Entity != self && tr.Entity != self.Owner && (tr.Entity:IsPlayer() || tr.Entity:GetClass() == "prop_ragdoll") then
 				local edata = EffectData()
-				edata:SetStart(self.Owner:GetShootPos())
+				edata:SetStart(owner:GetShootPos())
 				edata:SetOrigin(tr.HitPos)
 				edata:SetNormal(tr.Normal)
 				edata:SetEntity(tr.Entity)
@@ -207,8 +211,8 @@ function SWEP:AttackTrace()
 			self:EmitSound("Weapon_Crowbar.Single")
 		end
 	end
-	if self.Owner:IsPlayer() then
-		self.Owner:LagCompensation( false )
+	if owner:IsPlayer() then
+		owner:LagCompensation( false )
 	end
 end
 
@@ -218,18 +222,25 @@ function SWEP:GetCharge()
 end
 
 function SWEP:ThrowKnife(force)
+	local owner = self.Owner
+	if !IsValid(owner) then return end
+
 	local ent = ents.Create("mu_knife")
-	ent:SetOwner(self.Owner)
-	ent:SetPos(self.Owner:GetShootPos())
-	local knife_ang = Angle(-28,0,0) + self.Owner:EyeAngles()
+	if !IsValid(ent) then return end
+
+	ent:SetOwner(owner)
+	ent:SetPos(owner:GetShootPos())
+	local knife_ang = Angle(-28,0,0) + owner:EyeAngles()
 	knife_ang:RotateAroundAxis(knife_ang:Right(), -90)
 	ent:SetAngles(knife_ang)
 	ent:Spawn()
 
 
 	local phys = ent:GetPhysicsObject()
-	phys:SetVelocity(self.Owner:GetAimVector() * (force * 1000 + 200))
-	phys:AddAngleVelocity(Vector(0, 1500, 0))
+	if IsValid(phys) then
+		phys:SetVelocity(owner:GetAimVector() * (force * 1000 + 200))
+		phys:AddAngleVelocity(Vector(0, 1500, 0))
+	end
 
 	self:Remove()
 end

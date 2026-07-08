@@ -67,6 +67,8 @@ local function addPlayerItem(self, mlist, ply, pteam)
 end
 
 function GM:DoScoreboardActionPopup(ply)
+	if !IsValid(ply) || !ply:IsPlayer() then return end
+
 	local actions = DermaMenu()
 
 	if ply:IsAdmin() then
@@ -104,20 +106,26 @@ function GM:DoScoreboardActionPopup(ply)
 			local spectate = actions:AddOption( Translator:QuickVar(translate.adminMoveToSpectate, "spectate", team.GetName(1)) )
 			spectate:SetIcon( "icon16/status_busy.png" )
 			function spectate:DoClick()
-				RunConsoleCommand("mu_movetospectate", ply:EntIndex())
+				if IsValid(ply) then
+					RunConsoleCommand("mu_movetospectate", ply:EntIndex())
+				end
 			end
 
 			local force = actions:AddOption( translate.adminMurdererForce )
 			force:SetIcon( "icon16/delete.png" )
 			function force:DoClick()
-				RunConsoleCommand("mu_forcenextmurderer", ply:EntIndex())
+				if IsValid(ply) then
+					RunConsoleCommand("mu_forcenextmurderer", ply:EntIndex())
+				end
 			end
 
 			if ply:Alive() then
 				local specateThem = actions:AddOption( translate.adminSpectate )
 				specateThem:SetIcon( "icon16/status_online.png" )
 				function specateThem:DoClick()
-					RunConsoleCommand("mu_spectate", ply:EntIndex())
+					if IsValid(ply) then
+						RunConsoleCommand("mu_spectate", ply:EntIndex())
+					end
 				end
 			end
 		end
@@ -152,7 +160,13 @@ local function doPlayerItems(self, mlist, pteam)
 	end
 	// make sure the rest of the elements are moved up
 	if del then
-		timer.Simple(0, function() mlist:GetCanvas():InvalidateLayout() end)
+		timer.Simple(0, function()
+			if !IsValid(mlist) then return end
+			local canvas = mlist:GetCanvas()
+			if IsValid(canvas) then
+				canvas:InvalidateLayout()
+			end
+		end)
 	end
 end
 

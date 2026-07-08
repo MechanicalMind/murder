@@ -162,24 +162,33 @@ end
 
 function SWEP:Think()
 	self:CalculateHoldType()
+	local owner = self:GetOwner()
+	if !IsValid(owner) then
+		self.ReloadHoldStart = nil
+		self.UsingIronsights = false
+		return
+	end
+
 	if self:GetReloadEnd() > 0 && self:GetReloadEnd() < CurTime() then
 		self:SetReloadEnd(0)
 		
 		if self.Primary.InfiniteAmmo then
 			self:SetClip1(self:GetMaxClip1())
 		else
-			local spare = self.Owner:GetAmmoCount(self:GetPrimaryAmmoType())
+			local spare = owner:GetAmmoCount(self:GetPrimaryAmmoType())
 			local addAmmo = math.min(self:GetMaxClip1() - self:Clip1(), spare)
 			self:SetClip1(self:Clip1() + addAmmo)
-			self.Owner:SetAmmo(spare - addAmmo, self:GetPrimaryAmmoType())
+			owner:SetAmmo(spare - addAmmo, self:GetPrimaryAmmoType())
 		end
 	end
 	if self:GetNextIdle() > 0 && self:GetNextIdle() < CurTime() then
 		self:SetNextIdle(0)
 		
 		local sequence = self.SequenceIdle
-		local vm = self.Owner:GetViewModel()
-		vm:SendViewModelMatchingSequence(vm:LookupSequence(sequence))
+		local vm = owner:GetViewModel()
+		if IsValid(vm) then
+			vm:SendViewModelMatchingSequence(vm:LookupSequence(sequence))
+		end
 		if self.Primary.AutoReload then
 			if self:GetMaxClip1() > 0 && self:Clip1() <= 0 then
 				self:Reload()
@@ -187,14 +196,12 @@ function SWEP:Think()
 		end
 	end
 	
-	if IsValid(self.Owner) then
-		if !self.Owner:KeyDown(IN_RELOAD) then
-			self.ReloadHoldStart = nil
-		end
-		self.UsingIronsights = false
-		if self.Owner:KeyDown(IN_ATTACK2) && self:GetWeaponState() != "holster" then
-			self.UsingIronsights = true
-		end
+	if !owner:KeyDown(IN_RELOAD) then
+		self.ReloadHoldStart = nil
+	end
+	self.UsingIronsights = false
+	if owner:KeyDown(IN_ATTACK2) && self:GetWeaponState() != "holster" then
+		self.UsingIronsights = true
 	end
 	
 	self.IronsightsPercent = lerp(self.IronsightsPercent, self.UsingIronsights and 1 or 0, FrameTime() * 2.5)

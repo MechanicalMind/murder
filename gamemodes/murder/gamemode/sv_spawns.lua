@@ -32,8 +32,10 @@ function GM:LoadSpawns()
 		local jason = file.ReadDataAndContent("murder/" .. game.GetMap() .. "/spawns/" .. listName .. ".txt")
 		if jason then
 			local tbl = util.JSONToTable(jason)
-			TeamSpawns[listName] = tbl
-			networkChange(listName)
+			if istable(tbl) then
+				TeamSpawns[listName] = tbl
+				networkChange(listName)
+			end
 		end
 	end
 end

@@ -174,6 +174,7 @@ local function getPos(self) return self.pos end
 
 local function generateSpawnEntities(spawnList)
 	local tbl = {}
+	if !istable(spawnList) then return tbl end
 
 	for k, pos in pairs(spawnList) do
 		local t = {}
@@ -510,7 +511,7 @@ local function pressedUse(self, ply)
 		-- find closest button to cursor with usable range
 		local dis, dot, but
 		for k, lbut in pairs(ents.FindByClass("ttt_traitor_button")) do
-			if lbut.TraitorButton then
+			if lbut.TraitorButton && lbut:IsUsable() then
 				local vec = lbut:GetPos() - ply:GetShootPos()
 				local ldis, ldot = vec:Length(), vec:GetNormal():Dot(ply:GetAimVector())
 				if (ldis < lbut:GetUsableRange() && ldot > 0.95) && (!but || ldot > dot) then

@@ -60,6 +60,8 @@ local function addElement(transCode, code)
 end
 
 concommand.Add("+menu", function (client, com, args, full)
+	if !IsValid(client) then return end
+
 	if client:Alive() && client:Team() == 2 then
 		elements = {}
 		addElement("Help", "help")

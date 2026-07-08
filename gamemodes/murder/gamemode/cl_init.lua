@@ -41,16 +41,19 @@ function GM:Think()
 
 			local pos = ply:GetPos() + Vector(0,0,30)
 			local client = LocalPlayer()
+			if !IsValid(client) then continue end
 
 			if ply.FogNextPart < CurTime() then
 
-				if client:GetPos():Distance(pos) > 1000 then return end
+				if client:GetPos():Distance(pos) > 1000 then continue end
 
 				ply.FogEmitter:SetPos(pos)
 				ply.FogNextPart = CurTime() + math.Rand(0.01, 0.03)
 				local vec = Vector(math.Rand(-8, 8), math.Rand(-8, 8), math.Rand(10, 55))
 				local pos = ply:LocalToWorld(vec)
 				local particle = ply.FogEmitter:Add( "particle/snow.vmt", pos)
+				if !particle then continue end
+
 				particle:SetVelocity(  Vector(0,0, 4) + VectorRand() * 3 )
 				particle:SetDieTime( 5 )
 				particle:SetStartAlpha( 180 )

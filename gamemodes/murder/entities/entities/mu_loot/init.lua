@@ -19,6 +19,10 @@ function ENT:Initialize()
 end
 
 function ENT:Use(ply)
+	if self.PickedUp then return end
+	if !IsValid(ply) || !ply:IsPlayer() || !ply:Alive() || ply:Team() != 2 then return end
+
+	self.PickedUp = true
 	local phys = self:GetPhysicsObject()
 	if IsValid(phys) then
 		phys:Wake()
