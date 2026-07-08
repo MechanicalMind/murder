@@ -39,6 +39,8 @@ function ENT:Think()
 	if self.HitSomething && self:GetVelocity():Length2D() < 1.5 then
 		self.HitSomething = false
 		local knife = ents.Create("weapon_mu_knife")
+		if !IsValid(knife) then return end
+
 		knife:SetPos(self:GetPos())
 		knife:SetAngles(self:GetAngles())
 		knife:Spawn()
@@ -73,7 +75,12 @@ function ENT:PhysicsCollide( data, physobj )
 
 		local dmg = DamageInfo()
 		dmg:SetDamage(120)
-		dmg:SetAttacker(self:GetOwner())
+		local attacker = self:GetOwner()
+		if !IsValid(attacker) then
+			attacker = game.GetWorld()
+		end
+		dmg:SetAttacker(attacker)
+		dmg:SetInflictor(self)
 		ply:TakeDamageInfo(dmg)
 		self:EmitSound("physics/flesh/flesh_squishy_impact_hard" .. math.random(1, 4) .. ".wav")
 
@@ -82,6 +89,8 @@ function ENT:PhysicsCollide( data, physobj )
 		addangle(ang, Angle(-60,0,0))
 
 		timer.Simple(0, function ()
+			if !IsValid(ply) then return end
+
 			local rag = ply:GetRagdollEntity()
 
 			if IsValid(rag) then

@@ -62,6 +62,7 @@ local healthCol = Color(120,255,20)
 function GM:HUDPaint()
 	local round = self:GetRound()
 	local client = LocalPlayer()
+	if !IsValid(client) then return end
 
 	if round == 0 then
 		drawTextShadow(translate.minimumPlayers, "MersRadial", ScrW() / 2, ScrH() - 10, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM)
@@ -121,6 +122,8 @@ end
 
 function GM:DrawStartRoundInformation()
 	local client = LocalPlayer()
+	if !IsValid(client) then return end
+
 	local t1 = translate.startHelpBystanderTitle
 	local t2 = nil
 	local c = Color(20,120,255)
@@ -202,12 +205,14 @@ function GM:DrawGameHUD(ply)
 			// find closest button to cursor with usable range
 			local dis, dot, but
 			for k, lbut in pairs(ents.FindByClass("ttt_traitor_button")) do
-				local vec = lbut:GetPos() - ply:GetShootPos()
-				local ldis, ldot = vec:Length(), vec:GetNormal():Dot(ply:GetAimVector())
-				if (ldis < lbut:GetUsableRange() && ldot > 0.95) && (!but || ldot > dot) then
-					dis = ldis
-					dot = ldot
-					but = lbut
+				if lbut:IsUsable() then
+					local vec = lbut:GetPos() - ply:GetShootPos()
+					local ldis, ldot = vec:Length(), vec:GetNormal():Dot(ply:GetAimVector())
+					if (ldis < lbut:GetUsableRange() && ldot > 0.95) && (!but || ldot > dot) then
+						dis = ldis
+						dot = ldot
+						but = lbut
+					end
 				end
 			end
 			
@@ -352,6 +357,8 @@ end
 
 function GM:RenderScreenspaceEffects()
 	local client = LocalPlayer()
+	if !IsValid(client) then return end
+
 	if !client:Alive() then
 		self:RenderDeathOverlay()
 	end

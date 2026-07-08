@@ -79,7 +79,12 @@ function GM:GenerateName(words, sex)
 				table.insert(tab, v.name)
 			end
 		end
-		local word = tab[math.random(#tab)]
+		if #tab <= 0 then
+			for k, v in pairs(self.BystanderNameParts) do
+				table.insert(tab, v.name)
+			end
+		end
+		local word = tab[math.random(#tab)] or "Bystander"
 		if !name then
 			name = word
 		else

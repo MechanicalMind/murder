@@ -116,7 +116,13 @@ local function doPlayerItems(self, mlist, pteam)
 	end
 	// make sure the rest of the elements are moved up
 	if del then
-		timer.Simple(0, function() mlist:GetCanvas():InvalidateLayout() end)
+		timer.Simple(0, function()
+			if !IsValid(mlist) then return end
+			local canvas = mlist:GetCanvas()
+			if IsValid(canvas) then
+				canvas:InvalidateLayout()
+			end
+		end)
 	end
 end
 
@@ -195,12 +201,13 @@ net.Receive("mu_adminpanel_details", function (ply, length)
 	local json = net.ReadString()
 	local tab = util.JSONToTable(json)
 
-	playerData = tab
+	playerData = istable(tab) and tab or nil
 	-- PrintTable(tab)
 end)
 
 
 concommand.Add("mu_adminpanel", function (client)
+	if !IsValid(client) then return end
 	if !client:IsAdmin() then return end
 	local canUse = GAMEMODE.RoundSettings.AdminPanelAllowed
 	if !canUse then return end

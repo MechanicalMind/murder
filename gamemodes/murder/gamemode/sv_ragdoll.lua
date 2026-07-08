@@ -11,7 +11,7 @@ local function clearupRagdolls(ragdolls, max)
 		if IsValid(rag) then
 			count = count + 1
 		else
-			rag[k] = nil
+			ragdolls[k] = nil
 		end
 	end
 
@@ -50,6 +50,8 @@ function PlayerMeta:CreateRagdoll(attacker, dmginfo)
 	end
 
 	local ent = ents.Create( "prop_ragdoll" )
+	if !IsValid(ent) then return end
+
 	data.ModelScale = 1 // doesn't work on ragdolls
 	duplicator.DoGeneric(ent, data)
 	
@@ -92,13 +94,15 @@ function PlayerMeta:GetRagdollEntity()
 	return self:GetRagdollEntityOld()
 end
 
-if !PlayerMeta.GetRagdollOwnerOld then
-	PlayerMeta.GetRagdollOwnerOld = PlayerMeta.GetRagdollOwner
+if !EntityMeta.GetRagdollOwnerOld then
+	EntityMeta.GetRagdollOwnerOld = EntityMeta.GetRagdollOwner
 end
 function EntityMeta:GetRagdollOwner()
 	local ent = self:GetNWEntity("RagdollOwner")
 	if IsValid(ent) then
 		return ent
 	end
-	return self:GetRagdollOwnerOld()
+	if self.GetRagdollOwnerOld then
+		return self:GetRagdollOwnerOld()
+	end
 end

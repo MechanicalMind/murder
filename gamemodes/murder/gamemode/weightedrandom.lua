@@ -21,11 +21,13 @@ function WRandom:Roll()
 	for k, item in pairs(self.items) do
 		total = total + item.weight
 	end
-	local c = math.random(total - 1)
+	if total <= 0 then return end
+
+	local c = math.Rand(0, total)
 	local cur = 0
 	for k, item in pairs(self.items) do
 		cur = cur + item.weight
-		if c < cur then
+		if c <= cur then
 			return item.item
 		end
 	end

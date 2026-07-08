@@ -28,6 +28,8 @@ local function unnetworkList()
 		GAMEMODE.Spawns[i].Pos = pos
 		if !IsValid(GAMEMODE.Spawns[i].Ent) then
 			GAMEMODE.Spawns[i].Ent = ClientsideModel("models/editor/playerstart.mdl")
+			if !IsValid(GAMEMODE.Spawns[i].Ent) then continue end
+
 			GAMEMODE.Spawns[i].Ent:SetAngles(Angle(0, math.random(0, 360), 0))
 		end
 		GAMEMODE.Spawns[i].Ent:SetPos(pos)

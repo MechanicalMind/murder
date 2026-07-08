@@ -59,7 +59,7 @@ local function loadLootFileInDir(fileDir)
 	local json = file.Read(filePath, "GAME")
 	local content = util.JSONToTable(json)
 
-	if json then
+	if istable(content) then
 		LootItems = content
 		print("Successfully loaded loot data from "..filePath.."!")
 		return true
@@ -114,6 +114,10 @@ function GM:SpawnLoot()
 end
 
 function GM:SpawnLootItem(data)
+	if !istable(data) || !isstring(data.model) || !isvector(data.pos) || !isangle(data.angle) then
+		return
+	end
+
 	for k, ent in pairs(ents.FindByClass("mu_loot")) do
 		if ent.LootData == data then
 			ent:Remove()
@@ -121,6 +125,8 @@ function GM:SpawnLootItem(data)
 	end
 
 	local ent = ents.Create("mu_loot")
+	if !IsValid(ent) then return end
+
 	ent:SetModel(data.model)
 	ent:SetPos(data.pos)
 	ent:SetAngles(data.angle)
@@ -189,7 +195,9 @@ local function giveMagnum(ply)
 end
 
 function GM:PlayerPickupLoot(ply, ent)
-	ply.LootCollected = ply.LootCollected + 1
+	if !IsValid(ply) || !IsValid(ent) then return end
+
+	ply.LootCollected = (ply.LootCollected or 0) + 1
 
 	if !ply:GetMurderer() then
 		if ply.LootCollected == 5 then
@@ -273,6 +281,11 @@ concommand.Add("mu_loot_add", function (ply, com, args, full)
 	GAMEMODE:SaveLootData()
 
 	local ent = GAMEMODE:SpawnLootItem(data)
+	if !IsValid(ent) then
+		ply:ChatPrint("Failed to spawn loot item")
+		return
+	end
+
 	local mins, maxs = ent:OBBMins(), ent:OBBMaxs()
 	local pos = ent:GetPos()
 	pos.z = pos.z - mins.z

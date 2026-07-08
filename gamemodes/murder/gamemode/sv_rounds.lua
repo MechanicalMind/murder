@@ -156,6 +156,8 @@ end
 // 3 Murderer rage quit
 function GM:EndTheRound(reason, murderer)
 	if self.RoundStage != self.Round.Playing then return end
+	if self.EndingRound then return end
+	self.EndingRound = true
 
 	local players = team.GetPlayers(2)
 	for k, ply in pairs(players) do
@@ -246,18 +248,21 @@ function GM:EndTheRound(reason, murderer)
 
 	self.MurdererLastKill = nil
 
-	hook.Call("OnEndRound")
+	hook.Call("OnEndRound", self)
 	hook.Run("OnEndRoundResult", reason)
 	self.RoundCount = self.RoundCount + 1
 	local limit = self.RoundLimit:GetInt()
 	if limit > 0 then
 		if self.RoundCount >= limit then
-			self:ChangeMap()
-			self:SetRound(4)
-			return
+			if self:ChangeMap() then
+				self:SetRound(4)
+				self.EndingRound = nil
+				return
+			end
 		end
 	end
 	self:SetRound(2)
+	self.EndingRound = nil
 end
 
 function GM:StartNewRound()
@@ -302,8 +307,9 @@ function GM:StartNewRound()
 	// pick a random murderer, weighted
 	local rand = WeightedRandom()
 	for k, ply in pairs(players) do
-		rand:Add(ply.MurdererChance ^ weightMul, ply)
-		ply.MurdererChance = ply.MurdererChance + 1
+		local chance = ply.MurdererChance or 1
+		rand:Add(chance ^ weightMul, ply)
+		ply.MurdererChance = chance + 1
 	end
 	murderer = rand:Roll()
 
@@ -347,7 +353,7 @@ function GM:StartNewRound()
 	self.MurdererLastKill = CurTime()
 
 	self:SetRound(self.Round.Playing)
-	hook.Call("OnStartRound")
+	hook.Call("OnStartRound", self)
 end
 
 function GM:PlayerLeavePlay(ply)
@@ -355,7 +361,7 @@ function GM:PlayerLeavePlay(ply)
 		ply:DropWeapon(ply:GetWeapon("weapon_mu_magnum"))
 	end
 
-	if self.RoundStage == 1 then
+	if self.RoundStage == 1 && !self.EndingRound then
 		if ply:GetMurderer() then
 			self:EndTheRound(3, ply)
 		end
@@ -390,13 +396,16 @@ function GM:ChangeMap()
 				table.insert(prefix, map .. "%.bsp$")
 			end
 			MapVote.Start(nil, nil, nil, prefix)
-			return
+			return true
 		end
-		self:RotateMap()
+		return self:RotateMap()
 	end
+	return false
 end
 
 function GM:RotateMap()
+	if #self.MapList <= 0 then return false end
+
 	local map = game.GetMap()
 	local index 
 	for k, map2 in pairs(self.MapList) do
@@ -418,6 +427,7 @@ function GM:RotateMap()
 	timer.Simple(5, function ()
 		RunConsoleCommand("changelevel", nextMap)
 	end)
+	return true
 end
 
 GM.MapList = {}

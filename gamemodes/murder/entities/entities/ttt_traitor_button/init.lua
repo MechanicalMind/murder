@@ -68,9 +68,10 @@ end
 util.AddNetworkString("TTT_ConfirmUseTButton")
 
 function ENT:TraitorButtonPressed(ply)
-	if self:GetNextUseTime() > CurTime() then
-		return
+	if !self:IsUsable() then
+		return false
 	end
+
 	self:TriggerOutput("OnPressed", ply)
 
 	if self.RemoveOnPress then
